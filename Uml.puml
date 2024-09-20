@@ -1,0 +1,137 @@
+@startuml
+'autonumber
+
+class User {
+    __Attributes__
+    - string login
+    - string password
+    - int coins = 20
+    - Collection<Card> stack
+    - Collection<Card> deck
+    - int stat
+    __Methods__
+    + Deck chooseDeck()
+    + void joinBattle()
+    + void trade(Card card, requirement)
+    + Package acquire(int coins)
+
+    --Getters--
+
+    --Setters--
+    + setName
+    + setPassword
+}
+class Element <<enum>> {
+    FIRE
+    WATER
+    NORMAL
+}
+
+abstract class Card {
+    - string name
+    - final int damage
+    - Element element
+    {abstract} void attack()
+}
+Card --> Element : has
+class Spell {
+}
+Spell --|> Card
+
+abstract class  Monster {
+
+}
+Monster --|> Card
+
+class Dragon {
+    void attack()
+}
+
+class Goblin {
+}
+
+class Wizard {
+}
+
+class Ork {
+}
+
+class Knight {
+}
+
+class Kraken {
+}
+
+class Elf{
+}
+
+Dragon ..|> Monster
+Goblin ..|> Monster
+Wizard ..|> Monster
+Ork ..|> Monster
+Knight ..|> Monster
+Kraken ..|> Monster
+Elf ..|> Monster
+
+
+class Battle {
+    {static} int MAX_ROUNDS_COUNT = 100;
+    __Attributes__
+    - User participant1
+    - User participant2
+    - Map<int, string> log
+    - List<Rounds> rounds
+    - Decks ??
+    --Constructors--
+    Battle(User user1, User user2)
+    __Methods__
+    - arr[2] chooseCards()
+    - sentDataServer()
+    + launch() {
+       chooseCards
+       for (start rounds)
+    }// launch round?
+}
+
+note left of Battle::sentDataServer
+    Send users data, result, count of rounds
+end note
+note left of Battle::launch
+    if one of participants has no more cards in his deck
+end note
+class Round {
+    --Attributes--
+    - User winner;
+    - User looser;
+    - Card playedCard
+    __Methods__
+    + start(Card card1, Card card2)
+    + User getWinner()
+    + User getLooser()
+    + Card getPlayedCard()
+}
+note left of Round::playedCard
+    moved card from looser to winner
+end note
+note left of Round::start
+    logic of fight here???
+end note
+Battle *-- "rounds" Round
+
+class ScoreBoard {
+    //singloton???
+    private Map<string, int> rating
+}
+class Store {
+    __Attributes__
+    - Collection<Card> store
+    __Methods__
+    + addCard(Card card, Requierments)
+    + deleteCard()
+}
+
+class Trade {
+    trade()
+}
+
+@enduml
