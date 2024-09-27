@@ -1,4 +1,4 @@
-package services.trade;
+package at.fhtw.swen.mctg.services.trade;
 
 public class Requirement {
     public enum CardType{

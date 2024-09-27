@@ -1,6 +1,6 @@
-package at.fhtw.swen.mctg.model;
+package at.fhtw.swen.mctg.core;
 
-import services.trade.Requirement;
+import at.fhtw.swen.mctg.services.trade.Requirement;
 
 import java.util.Collection;
 

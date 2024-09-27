@@ -1,7 +1,7 @@
-package at.fhtw.swen.mctg.model;
+package at.fhtw.swen.mctg.core;
 
-import services.trade.Requirement;
-import services.trade.TradeOffer;
+import at.fhtw.swen.mctg.services.trade.Requirement;
+import at.fhtw.swen.mctg.services.trade.TradeOffer;
 
 import java.util.Collection;
 
@@ -12,6 +12,10 @@ public class User {
     private Collection<Card> deck;
     int stat;
     int coins = 20;
+
+    public Collection<Card> getDeck() {
+        return deck;
+    }
 
     private Collection<Card> chooseDeck() {}
 

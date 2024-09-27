@@ -1,4 +1,4 @@
-package at.fhtw.swen.mctg.model;
+package at.fhtw.swen.mctg.core;
 
 public abstract class Card {
     public enum Element {
@@ -14,4 +14,8 @@ public abstract class Card {
         element = type;
     }
     public abstract void attack();
+
+    public int getDamage() {
+        return damage;
+    }
 }

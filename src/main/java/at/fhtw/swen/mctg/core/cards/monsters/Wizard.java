@@ -1,6 +1,6 @@
-package at.fhtw.swen.mctg.model.cards.monsters;
+package at.fhtw.swen.mctg.core.cards.monsters;
 
-import at.fhtw.swen.mctg.model.cards.Monster;
+import at.fhtw.swen.mctg.core.cards.Monster;
 
 public class Wizard extends Monster {
     public Wizard(int damage, Element type) {
