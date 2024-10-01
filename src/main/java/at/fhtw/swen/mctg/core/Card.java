@@ -1,5 +1,6 @@
 package at.fhtw.swen.mctg.core;
 
+
 public abstract class Card {
     public enum Element {
         FIRE,
@@ -14,8 +15,10 @@ public abstract class Card {
         element = type;
     }
     public abstract void attack();
+    public abstract boolean isMonsterType();
 
     public int getDamage() {
         return damage;
     }
+
 }

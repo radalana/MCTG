@@ -11,4 +11,8 @@ public class Spell extends Card {
     public void attack() {
         System.out.println("Spell");
     }
+    @Override
+    public boolean isMonsterType() {
+        return false;
+    }
 }

@@ -6,4 +6,9 @@ public abstract class Monster extends Card {
     public Monster(int damage, Element type) {
         super(damage, type);
     }
+
+    @Override
+    public boolean isMonsterType() {
+        return true;
+    }
 }
