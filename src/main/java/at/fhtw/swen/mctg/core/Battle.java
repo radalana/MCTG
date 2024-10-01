@@ -16,13 +16,8 @@ public class Battle {
     }
     public void launch(){
         for(int i = 0; i < MAX_ROUNDS; i++) {
-            Card card1 = chooseCard(User.getDeck());
-            Card card2 = chooseCard(User.getDeck());
             Round round = new Round();
-            round.start(card1, card2);
+            //TODO round.start(card1, card2);
         }
-    };
-    private Card chooseCard(Collection<Card> userDeck) {
-        //random
     };
 }

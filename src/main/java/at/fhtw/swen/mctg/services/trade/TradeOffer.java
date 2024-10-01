@@ -8,7 +8,7 @@ public class TradeOffer {
     private Card card;
     private Requirement claim;
 
-    public TradeOffer(trader, card, claim) {
+    public TradeOffer(User trader, Card card, Requirement claim) {
         this.trader = trader;
         this.card = card;
         this.claim = claim;

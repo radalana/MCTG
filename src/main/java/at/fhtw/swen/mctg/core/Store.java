@@ -8,7 +8,7 @@ import java.util.Collection;
 public class Store {
     Collection<Card> store;
 
-    public addOffer(Card card, Requirement requirement){};
-    public deleteCard();
+    //TODO public boolean addOffer(Card card, Requirement requirement){};
+    //TODO public boolean deleteCard(){};
 }
 
