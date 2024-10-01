@@ -1,20 +1,24 @@
 package at.fhtw.swen.mctg.services;
 
 import at.fhtw.swen.mctg.core.Card;
+import at.fhtw.swen.mctg.core.Deck;
 import at.fhtw.swen.mctg.core.Round;
 import at.fhtw.swen.mctg.core.User;
 
-import java.util.Collection;
+import java.util.List;
 
 
 public class RoundService {
-    private static Card chooseCardFromDeck(Collection<Card> deck){
+    private static Card chooseCardFromDeck(Deck deck){
         //TODO Card card = getRandomCard(Collection<Card> deck);
-        return card;
+        //TODO выбрать реализацию для хранения карт: Arraylist/SortetList/LinkedList...??
+         return deck.get(1);
     }
     private static int fight(Card card1, Card card2) {
-        int comparisonResult =  Integer.compare(card1.getDamage(), card2.getDamage());
-        return comparisonResult;
+        if (card1.isMonsterType() && card2.isMonsterType()) {
+            return Integer.compare(card1.getDamage(), card2.getDamage());
+        }
+        return 0;
     }
     public static Round startRound(User user1, User user2) {
         var deck1 = user1.getDeck();
@@ -23,18 +27,22 @@ public class RoundService {
         Card card2 = chooseCardFromDeck(deck2);
         Round round = new Round();//maybe better users, not cards;
         int comparisonResult = fight(card1, card2);
+        //TODO: implement how card transferred from looser to winner
           switch (comparisonResult) {
               case 1:
                   round.setWinner(user1);
                   round.setLooser(user2);
+                  round.setPlayedCard(card2);
                   break;
               case -1:
                   round.setWinner(user2);
                   round.setLooser(user1);
+                  round.setPlayedCard(card1);
                   break;
               case 0:
                   round.setLooser(null);
                   round.setWinner(null);
+                  round.setPlayedCard(null);
                   break;
               default:
                   throw new IllegalArgumentException("Unexpected result " + comparisonResult);
