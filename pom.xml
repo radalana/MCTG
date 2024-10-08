@@ -27,6 +27,46 @@
             <version>RELEASE</version>
             <scope>test</scope>
         </dependency>
+        <dependency>
+            <groupId>com.fasterxml.jackson.core</groupId>
+            <artifactId>jackson-databind</artifactId>
+            <version>2.18.0</version>
+        </dependency>
     </dependencies>
+    <build>
+        <plugins>
+            <!-- Плагин для сборки исполняемого JAR-файла -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>3.8.1</version>
+                <configuration>
+                    <source>21</source> <!-- Установите нужную версию Java -->
+                    <target>21</target>
+                </configuration>
+            </plugin>
 
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-jar-plugin</artifactId>
+                <version>3.1.0</version>
+                <configuration>
+                    <archive>
+                        <manifest>
+                            <mainClass>at.fhtw.swen.mctg.Main</mainClass> <!-- Ваш основной класс -->
+                        </manifest>
+                    </archive>
+                </configuration>
+            </plugin>
+
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>exec-maven-plugin</artifactId>
+                <version>3.0.0</version>
+                <configuration>
+                    <mainClass>at.fhtw.swen.mctg.Main</mainClass> <!-- Ваш основной класс -->
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
 </project>
