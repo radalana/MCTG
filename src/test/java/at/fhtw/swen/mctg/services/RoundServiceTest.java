@@ -6,18 +6,17 @@ import at.fhtw.swen.mctg.core.Round;
 import at.fhtw.swen.mctg.core.User;
 import at.fhtw.swen.mctg.core.cards.Spell;
 import at.fhtw.swen.mctg.core.cards.monsters.*;
-import org.junit.jupiter.api.Test;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.List;
-
-import static at.fhtw.swen.mctg.services.RoundService.startRound;
+import static at.fhtw.swen.mctg.core.services.RoundService.startRound;
 import static org.junit.jupiter.api.Assertions.*;
 
 class RoundServiceTest {
-
+    /*
+    * TODO test 2 monsters
+    * TODO test 2 monsters same damage
+    * TODO test spell vs Monster
+    * TODO spells and special cases
+    * */
     @org.junit.jupiter.api.Test
     void startRoundTest() {
         Card card1 = new Ork(30, Card.Element.NORMAL);//user1
