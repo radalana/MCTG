@@ -7,12 +7,11 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class Router {
-    private Map<String, LoginService> serviceRegistry = new HashMap<>();
+    private Map<String, Service> serviceRegistry = new HashMap<>();
 
-    //TODO вместо loginService  Service - общий класс, но его надо сделать
-    public void addService(String route, LoginService loginService)
+    public void addService(String route, Service service)
     {
-        this.serviceRegistry.put(route, loginService);
+        this.serviceRegistry.put(route, service);
     }
 
     //реши какой сервис запустить

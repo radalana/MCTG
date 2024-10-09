@@ -13,16 +13,16 @@ public class RequestBuilder {
     public Request buildRequest(BufferedReader bufferedReader) throws IOException {
         Request request = new Request();
         String line = bufferedReader.readLine();
-        System.out.println(line);
+        //System.out.println(line);
         if (line != null) {
             String[] splitFirstLine = line.split(" ");
-            System.out.println("splitFirstline[] " + Arrays.toString(splitFirstLine));
+            //System.out.println("splitFirstline[] " + Arrays.toString(splitFirstLine));
             request.setMethod(getMethod(splitFirstLine[0]));
             setPathname(request, splitFirstLine[1]); //bsp "/users"
 
             line = bufferedReader.readLine();
-            System.out.println("method: " + request.getMethod());
-            System.out.println("pathname: " + request.getPathname());
+            //System.out.println("method: " + request.getMethod());
+            //System.out.println("pathname: " + request.getPathname());
 
             //что это
             while (!line.isEmpty()) {

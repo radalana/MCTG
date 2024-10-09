@@ -1,7 +1,5 @@
 package at.fhtw.swen.mctg.core;
 
-import at.fhtw.swen.mctg.services.trade.Requirement;
-
 import java.util.Collection;
 
 //macht anfrage zu server hier???
