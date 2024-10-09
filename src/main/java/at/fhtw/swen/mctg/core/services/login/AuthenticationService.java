@@ -15,13 +15,20 @@ public class AuthenticationService {
         String token = null;
         String username = loginData.get(USERNAME);
         String password = loginData.get(PASSWORD);
-        if (userDao.validateCredentials(username, password)) {
-            token = generateToken(username);
+        if (isValid(username) && isValid(password)) {
+            if (userDao.validateCredentials(username, password)) {
+                token = generateToken(username);
+            }
         }
+
         return token;
     }
     private String generateToken(String login) {
-        return login + "_token";
+        return login + "-mtcgToken";
+    }
+
+    private boolean isValid(String data) {
+        return data != null && !data.isEmpty();
     }
 
 }

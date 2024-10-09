@@ -1,22 +1,29 @@
 package at.fhtw.swen.mctg.core;
 
-import at.fhtw.swen.mctg.services.trade.Requirement;
-import at.fhtw.swen.mctg.services.trade.TradeOffer;
-
 import java.util.Collection;
-import java.util.List;
 
 public class User {
-    private String login;
+    private final String login;
     private String password;
     private Collection<Card> stack;
     private Deck deck; //TODO max 4 define es class maybe in Array List
     int stat;
     int coins = 20;
     //TODO deck in counstruction for test
+    public User(String login, String password) {
+        this.login = login;
+        this.password = password;
+    }
     public User(String login, Deck deck) {
         this.login = login;
         this.deck = deck; //TODO убрать deck после RoundServiceTest
+    }
+    public String getLogin() {
+        return this.login;
+    }
+
+    public String getPassword() {
+        return this.password;
     }
     public Deck getDeck() {
         return deck;
