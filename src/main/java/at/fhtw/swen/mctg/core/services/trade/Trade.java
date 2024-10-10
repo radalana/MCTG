@@ -1,4 +1,4 @@
-package at.fhtw.swen.mctg.services.trade;
+package at.fhtw.swen.mctg.core.services.trade;
 
 import at.fhtw.swen.mctg.core.Card;
 import at.fhtw.swen.mctg.core.User;

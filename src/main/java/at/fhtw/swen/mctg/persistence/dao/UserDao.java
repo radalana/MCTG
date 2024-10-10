@@ -7,14 +7,18 @@ import java.util.Map;
 
 
 public class UserDao {
-    private Map<String,User> dummyDB1 = new HashMap<>();
-    private Map<String,User> dummyDB;
+    private final static Map<String,User> dummyDB = new HashMap<>();
+    private Map<String,User> dummyDB1;
 
+    /*
     public UserDao() {
         dummyDB = new HashMap<>();
         dummyDB.put("kienboec", new User("kienboec", "daniel"));
         dummyDB.put("altenhof", new User("altenhof", "markus"));
         dummyDB.put("admin", new User("admin", "istrator"));
+    }*/
+    public  UserDao() {
+       // dummyDB = new HashMap<>();
     }
     public boolean validateCredentials(String login, String password) {
         //TODO add logic password passt to user
@@ -46,8 +50,14 @@ public class UserDao {
     }
 
     public boolean save(User user) {
-
-        return null == dummyDB.put(user.getLogin(), user);
+        if (user == null || user.getLogin() == null) {
+            return false;
+        }
+        if (isUserExists(user.getLogin())) {
+            return false;
+        }
+        dummyDB.put(user.getLogin(), user);
+        return true;
     }
 
     public User findUserByUsername(String login) {

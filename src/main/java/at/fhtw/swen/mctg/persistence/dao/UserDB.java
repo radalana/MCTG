@@ -8,5 +8,4 @@ import java.util.Map;
 public class UserDB {
     private Map<String, User> dummyDB = new HashMap<>();
 
-
 }

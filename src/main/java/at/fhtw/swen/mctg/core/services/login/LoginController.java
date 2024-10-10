@@ -41,8 +41,4 @@ public class LoginController extends Controller {
         }
 
     }
-    private boolean validateCredentials(Map<String, String> loginData) {
-        //TODO: add validation
-        return true;
-    }
 }
