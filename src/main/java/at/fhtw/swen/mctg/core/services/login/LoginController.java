@@ -21,7 +21,7 @@ public class LoginController extends Controller {
         try {
             Map<String, String> loginData = this.getObjectMapper().readValue(request.getBody(), new TypeReference<Map<String,String>>(){});
 
-            String token = authService.authenticate(loginData);
+            String token = authService.authenticateUser(loginData);
             if (token == null) {
                 return new Response(
                         HttpStatus.UNAUTHORIZED,

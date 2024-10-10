@@ -7,11 +7,12 @@ import java.util.Map;
 public class AuthenticationService {
     private final static String USERNAME= "Username";
     private final static String PASSWORD = "Password";
+    private final static String TOKEN = "-mtcgToken";
     private UserDao userDao;
     public AuthenticationService() {
         this.userDao = new UserDao();
     }
-    public String authenticate(Map<String,String> loginData) {
+    public String authenticateUser(Map<String,String> loginData) {
         String token = null;
         String username = loginData.get(USERNAME);
         String password = loginData.get(PASSWORD);
@@ -20,11 +21,10 @@ public class AuthenticationService {
                 token = generateToken(username);
             }
         }
-
         return token;
     }
     private String generateToken(String login) {
-        return login + "-mtcgToken";
+        return login + TOKEN;
     }
 
     private boolean isValid(String data) {
