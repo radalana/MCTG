@@ -7,3 +7,5 @@ test-login:
 	./testlogin.sh pause
 test:
 	./test1.sh pause
+full-test:
+	./MonsterTradingCards.sh pause

@@ -1,13 +1,12 @@
 package at.fhtw.swen.mctg.services;
 
-import at.fhtw.swen.mctg.core.Card;
-import at.fhtw.swen.mctg.core.Deck;
-import at.fhtw.swen.mctg.core.Round;
-import at.fhtw.swen.mctg.core.User;
+import at.fhtw.swen.mctg.model.Card;
+import at.fhtw.swen.mctg.model.Deck;
+import at.fhtw.swen.mctg.model.Round;
 import at.fhtw.swen.mctg.core.cards.Spell;
 import at.fhtw.swen.mctg.core.cards.monsters.*;
 
-import static at.fhtw.swen.mctg.core.services.RoundService.startRound;
+import static at.fhtw.swen.mctg.services.RoundService.startRound;
 import static org.junit.jupiter.api.Assertions.*;
 
 class RoundServiceTest {

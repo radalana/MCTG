@@ -1,4 +1,4 @@
-package at.fhtw.swen.mctg.core;
+package at.fhtw.swen.mctg.model;
 
 //Lohnt es Singleton zu machen?
 public class ScoreBoard {

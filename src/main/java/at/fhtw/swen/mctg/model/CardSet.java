@@ -1,4 +1,4 @@
-package at.fhtw.swen.mctg.core;
+package at.fhtw.swen.mctg.model;
 
 public interface CardSet {
     void addCard(Card card);

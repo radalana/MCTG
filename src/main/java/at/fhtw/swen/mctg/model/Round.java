@@ -1,4 +1,6 @@
-package at.fhtw.swen.mctg.core;
+package at.fhtw.swen.mctg.model;
+
+import at.fhtw.swen.mctg.services.User;
 
 public class Round {
     private User winner; //или карта

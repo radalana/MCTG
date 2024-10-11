@@ -1,9 +1,11 @@
 package at.fhtw.swen.mctg;
 
-import at.fhtw.swen.mctg.core.services.registration.RegistrationService;
+import at.fhtw.swen.mctg.httpserver.server.Service;
+import at.fhtw.swen.mctg.services.packages.PackageService;
+import at.fhtw.swen.mctg.services.registration.RegistrationService;
 import at.fhtw.swen.mctg.httpserver.server.Server;
 import at.fhtw.swen.mctg.httpserver.utils.Router;
-import at.fhtw.swen.mctg.core.services.login.LoginService;
+import at.fhtw.swen.mctg.services.login.LoginService;
 
 import java.io.IOException;
 
@@ -24,6 +26,7 @@ public class Main{
         Router router = new Router();
         router.addService("/sessions", new LoginService());
         router.addService("/users", new RegistrationService());
+        router.addService("/packages", new PackageService());
 
         return router;
     }

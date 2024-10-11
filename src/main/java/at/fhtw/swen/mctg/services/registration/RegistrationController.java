@@ -1,8 +1,7 @@
-package at.fhtw.swen.mctg.core.services.registration;
+package at.fhtw.swen.mctg.services.registration;
 
-import at.fhtw.swen.mctg.core.User;
+import at.fhtw.swen.mctg.services.User;
 import at.fhtw.swen.mctg.core.controller.Controller;
-import at.fhtw.swen.mctg.core.services.login.AuthenticationService;
 import at.fhtw.swen.mctg.httpserver.http.HttpStatus;
 import at.fhtw.swen.mctg.httpserver.server.Request;
 import at.fhtw.swen.mctg.httpserver.server.Response;

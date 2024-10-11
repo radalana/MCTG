@@ -1,4 +1,4 @@
-package at.fhtw.swen.mctg.core;
+package at.fhtw.swen.mctg.model;
 
 import java.util.Collection;
 

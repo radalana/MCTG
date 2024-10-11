@@ -1,4 +1,4 @@
-package at.fhtw.swen.mctg.core.services.login;
+package at.fhtw.swen.mctg.services.login;
 
 import at.fhtw.swen.mctg.persistence.dao.UserDao;
 

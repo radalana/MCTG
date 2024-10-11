@@ -1,6 +1,6 @@
 package at.fhtw.swen.mctg.core.cards;
 
-import at.fhtw.swen.mctg.core.Card;
+import at.fhtw.swen.mctg.model.Card;
 
 public class Spell extends Card {
 

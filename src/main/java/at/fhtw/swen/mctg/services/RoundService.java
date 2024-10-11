@@ -1,11 +1,8 @@
-package at.fhtw.swen.mctg.core.services;
+package at.fhtw.swen.mctg.services;
 
-import at.fhtw.swen.mctg.core.Card;
-import at.fhtw.swen.mctg.core.Deck;
-import at.fhtw.swen.mctg.core.Round;
-import at.fhtw.swen.mctg.core.User;
-
-import java.util.List;
+import at.fhtw.swen.mctg.model.Card;
+import at.fhtw.swen.mctg.model.Deck;
+import at.fhtw.swen.mctg.model.Round;
 
 
 public class RoundService {

@@ -1,4 +1,4 @@
-package at.fhtw.swen.mctg.core.services.registration;
+package at.fhtw.swen.mctg.services.registration;
 
 
 import at.fhtw.swen.mctg.httpserver.http.Method;

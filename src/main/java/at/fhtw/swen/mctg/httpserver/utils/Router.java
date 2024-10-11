@@ -1,6 +1,5 @@
 package at.fhtw.swen.mctg.httpserver.utils;
 
-import at.fhtw.swen.mctg.core.services.login.LoginService;
 import at.fhtw.swen.mctg.httpserver.server.Service;
 
 import java.util.HashMap;

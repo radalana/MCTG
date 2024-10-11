@@ -1,4 +1,7 @@
-package at.fhtw.swen.mctg.core;
+package at.fhtw.swen.mctg.services;
+
+import at.fhtw.swen.mctg.model.Card;
+import at.fhtw.swen.mctg.model.Deck;
 
 import java.util.Collection;
 

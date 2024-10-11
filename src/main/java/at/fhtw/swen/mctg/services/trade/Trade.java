@@ -1,7 +1,7 @@
-package at.fhtw.swen.mctg.core.services.trade;
+package at.fhtw.swen.mctg.services.trade;
 
-import at.fhtw.swen.mctg.core.Card;
-import at.fhtw.swen.mctg.core.User;
+import at.fhtw.swen.mctg.model.Card;
+import at.fhtw.swen.mctg.services.User;
 //in Service package
 public class Trade {
     public static void trade(TradeOffer offer1, TradeOffer offer2) {

@@ -1,6 +1,7 @@
-package at.fhtw.swen.mctg.core;
+package at.fhtw.swen.mctg.model;
 
-import java.util.Collection;
+import at.fhtw.swen.mctg.services.User;
+
 import java.util.List;
 
 public class Battle {
