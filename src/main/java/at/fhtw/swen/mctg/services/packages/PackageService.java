@@ -21,6 +21,7 @@ public class PackageService implements Service {
         System.out.println(token);
 
         //2.если токен существует
+        //когда решится многопоточность, и чтобы вызывать метод из объекта isTokenValid
         if (token == null || token.isEmpty()) {
             return new Response(HttpStatus.UNAUTHORIZED, "{ \"message\", \"Access token is missing or invalid\"}");
         }
