@@ -31,5 +31,8 @@ public class AuthenticationService {
         //return data != null && !data.isEmpty();
         return true;
     }
+    public boolean isTokenValid(String token) {
+        return (token != null && !token.isEmpty());
+    }
 
 }
