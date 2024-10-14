@@ -12,21 +12,25 @@ public abstract class Card {
 
     private String Id;
     private String Name;
-    private final int Damage;
+    private final double Damage;
     private Element element;
-    public Card(String id, String Name, int Damage) {
+    private String type;//TODO smth with enum
+    public Card(String id, String Name, double Damage) {
         this.Id = id;
         this.Name = Name;
         this.Damage = Damage;
     }
-    public Card(int damage, Element type) {
+    public Card(double damage, Element type) {
         this.Damage = damage;
         element = type;
+    }
+    public Card(double damage) {
+        this.Damage = damage;
     }
     public abstract void attack();
     public abstract boolean isMonsterType();
 
-    public int getDamage() {
+    public double getDamage() {
         return Damage;
     }
 

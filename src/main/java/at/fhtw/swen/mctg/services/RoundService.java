@@ -14,7 +14,7 @@ public class RoundService {
 
     static int fight(Card card1, Card card2) {
         if (card1.isMonsterType() && card2.isMonsterType()) {
-            return Integer.compare(card1.getDamage(), card2.getDamage());
+            return Double.compare(card1.getDamage(), card2.getDamage());
         }
         /*
         как хочу:

@@ -1,5 +1,6 @@
 package at.fhtw.swen.mctg.services.packages;
 
+import at.fhtw.swen.mctg.core.cards.factories.CardFactory;
 import at.fhtw.swen.mctg.core.controller.Controller;
 import at.fhtw.swen.mctg.httpserver.http.HttpStatus;
 import at.fhtw.swen.mctg.httpserver.server.Request;
@@ -21,8 +22,10 @@ public class PackageMaker extends Controller {
             //вариант 1: сначала создает не Card а либо рандомные обхект либо map и потом исходя из имени создается соответсвующая карта
             //вариант 2: создаем еще один класс для карты который не абстрактный
             List<CardData> cards= this.getObjectMapper().readValue(request.getBody(), new TypeReference<List<CardData>>(){});
-            for (var card : cards) {
-                System.out.println(card);
+            CardFactory cardFactory = new CardFactory();
+            for (var cardData : cards) {
+                System.out.println(cardData);
+                Card card = cardFactory.createCard(cardData);
             }
          /*
             Package package = new Package(ArrayList<Card>)

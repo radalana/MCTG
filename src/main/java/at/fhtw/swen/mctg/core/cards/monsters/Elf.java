@@ -3,7 +3,7 @@ package at.fhtw.swen.mctg.core.cards.monsters;
 import at.fhtw.swen.mctg.core.cards.Monster;
 
 public class Elf extends Monster {
-    public Elf(int damage, Element type) {
+    public Elf(double damage, Element type) {
         super(damage, type);
     }
 

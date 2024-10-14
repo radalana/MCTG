@@ -4,7 +4,7 @@ import at.fhtw.swen.mctg.core.cards.Monster;
 
 public class Goblin extends Monster {
 
-    public Goblin(int damage, Element type) {
+    public Goblin(double damage, Element type) {
         super(damage, type);
     }
 
