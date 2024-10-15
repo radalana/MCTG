@@ -46,3 +46,4 @@ test.sh
 test1.sh
 /testlogin.sh
 /MonsterTradingCards.sh
+/test_create_packages.sh
