@@ -7,7 +7,7 @@ public class Goblin extends Monster {
     public Goblin(double damage, Element type) {
         super(damage, type);
     }
-
+    public Goblin(double damage) {super(damage);}
     @Override
     public void attack() {
         System.out.println("Stab with a rusty dagger");

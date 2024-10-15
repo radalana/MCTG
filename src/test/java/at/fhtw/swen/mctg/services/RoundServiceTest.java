@@ -18,13 +18,13 @@ class RoundServiceTest {
     * */
     @org.junit.jupiter.api.Test
     void startRoundTest() {
-        Card card1 = new Ork(30, Card.Element.NORMAL);//user1
+        Card card1 = new Ork(30, Card.Element.REGULAR);//user1
         Card card2 = new Kraken(33, Card.Element.WATER);//user2
         Card card3 = new Dragon(50, Card.Element.FIRE);
         Card card4 = new Elf(45, Card.Element.WATER);
-        Card card5 = new Goblin(15, Card.Element.NORMAL);
-        Card card6 = new Knight(10, Card.Element.NORMAL);
-        Card card7 = new Wizard(70, Card.Element.NORMAL);
+        Card card5 = new Goblin(15, Card.Element.REGULAR);
+        Card card6 = new Knight(10, Card.Element.REGULAR);
+        Card card7 = new Wizard(70, Card.Element.REGULAR);
         Card card8 = new Spell(34, Card.Element.WATER);
         Card card9 = new Spell(55, Card.Element.FIRE);//user2
         Card card10 = new Spell(30, Card.Element.WATER);

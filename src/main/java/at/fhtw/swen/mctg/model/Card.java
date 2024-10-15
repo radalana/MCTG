@@ -1,13 +1,11 @@
 package at.fhtw.swen.mctg.model;
 
 
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-
 public abstract class Card {
     public enum Element {
         FIRE,
         WATER,
-        NORMAL
+        REGULAR
     }
 
     private String Id;
@@ -32,6 +30,10 @@ public abstract class Card {
 
     public double getDamage() {
         return Damage;
+    }
+    @Override
+    public String toString() {
+        return "type: " + this.getClass().getSimpleName() + "\nElement: " + this.element + "\nDamage: " + Damage;
     }
 
 }

@@ -24,8 +24,9 @@ public class PackageMaker extends Controller {
             List<CardData> cards= this.getObjectMapper().readValue(request.getBody(), new TypeReference<List<CardData>>(){});
             CardFactory cardFactory = new CardFactory();
             for (var cardData : cards) {
-                System.out.println(cardData);
+                System.out.println("cardData: " + cardData);
                 Card card = cardFactory.createCard(cardData);
+                System.out.println("Card: " + card);
             }
          /*
             Package package = new Package(ArrayList<Card>)
