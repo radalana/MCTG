@@ -9,3 +9,5 @@ test:
 	./test1.sh pause
 full-test:
 	./MonsterTradingCards.sh pause
+create-packs:
+	./test_create_packages.sh pause
