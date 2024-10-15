@@ -7,28 +7,28 @@ import java.util.List;
 
 public abstract class CardSet {
     protected List<Card> cards;
-    private final int maxSize;
+    private final int size;
 
-    public CardSet(int maxSize) {
+    public CardSet(int size) {
         this.cards = new ArrayList<>();
-        this.maxSize = maxSize;
+        this.size = size;
     }
-    public CardSet(int maxSize, List<Card> cards) {
-        if (cards.size() > maxSize) {
-            throw new IllegalArgumentException(getClass().getSimpleName() + " can contain max " + maxSize + " cards!");
+    public CardSet(int size, List<Card> cards) {
+        if (cards.size() != size) {
+            throw new IllegalArgumentException(getClass().getSimpleName() + " must contain exactly " + size + " cards!");
         }
         this.cards = cards;
-        this.maxSize = maxSize;
+        this.size = size;
     }
     public void addCard(Card card) {
-        if (cards.size() < maxSize) {
+        if (cards.size() < size) {
             cards.add(card);
         } else {
-            throw new IllegalStateException("Max size of " + maxSize + " cards reached!");
+            throw new IllegalStateException("Max size of " + size + " cards reached!");
         }
     }
     public boolean addCards(Card ...cards) {
-        if (this.cards.size() + cards.length <= maxSize) {
+        if (this.cards.size() + cards.length <= size) {
             this.cards.addAll(List.of(cards));
             return true;
         }

@@ -5,13 +5,13 @@ import at.fhtw.swen.mctg.core.cards.CardSet;
 import java.util.List;
 
 public class Package extends CardSet {
-    private static final int MAX_SIZE = 5;
+    private static final int SIZE = 5;
 
     public Package(List<Card> cards) {
-        super(MAX_SIZE, cards);
+        super(SIZE, cards);
     }
     public Package() {
-        super(MAX_SIZE);
+        super(SIZE);
     }
 
 }
