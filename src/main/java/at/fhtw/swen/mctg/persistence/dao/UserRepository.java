@@ -24,14 +24,14 @@ public class UserRepository {
         try(PreparedStatement preparedStatement = this.unitOfWork.prepareStatement(sql)) {
             preparedStatement.setString(1, username);
             ResultSet resultSet = preparedStatement.executeQuery();
-            User user;
-            while (resultSet.next()) {
-                user = new User(
+            if (resultSet.next()) {
+                return new User(
                         resultSet.getString("username"),
                         resultSet.getString("password"),
                         resultSet.getString("token")
                 );
             }
+            return null;
         }catch (SQLException e) {
             throw  new DataAccessException(e);
         }
