@@ -11,3 +11,7 @@ full-test:
 	./MonsterTradingCards.sh pause
 create-packs:
 	./test_create_packages.sh pause
+up:
+	docker-compose up -d
+down:
+	docker-compose down
