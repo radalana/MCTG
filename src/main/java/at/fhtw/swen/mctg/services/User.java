@@ -3,10 +3,12 @@ package at.fhtw.swen.mctg.services;
 import at.fhtw.swen.mctg.model.Card;
 import at.fhtw.swen.mctg.model.Deck;
 
+import java.util.ArrayList;
 import java.util.Collection;
 
 public class User {
     private final String login;
+    private String token;
     private String password;
     private Collection<Card> stack;
     private Deck deck; //TODO max 4 define es class maybe in Array List
@@ -16,6 +18,11 @@ public class User {
     public User(String login, String password) {
         this.login = login;
         this.password = password;
+    }
+    public User(String login, String password, String token) {
+        this.login = login;
+        this.password = password;
+        this.token = token;
     }
     public User(String login, Deck deck) {
         this.login = login;

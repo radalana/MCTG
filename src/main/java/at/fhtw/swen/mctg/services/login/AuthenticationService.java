@@ -1,38 +1,39 @@
 package at.fhtw.swen.mctg.services.login;
 
-import at.fhtw.swen.mctg.persistence.dao.UserDao;
-
-import java.util.Map;
+import at.fhtw.swen.mctg.persistence.DataAccessException;
+import at.fhtw.swen.mctg.persistence.UnitOfWork;
+import at.fhtw.swen.mctg.persistence.dao.UserRepository;
+import at.fhtw.swen.mctg.services.User;
 
 public class AuthenticationService {
-    private final static String USERNAME= "Username";
-    private final static String PASSWORD = "Password";
-    private final static String TOKEN = "-mtcgToken";
-    private UserDao userDao;
+    public final static String USERNAME= "Username";
+    public final static String PASSWORD = "Password";
+    public final static String TOKEN = "-mtcgToken";
     public AuthenticationService() {
-        this.userDao = new UserDao();
+        //this.userDao = new UserRepository();
     }
-    public String authenticateUser(Map<String,String> loginData) {
-        String token = null;
-        String username = loginData.get(USERNAME);
-        String password = loginData.get(PASSWORD);
-        if (isValid(username) && isValid(password)) {
-            if (userDao.validateCredentials(username, password)) {
-                token = generateToken(username);
-            }
+    public String authenticateUser(String username, String password) throws DataAccessException {
+        UnitOfWork unitOfWork = new UnitOfWork();
+        User user = new UserRepository(unitOfWork).findByUsername(username);
+        if (user.getPassword().equals(password)) {
+            return generateToken(username);
         }
-        return token;
+        return null;
     }
+    public boolean isUserExists(String username) throws DataAccessException {
+        UnitOfWork unitOfWork = new UnitOfWork();
+        User user = new UserRepository(unitOfWork).findByUsername(username);
+        return user != null;
+    }
+
     private String generateToken(String login) {
         return login + TOKEN;
     }
 
-    private boolean isValid(String data) {
-        //return data != null && !data.isEmpty();
-        return true;
+    public boolean isValid(String data) {
+        return data != null && !data.trim().isEmpty();
     }
     public boolean isTokenValid(String token) {
         return (token != null && !token.isEmpty());
     }
-
 }
