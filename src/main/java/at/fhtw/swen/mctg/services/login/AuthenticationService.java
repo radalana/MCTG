@@ -20,6 +20,11 @@ public class AuthenticationService {
         }
         return null;
     }
+    public void signup(String username, String password) throws DataAccessException {
+        UnitOfWork unitOfWork = new UnitOfWork();
+        User user = new User(username, password);
+        new UserRepository(unitOfWork).save(user);
+    }
     public boolean isUserExists(String username) throws DataAccessException {
         UnitOfWork unitOfWork = new UnitOfWork();
         User user = new UserRepository(unitOfWork).findByUsername(username);

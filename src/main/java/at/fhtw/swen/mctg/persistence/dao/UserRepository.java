@@ -36,16 +36,16 @@ public class UserRepository {
             throw  new DataAccessException(e);
         }
     }
-    /*
-    public boolean save(User user) {
-        if (user == null || user.getLogin() == null) {
-            return false;
+    public void save(User user) {
+        String sql = "INSERT INTO users (username, password) VALUES (?, ?)";
+        System.out.println("user in save()" + user);
+        try(PreparedStatement preparedStatement = this.unitOfWork.prepareStatement(sql)){
+            preparedStatement.setString(1, user.getLogin());
+            preparedStatement.setString(2, user.getPassword());
+            preparedStatement.executeUpdate();
+        }catch (SQLException e) {
+            System.err.println("SQLException in save(): " + e.getMessage());
+            throw  new DataAccessException(e);
         }
-        if (isUserExists(user.getLogin())) {
-            return false;
-        }
-        dummyDB.put(user.getLogin(), user);
-        return true;
     }
-     */
 }
