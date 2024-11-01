@@ -3,10 +3,10 @@ CREATE DATABASE mctg;
 \c mctg
 
 CREATE TABLE users (
-    id serial PRIMARY KEY,
-    username VARCHAR ( 255 ) NOT NULL,
+    id INT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
+    username VARCHAR ( 255 ) NOT NULL UNIQUE ,
     password VARCHAR (255 ) NOT NULL,
-    token VARCHAR ( 255 ) NOT NULL,
+    token VARCHAR ( 255 ),
     last_updated TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
 );
 
