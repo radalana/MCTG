@@ -38,14 +38,13 @@ public class UserRepository {
     }
     public void save(User user) {
         String sql = "INSERT INTO users (username, password) VALUES (?, ?)";
-        System.out.println("user in save()" + user);
         try(PreparedStatement preparedStatement = this.unitOfWork.prepareStatement(sql)){
             preparedStatement.setString(1, user.getLogin());
             preparedStatement.setString(2, user.getPassword());
             preparedStatement.executeUpdate();
         }catch (SQLException e) {
-            System.err.println("SQLException in save(): " + e.getMessage());
-            throw  new DataAccessException(e);
+            //System.err.println("SQLException in save(): " + e.getMessage());
+            throw new DataAccessException("Error in save()", e);
         }
     }
 }

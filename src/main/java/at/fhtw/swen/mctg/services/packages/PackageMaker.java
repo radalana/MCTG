@@ -26,11 +26,6 @@ public class PackageMaker extends Controller {
             List<Card> cards = cardsData.stream()
                     .map(cardFactory::createCard)
                     .toList();
-            /*
-            for (var card : cards) {
-                System.out.println(card + "\n");
-            }
-             */
 
                 Package cardPackage = new Package(cards);
                 System.out.println(cardPackage);

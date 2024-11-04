@@ -22,13 +22,27 @@ public class AuthenticationService {
     }
     public void signup(String username, String password) throws DataAccessException {
         UnitOfWork unitOfWork = new UnitOfWork();
-        User user = new User(username, password);
-        new UserRepository(unitOfWork).save(user);
+        try(unitOfWork) {
+            User user = new User(username, password);
+            new UserRepository(unitOfWork).save(user);
+            unitOfWork.commitTransaction();
+        }catch (Exception e) {
+            unitOfWork.rollbackTransaction();
+            throw new DataAccessException("Error saving user", e);
+        }
+
     }
     public boolean isUserExists(String username) throws DataAccessException {
         UnitOfWork unitOfWork = new UnitOfWork();
-        User user = new UserRepository(unitOfWork).findByUsername(username);
-        return user != null;
+        try(unitOfWork) {
+            User user = new UserRepository(unitOfWork).findByUsername(username);
+            unitOfWork.commitTransaction();
+            return user != null;
+        }catch (Exception e) {
+            unitOfWork.rollbackTransaction();
+            throw new DataAccessException("Error finding user by username", e);
+        }
+
     }
 
     private String generateToken(String login) {

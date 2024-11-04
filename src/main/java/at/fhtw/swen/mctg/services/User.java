@@ -2,15 +2,19 @@ package at.fhtw.swen.mctg.services;
 
 import at.fhtw.swen.mctg.model.Card;
 import at.fhtw.swen.mctg.model.Deck;
+import lombok.Getter;
 
 import java.util.ArrayList;
 import java.util.Collection;
 
 public class User {
+    @Getter
     private final String login;
     private String token;
+    @Getter
     private String password;
     private Collection<Card> stack;
+    @Getter
     private Deck deck; //TODO max 4 define es class maybe in Array List
     int stat;
     int coins = 20;
@@ -27,16 +31,6 @@ public class User {
     public User(String login, Deck deck) {
         this.login = login;
         this.deck = deck; //TODO убрать deck после RoundServiceTest
-    }
-    public String getLogin() {
-        return this.login;
-    }
-
-    public String getPassword() {
-        return this.password;
-    }
-    public Deck getDeck() {
-        return deck;
     }
 
     private Deck chooseDeck() {return null;}

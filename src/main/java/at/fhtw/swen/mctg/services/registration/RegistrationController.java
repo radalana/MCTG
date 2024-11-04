@@ -28,7 +28,6 @@ public class RegistrationController extends Controller {
             if (!isValid(username) || !isValid(password)) {
                 return new Response(HttpStatus.BAD_REQUEST, "Invalid username/password");
             }
-            //TODO: if user exist programm зависает
             if (authService.isUserExists(username)) {
                 return new Response(
                         HttpStatus.CONFLICT,
@@ -41,7 +40,6 @@ public class RegistrationController extends Controller {
                     "{ \"message\" : \"User successfully registered\" }"
             );
         }catch (JsonProcessingException | DataAccessException e) {
-            e.printStackTrace();
             return new Response(
                     HttpStatus.INTERNAL_SERVER_ERROR,
                     "{ \"message\" : \"Internal Server Error\" }"
