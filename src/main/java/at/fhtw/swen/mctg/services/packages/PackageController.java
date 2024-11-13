@@ -8,38 +8,37 @@ import at.fhtw.swen.mctg.httpserver.server.Response;
 import at.fhtw.swen.mctg.model.Card;
 import at.fhtw.swen.mctg.model.Package;
 import at.fhtw.swen.mctg.model.dto.CardData;
+import at.fhtw.swen.mctg.persistence.DataAccessException;
+import at.fhtw.swen.mctg.persistence.UnitOfWork;
+import at.fhtw.swen.mctg.persistence.dao.CardDao;
+import at.fhtw.swen.mctg.persistence.dao.PackageDao;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 
-import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.List;
 
-public class PackageMaker extends Controller {
+public class PackageController extends Controller {
     //TODO избежать дублирования карт в системе, а не внутри самого пакета, код 409 см. mtcg-api
     //не знаю нужен ли тут AutificationService, и если да, то объект создать здесь или в компьютере
     public Response createPackage(Request request) {
-        try {
+        UnitOfWork unitOfWork = new UnitOfWork();
+        try (unitOfWork){
             List<CardData> cardsData= this.getObjectMapper().readValue(request.getBody(), new TypeReference<List<CardData>>(){});
             CardFactory cardFactory = new CardFactory();
-
             List<Card> cards = cardsData.stream()
                     .map(cardFactory::createCard)
                     .toList();
-
-                Package cardPackage = new Package(cards);
-                System.out.println(cardPackage);
-                /*
-                packageDao.save(cardPackage);
-
-                 */
+                Package cardPackage = new Package();
+                int packageId = new PackageDao(unitOfWork).save(cardPackage);
+                for(Card card : cards) {
+                    new CardDao(unitOfWork).save(card, packageId);
+                }
+                unitOfWork.commitTransaction();
                 return new Response(
                         HttpStatus.CREATED,
                         "{ \"message\": \"Package created successfully\"}"
                 );
-
         }catch (JsonProcessingException e) {
-            e.printStackTrace();
             return new Response(
                     HttpStatus.INTERNAL_SERVER_ERROR,
                     "{ \"message\" : \"Internal Server Error\" }"
@@ -49,13 +48,13 @@ public class PackageMaker extends Controller {
                         HttpStatus.BAD_REQUEST,
                         "{ \"message\": \"" + e.getMessage() + "\" }"
                 );
+        }catch(Exception e) {
+            System.err.println(e.getMessage());
+            return new Response(
+                    HttpStatus.INTERNAL_SERVER_ERROR,
+                    "{ \"message\" : \"DataAccess Error\"}"
+            );
         }
-//        catch (SQLException e) {
-//                return new Response(
-//                        HttpStatus.INTERNAL_SERVER_ERROR,
-//                        "{ \"message\": \"" + e.getMessage() + "\" }"
-//                );
-//            }
 
     }
 }

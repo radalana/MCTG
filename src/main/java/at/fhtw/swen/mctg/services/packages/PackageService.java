@@ -7,10 +7,10 @@ import at.fhtw.swen.mctg.httpserver.server.Response;
 import at.fhtw.swen.mctg.httpserver.server.Service;
 
 public class PackageService implements Service {
-    private final PackageMaker packageMaker;
+    private final PackageController packageController;
 
     public PackageService() {
-        this.packageMaker = new PackageMaker(); //не знаю или создать сразу в поле
+        this.packageController = new PackageController(); //не знаю или создать сразу в поле
     }
     @Override
     public Response handleRequest(Request request) {
@@ -30,7 +30,7 @@ public class PackageService implements Service {
             return new Response(HttpStatus.FORBIDDEN, "{ \"message\", \"You don't have permission to access this resource.\"}");
         }
         if (requestMethod == Method.POST && request.getBody() != null) {
-                return this.packageMaker.createPackage(request);
+                return this.packageController.createPackage(request);
         }
         return new Response(HttpStatus.BAD_REQUEST, "{ \"message\", \"No cards were provided for package creation.\"}");
 

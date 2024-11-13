@@ -4,8 +4,8 @@ import at.fhtw.swen.mctg.model.Card;
 
 public class Spell extends Card {
 
-    public Spell(double damage, Element type) {
-        super(damage, type);
+    public Spell(String id, String name, double damage, Element element) {
+        super(id, name, damage, element);
     }
     @Override
     public void attack() {

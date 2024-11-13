@@ -3,6 +3,7 @@ package at.fhtw.swen.mctg.persistence;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
+import java.sql.Statement;
 
 public class UnitOfWork implements AutoCloseable {
     private Connection connection;
@@ -42,15 +43,24 @@ public class UnitOfWork implements AutoCloseable {
             }
         }
     }
-    public PreparedStatement prepareStatement(String sql){
+    public PreparedStatement prepareStatement(String sql, boolean returnGeneratedKeys) {
         if(this.connection != null) {
             try {
-                return this.connection.prepareStatement(sql);
+                if (returnGeneratedKeys) {
+                    return this.connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
+                }else {
+                    return this.connection.prepareStatement(sql);
+                }
+
             } catch (SQLException e) {
                 throw new DataAccessException("Erstellen eines PreparedStatements nicht erfolgreich", e);
             }
         }
             throw new DataAccessException("UnitOfWork hat keine aktive Connection zur Verfügung");
+    }
+
+    public PreparedStatement prepareStatement(String sql) {
+        return prepareStatement(sql, false);
     }
 
     @Override

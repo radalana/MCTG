@@ -1,11 +1,13 @@
 package at.fhtw.swen.mctg.core.cards;
 
 import at.fhtw.swen.mctg.model.Card;
+import lombok.Getter;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public abstract class CardSet {
+    @Getter
     protected List<Card> cards;
     private final int size;
 

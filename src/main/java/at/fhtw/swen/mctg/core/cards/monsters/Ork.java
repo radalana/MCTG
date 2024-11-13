@@ -1,12 +1,13 @@
 package at.fhtw.swen.mctg.core.cards.monsters;
 
+import at.fhtw.swen.mctg.core.cards.Element;
 import at.fhtw.swen.mctg.core.cards.Monster;
+import at.fhtw.swen.mctg.core.cards.MonsterType;
 
 public class Ork extends Monster {
-    public Ork(double damage, Element type) {
-        super(damage, type);
+    public Ork(String id, String name, double damage, Element element) {
+        super(id, name, damage, element, MonsterType.ORK);
     }
-    public Ork(double damage) {super(damage);}
     @Override
     public void attack() {
         System.out.println("Swings a giant axe");

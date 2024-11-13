@@ -1,39 +1,34 @@
 package at.fhtw.swen.mctg.model;
 
 
-public abstract class Card {
-    public enum Element {
-        FIRE,
-        WATER,
-        REGULAR
-    }
+import at.fhtw.swen.mctg.core.cards.Element;
+import lombok.Getter;
 
-    private String Id;
-    private String Name;
-    private final double Damage;
+@Getter
+public abstract class Card {
+    private String id;
+    private String name;
+    private final double damage;
     private Element element;
-    private String type;//TODO smth with enum
-    public Card(String id, String Name, double Damage) {
-        this.Id = id;
-        this.Name = Name;
-        this.Damage = Damage;
+    public Card(String id, String Name, double Damage, Element element) {
+        this.id = id;
+        this.name = Name;
+        this.damage = Damage;
+        this.element = element;
     }
     public Card(double damage, Element type) {
-        this.Damage = damage;
+        this.damage = damage;
         element = type;
     }
     public Card(double damage) {
-        this.Damage = damage;
+        this.damage = damage;
     }
     public abstract void attack();
     public abstract boolean isMonsterType();
 
-    public double getDamage() {
-        return Damage;
-    }
     @Override
     public String toString() {
-        return "type: " + this.getClass().getSimpleName() + "\nElement: " + this.element + "\nDamage: " + Damage;
+        return "\nid: " + this.id + "\nname:" + this.name +  "\nclass: " + this.getClass().getSimpleName() + "\ndamage: " + damage + "\nelement: " + this.element;
     }
 
 }

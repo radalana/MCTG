@@ -1,13 +1,14 @@
 package at.fhtw.swen.mctg.core.cards.monsters;
 
+import at.fhtw.swen.mctg.core.cards.Element;
 import at.fhtw.swen.mctg.core.cards.Monster;
+import at.fhtw.swen.mctg.core.cards.MonsterType;
 
 public class Goblin extends Monster {
 
-    public Goblin(double damage, Element type) {
-        super(damage, type);
+    public Goblin(String id, String name, double damage, Element element) {
+        super(id, name, damage, element, MonsterType.GOBLIN);
     }
-    public Goblin(double damage) {super(damage);}
     @Override
     public void attack() {
         System.out.println("Stab with a rusty dagger");
