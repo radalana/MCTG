@@ -14,6 +14,9 @@ public enum Element {
     }
 
     public static Element fromString(String value) {
+        if (value.equalsIgnoreCase("Regular")) {
+            return NORMAL;
+        }
         for (Element element : Element.values()) {
             if (element.value.equalsIgnoreCase(value)) {
                 return element;
