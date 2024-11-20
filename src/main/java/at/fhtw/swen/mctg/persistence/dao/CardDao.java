@@ -38,6 +38,10 @@ public class CardDao {
             preparedStatement.setInt(7, packageId);
             preparedStatement.executeUpdate();
         }catch(SQLException e) {
+            String duplicateKeySQLState = "23505";
+            if (duplicateKeySQLState.equals(e.getSQLState())) {
+                throw new DataAccessException("Failed to save card: card with id='" + uuid + "' already exists", e);
+            }
             throw new DataAccessException("Failed to save card in data base: " + e.getMessage(), e);
         }
     };

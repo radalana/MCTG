@@ -15,6 +15,7 @@ import at.fhtw.swen.mctg.persistence.dao.PackageDao;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 
+import javax.xml.crypto.Data;
 import java.util.List;
 
 public class PackageController extends Controller {
@@ -48,11 +49,16 @@ public class PackageController extends Controller {
                         HttpStatus.BAD_REQUEST,
                         "{ \"message\": \"" + e.getMessage() + "\" }"
                 );
+        }catch (DataAccessException e){
+            return new Response(
+                    HttpStatus.BAD_REQUEST,
+                    "{ \"message\" : \"" + e.getMessage() + "\" }"
+            );
         }catch(Exception e) {
-            System.err.println(e.getMessage());
+            System.err.println(e.getMessage() + e.getClass().getName());
             return new Response(
                     HttpStatus.INTERNAL_SERVER_ERROR,
-                    "{ \"message\" : \"DataAccess Error\"}"
+                    "{ \"message\" : \""  + e.getMessage() + "\"}"
             );
         }
 
