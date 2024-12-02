@@ -12,17 +12,20 @@ public class AuthenticationService {
     public AuthenticationService() {
         //this.userDao = new UserRepository();
     }
-    public String authenticateUser(String username, String password) throws DataAccessException {
-        UnitOfWork unitOfWork = new UnitOfWork();
-        User user = new UserRepository(unitOfWork).findByUsername(username);
-        if (user.getPassword().equals(password)) {
-            String token = generateToken(username);
-            //TODO beim login token in db speichern, aber wofür ... dann beim anderen beim spield/kauf z.b of token passt mit db
-            //save token
-
-            return token;
-        }else {
-            throw new IllegalArgumentException("Invalid username or password");
+    public String authenticateUser(String username, String password) {
+        try (UnitOfWork unitOfWork = new UnitOfWork()) {
+            UserRepository userRepository = new UserRepository(unitOfWork);
+            User user = userRepository.findByUsername(username);
+            if (user.getPassword().equals(password)) {
+                String token = generateToken(username);
+                userRepository.updateToken(user.getLogin(), token);
+                unitOfWork.commitTransaction();
+                return token;
+            } else {
+                throw new IllegalArgumentException("Invalid username or password");
+            }
+        }catch (Exception e) {
+            throw new DataAccessException("Error during authentication: " + e.getMessage(), e);
         }
     }
     public void signup(String username, String password) throws DataAccessException {

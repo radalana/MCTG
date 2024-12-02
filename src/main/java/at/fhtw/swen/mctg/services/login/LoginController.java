@@ -55,6 +55,12 @@ public class LoginController extends Controller {
                     HttpStatus.UNAUTHORIZED,
                     "{ \"message\" : " + e.getMessage() + " }"
             );
+        }catch (Exception e) {
+            System.err.println("Login controller: " + e.getMessage());
+            return new Response(
+                    HttpStatus.INTERNAL_SERVER_ERROR,
+                    "{ \"message\" : \"Service temporarily unavailable. Please try again later.\" }"
+            );
         }
 
     }
