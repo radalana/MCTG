@@ -17,8 +17,8 @@ import java.util.Map;
 //session
 public class RegistrationController extends Controller {
     private final AuthenticationService authService;
-    public RegistrationController() {
-        this.authService = new AuthenticationService();
+    public RegistrationController(AuthenticationService authService) {
+        this.authService = authService;
     }
     public Response signup(Request request) {
         try {

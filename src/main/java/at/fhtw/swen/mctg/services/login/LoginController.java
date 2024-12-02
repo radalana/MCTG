@@ -15,8 +15,8 @@ import java.util.Map;
 public class LoginController extends Controller {
 
     private final AuthenticationService authService;
-    public LoginController() {
-        this.authService = new AuthenticationService();
+    public LoginController(AuthenticationService authService) {
+        this.authService = authService;
     }
     public Response login(Request request) {
         try {

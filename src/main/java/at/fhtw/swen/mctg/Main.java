@@ -23,11 +23,12 @@ public class Main{
 
     private static Router configureRouter()
     {
+        AuthenticationService authenticationService = new AuthenticationService();
         Router router = new Router();
-        router.addService("/sessions", new LoginService());
-        router.addService("/users", new RegistrationService());
+        router.addService("/sessions", new LoginService(authenticationService));
+        router.addService("/users", new RegistrationService(authenticationService));
         router.addService("/packages", new PackageService());
-
+        router.addService("/transactions/packages", new CardAcquisitionService(authenticationService));
         return router;
     }
 }
