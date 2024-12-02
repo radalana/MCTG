@@ -14,10 +14,10 @@ public class StackRepository {
         this.unitOfWork = unitOfWork;
     }
 
-    public int create(String userId) {
-        String sql = "INSERT INTO stack (user_id) VALUES (?)";
+    public int create(int userId) {
+        String sql = "INSERT INTO stacks (user_id) VALUES (?)";
         try (PreparedStatement preparedStatement = this.unitOfWork.prepareStatement(sql, true)) {
-            preparedStatement.setString(1, userId);
+            preparedStatement.setInt(1, userId);
             preparedStatement.executeUpdate();
             ResultSet generatedKey = preparedStatement.getGeneratedKeys();
             if (generatedKey.next()) {

@@ -59,7 +59,7 @@ public class UserRepository {
             throw  new DataAccessException(e);
         }
     }
-    public String save(User user) {
+    public int save(User user) {
         String sql = "INSERT INTO users (username, password) VALUES (?, ?)";
         try(PreparedStatement preparedStatement = this.unitOfWork.prepareStatement(sql, true)){
             preparedStatement.setString(1, user.getLogin());
@@ -67,7 +67,7 @@ public class UserRepository {
             preparedStatement.executeUpdate();
             ResultSet generatedKeys = preparedStatement.getGeneratedKeys();
             if (generatedKeys.next()) {
-                return generatedKeys.getString(1);
+                return generatedKeys.getInt(1);
             } else {
                 throw new DataAccessException("Could not save user");
             }

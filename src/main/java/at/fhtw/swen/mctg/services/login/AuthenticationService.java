@@ -24,11 +24,13 @@ public class AuthenticationService {
         UnitOfWork unitOfWork = new UnitOfWork();
         try(unitOfWork) {
             User user = new User(username, password);
-            new UserRepository(unitOfWork).save(user);
+            int userId = new UserRepository(unitOfWork).save(user);
+            //TODO fix create stack
+            int stackId = new StackRepository(unitOfWork).create(userId);
             unitOfWork.commitTransaction();
         }catch (Exception e) {
             unitOfWork.rollbackTransaction();
-            throw new DataAccessException("Error saving user", e);
+            throw new DataAccessException("Error signup user: " + e.getMessage(), e);
         }
 
     }
