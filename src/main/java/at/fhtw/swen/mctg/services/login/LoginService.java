@@ -9,8 +9,8 @@ public class LoginService implements Service {
 
     private final LoginController loginController;
 
-    public LoginService() {
-        this.loginController = new LoginController();
+    public LoginService(AuthenticationService authenticationService) {
+        this.loginController = new LoginController(authenticationService);
     }
     @Override
     public Response handleRequest(Request request) {
