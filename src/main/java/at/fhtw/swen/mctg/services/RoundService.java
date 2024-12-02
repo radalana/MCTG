@@ -3,6 +3,7 @@ package at.fhtw.swen.mctg.services;
 import at.fhtw.swen.mctg.model.Card;
 import at.fhtw.swen.mctg.model.Deck;
 import at.fhtw.swen.mctg.model.Round;
+import at.fhtw.swen.mctg.model.User;
 
 
 public class RoundService {

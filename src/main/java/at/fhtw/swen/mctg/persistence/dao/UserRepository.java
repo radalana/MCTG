@@ -1,5 +1,7 @@
 package at.fhtw.swen.mctg.persistence.dao;
 
+import at.fhtw.swen.mctg.model.Card;
+import at.fhtw.swen.mctg.model.User;
 import at.fhtw.swen.mctg.persistence.DataAccessException;
 import at.fhtw.swen.mctg.persistence.UnitOfWork;
 import at.fhtw.swen.mctg.services.User;

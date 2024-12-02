@@ -1,10 +1,11 @@
 package at.fhtw.swen.mctg.services.login;
 
+import at.fhtw.swen.mctg.model.User;
 import at.fhtw.swen.mctg.persistence.DataAccessException;
 import at.fhtw.swen.mctg.persistence.UnitOfWork;
 import at.fhtw.swen.mctg.persistence.dao.StackRepository;
 import at.fhtw.swen.mctg.persistence.dao.UserRepository;
-import at.fhtw.swen.mctg.services.User;
+
 
 public class AuthenticationService {
     public final static String USERNAME= "Username";
