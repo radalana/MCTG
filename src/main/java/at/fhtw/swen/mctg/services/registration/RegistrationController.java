@@ -1,8 +1,6 @@
 package at.fhtw.swen.mctg.services.registration;
 
 import at.fhtw.swen.mctg.persistence.DataAccessException;
-import at.fhtw.swen.mctg.persistence.UnitOfWork;
-import at.fhtw.swen.mctg.services.User;
 import at.fhtw.swen.mctg.core.controller.Controller;
 import at.fhtw.swen.mctg.httpserver.http.HttpStatus;
 import at.fhtw.swen.mctg.httpserver.server.Request;
@@ -40,6 +38,7 @@ public class RegistrationController extends Controller {
                     "{ \"message\" : \"User successfully registered\" }"
             );
         }catch (JsonProcessingException | DataAccessException e) {
+            System.err.println(e.getMessage());
             return new Response(
                     HttpStatus.INTERNAL_SERVER_ERROR,
                     "{ \"message\" : \"Internal Server Error\" }"
