@@ -16,9 +16,14 @@ public class AuthenticationService {
         UnitOfWork unitOfWork = new UnitOfWork();
         User user = new UserRepository(unitOfWork).findByUsername(username);
         if (user.getPassword().equals(password)) {
-            return generateToken(username);
+            String token = generateToken(username);
+            //TODO beim login token in db speichern, aber wofür ... dann beim anderen beim spield/kauf z.b of token passt mit db
+            //save token
+
+            return token;
+        }else {
+            throw new IllegalArgumentException("Invalid username or password");
         }
-        return null;
     }
     public void signup(String username, String password) throws DataAccessException {
         UnitOfWork unitOfWork = new UnitOfWork();

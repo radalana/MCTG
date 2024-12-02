@@ -32,12 +32,6 @@ public class LoginController extends Controller {
                 return new Response(HttpStatus.NOT_FOUND, "User with login " + username + " does not exist");
             }
             String token = authService.authenticateUser(username, password);
-            if (token == null) {
-                return new Response(
-                        HttpStatus.UNAUTHORIZED,
-                        "{ \"message\": \"Invalid username or password\" }"
-                );
-            }
             return new Response(
                     HttpStatus.OK,
                     "{ \"message\": { \"token\": \"" + token + "\", \"status\": \"login succeeded\" }}"
@@ -55,6 +49,11 @@ public class LoginController extends Controller {
             return new Response(
                     HttpStatus.INTERNAL_SERVER_ERROR,
                     "{ \"message\" : \"Service temporarily unavailable. Please try again later.\" }"
+            );
+        }catch (IllegalArgumentException e) {
+            return new Response(
+                    HttpStatus.UNAUTHORIZED,
+                    "{ \"message\" : " + e.getMessage() + " }"
             );
         }
 
