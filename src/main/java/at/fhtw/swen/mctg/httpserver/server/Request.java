@@ -20,7 +20,7 @@ public class Request {
         if (this.pathParts == null || this.pathParts.isEmpty()) {
             return null;
         }
-        return '/' + this.pathParts.get(0); //например /users
+        return '/' + String.join("/", this.pathParts);
     }
 
     public String getPathname() {
