@@ -1,13 +1,20 @@
 package at.fhtw.swen.mctg.model;
 
+import lombok.Getter;
+
 import java.util.Collection;
 
 public class User {
+    @Getter
     private final String login;
+    @Getter
     private String password;
+    @Getter
+    private String token;
     private Collection<Card> stack;
     private Deck deck; //TODO max 4 define es class maybe in Array List
     int stat;
+    @Getter
     int coins = 20;
     //TODO deck in counstruction for test
     public User(String login, String password) {
@@ -18,8 +25,11 @@ public class User {
         this.login = login;
         this.deck = deck; //TODO убрать deck после RoundServiceTest
     }
-    public String getLogin() {
-        return this.login;
+    public User(String login, String password, String token, int coins) {
+        this.login = login;
+        this.password = password;
+        this.coins = coins;
+        this.stack = stack;
     }
 
     public void spendFiveCoins() {
@@ -28,6 +38,7 @@ public class User {
         }
         coins -= 5;
     }
+
     public Deck getDeck() {
         return deck;
     }

@@ -4,14 +4,12 @@ import at.fhtw.swen.mctg.model.Card;
 import at.fhtw.swen.mctg.model.User;
 import at.fhtw.swen.mctg.persistence.DataAccessException;
 import at.fhtw.swen.mctg.persistence.UnitOfWork;
-import at.fhtw.swen.mctg.services.User;
+
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 
 public class UserRepository {
@@ -30,7 +28,8 @@ public class UserRepository {
                 return new User(
                         resultSet.getString("username"),
                         resultSet.getString("password"),
-                        resultSet.getString("token")
+                        resultSet.getString("token"),
+                        resultSet.getInt("coins")
                 );
             }
             return null;
@@ -39,24 +38,25 @@ public class UserRepository {
         }
     }
     public User findUserByToken(String token) {
-        //check if token null
         if (token == null || token.isEmpty()) {
             throw new IllegalArgumentException("Token cannot be null or empty");
         }
         String sql = "SELECT * FROM users WHERE token = ?";
+        System.out.println("Token in findUserByToken: " + token);
         try(PreparedStatement preparedStatement = this.unitOfWork.prepareStatement(sql)) {
             preparedStatement.setString(1, token);
             ResultSet resultSet = preparedStatement.executeQuery();
             if (resultSet.next()) {
                 return new User(
-                    resultSet.getString("username"),
-                    resultSet.getString("password"),
-                    resultSet.getString("token"),
-                    resultSet.getInt("coins"),
-                    resultSet.getInt() //TODO при создании юзера сразу создавть стэк
+                        resultSet.getString("username"),
+                        resultSet.getString("password"),
+                        resultSet.getString("token"),
+                        resultSet.getInt("coins")
                 );
+            } else {
+                //TODO change to optional?
+                throw new DataAccessException("User not found");
             }
-            return null; //TODO exception???
         }catch (SQLException e) {
             throw  new DataAccessException(e);
         }

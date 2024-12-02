@@ -16,10 +16,6 @@ public class CardDao {
     }
 
     public void save(Card card, int packageId) {
-
-        //TODO: check if card already exists : db ckecks it already
-        System.out.println("CardDao:");
-        System.out.println(card);
         String query = """
                 INSERT INTO cards (id, name, type, subtype, damage, element, package_id)
                 VALUES(?, ?, ?, ?, ?, ?, ?)

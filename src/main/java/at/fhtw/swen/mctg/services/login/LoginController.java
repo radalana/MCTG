@@ -6,6 +6,7 @@ import at.fhtw.swen.mctg.httpserver.server.Request;
 import at.fhtw.swen.mctg.httpserver.server.Response;
 
 import at.fhtw.swen.mctg.persistence.DataAccessException;
+import at.fhtw.swen.mctg.persistence.dao.UserRepository;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 
@@ -45,7 +46,7 @@ public class LoginController extends Controller {
             );
         }catch (DataAccessException e){
             System.out.println("Database error: " + e.getMessage());
-            e.printStackTrace();
+            //e.printStackTrace();
             return new Response(
                     HttpStatus.INTERNAL_SERVER_ERROR,
                     "{ \"message\" : \"Service temporarily unavailable. Please try again later.\" }"

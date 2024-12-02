@@ -15,6 +15,8 @@ public class PackageDao {
     public PackageDao(UnitOfWork unitOfWork) {
         this.unitOfWork = unitOfWork;
     }
+
+    // Wird verwendet, wenn ein Admin ein neues Paket erstellt.
     public int save(Package cardPackage) {
         String sqlQueryPackages = "INSERT INTO packages DEFAULT VALUES";
         try(PreparedStatement preparedStatement = this.unitOfWork.prepareStatement(sqlQueryPackages, true)){
