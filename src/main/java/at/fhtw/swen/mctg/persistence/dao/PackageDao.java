@@ -30,4 +30,19 @@ public class PackageDao {
         }
     }
 
+    // Wird beim Paketkauf verwendet, um eine zufällige Paket-ID auszuwählen.
+    public int getRandomPackageId() {
+        String sqlQuery = "SELECT id FROM packages ORDER BY RANDOM() LIMIT 1";
+        try (PreparedStatement preparedStatement = this.unitOfWork.prepareStatement(sqlQuery)) {
+            ResultSet resultSet = preparedStatement.executeQuery();
+            if (resultSet.next()) {
+                return resultSet.getInt("id");
+            } else {
+                throw new DataAccessException("No packages available.");
+            }
+        } catch (SQLException e) {
+            throw new DataAccessException("Failed to fetch a random package ID: " + e.getMessage(), e);
+        }
+    }
+
 }

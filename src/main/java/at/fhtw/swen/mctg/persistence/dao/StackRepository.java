@@ -30,4 +30,23 @@ public class StackRepository {
         }
     }
 
+    public int findStackByUsername(String username) {
+        String sql = """
+                        SELECT stacks.id AS stack_id
+                        FROM stacks
+                        JOIN users ON stacks.user_id = users.id
+                        WHERE users.username = ?
+                        """;
+        try (PreparedStatement preparedStatement = this.unitOfWork.prepareStatement(sql)) {
+            preparedStatement.setString(1, username);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            if (resultSet.next()) {
+                return resultSet.getInt(1);
+            } else {
+                throw new DataAccessException("No stack found for the user with username: " + username);
+            }
+        }catch (SQLException e) {
+            throw new DataAccessException("Database error occurred while fetching stack for username: " + username, e);
+        }
+    }
 }

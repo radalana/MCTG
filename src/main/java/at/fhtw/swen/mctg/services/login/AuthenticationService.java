@@ -2,6 +2,7 @@ package at.fhtw.swen.mctg.services.login;
 
 import at.fhtw.swen.mctg.persistence.DataAccessException;
 import at.fhtw.swen.mctg.persistence.UnitOfWork;
+import at.fhtw.swen.mctg.persistence.dao.StackRepository;
 import at.fhtw.swen.mctg.persistence.dao.UserRepository;
 import at.fhtw.swen.mctg.services.User;
 
@@ -62,7 +63,11 @@ public class AuthenticationService {
     public boolean isValid(String data) {
         return data != null && !data.trim().isEmpty();
     }
-    public boolean isTokenValid(String token) {
-        return (token != null && !token.isEmpty());
+
+    public String extractToken(String token) {
+        if (token != null && token.startsWith("Bearer ")) {
+            return token.substring(7);
+        }
+        return token;
     }
 }

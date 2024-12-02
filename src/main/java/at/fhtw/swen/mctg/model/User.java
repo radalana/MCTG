@@ -22,8 +22,11 @@ public class User {
         return this.login;
     }
 
-    public String getPassword() {
-        return this.password;
+    public void spendFiveCoins() {
+        if (coins < Package.PACKAGE_PRICE) {
+            throw new IllegalStateException("Not enough coins to buy a package. Required: " + Package.PACKAGE_PRICE + ", Available: " + coins);
+        }
+        coins -= 5;
     }
     public Deck getDeck() {
         return deck;

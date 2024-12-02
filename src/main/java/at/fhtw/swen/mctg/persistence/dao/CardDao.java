@@ -44,5 +44,26 @@ public class CardDao {
             }
             throw new DataAccessException("Failed to save card in data base: " + e.getMessage(), e);
         }
-    };
+    }
+
+    public void assignCardsToStack(int userStackId, int packageId) {
+        String sql = "UPDATE cards SET stack_id = ? WHERE package_id = ?";
+        try (PreparedStatement preparedStatement = this.unitOfWork.prepareStatement(sql)) {
+            preparedStatement.setInt(1, userStackId);
+            preparedStatement.setInt(2, packageId);
+            preparedStatement.executeUpdate();
+        } catch (SQLException e) {
+            throw new DataAccessException("Failed to assign cards to stack: " + e.getMessage(), e);
+        }
+    }
+
+    public void clearPackageId(int packageId) {
+        String sql = "UPDATE cards SET package_id = NULL WHERE package_id = ?";
+        try (PreparedStatement preparedStatement = this.unitOfWork.prepareStatement(sql)) {
+            preparedStatement.setInt(1, packageId);
+            preparedStatement.executeUpdate();
+        } catch (SQLException e) {
+            throw new DataAccessException("Failed to clear package ID: " + e.getMessage(), e);
+        }
+    }
 }

@@ -37,7 +37,7 @@ CREATE TABLE cards
     element varchar(255) CHECK ( element IN ('water', 'fire', 'normal')),
     package_id INTEGER,
     FOREIGN KEY (package_id) REFERENCES packages(id) ON DELETE SET NULL,
-    stack_id INTEGER UNIQUE DEFAULT NULL,
+    stack_id INTEGER DEFAULT NULL,
     FOREIGN KEY (stack_id) REFERENCES stacks(id) ON DELETE SET NULL
 );
 

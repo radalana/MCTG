@@ -76,4 +76,35 @@ public class UserRepository {
             throw new DataAccessException("Database INSERT operation failed during package creation: " + e.getMessage());
         }
     }
+
+    public void updateToken(String username, String newToken) {
+        String sql = "UPDATE users SET token = ? WHERE username = ?";
+        try (PreparedStatement preparedStatement = this.unitOfWork.prepareStatement(sql)) {
+            preparedStatement.setString(1, newToken);
+            preparedStatement.setString(2, username);
+            int rowsUpdated = preparedStatement.executeUpdate();
+            if (rowsUpdated == 0) {
+                throw new DataAccessException("Failed to update token: User with username '" + username + "' not found");
+            }
+        } catch (SQLException e) {
+            throw new DataAccessException("Database UPDATE operation failed: " + e.getMessage(), e);
+        }
+    }
+
+    //beim Packagekauf
+    public void updateCoins(User user) {
+        String sql = "UPDATE users SET coins = ? WHERE username = ?";
+        String username = user.getLogin();
+        int coins = user.getCoins();
+        try (PreparedStatement preparedStatement = this.unitOfWork.prepareStatement(sql)) {
+            preparedStatement.setInt(1, coins);
+            preparedStatement.setString(2, username);
+            int rowsUpdated = preparedStatement.executeUpdate();
+            if (rowsUpdated == 0) {
+                throw new DataAccessException("Failed to update coins: User with username '" + username + "' not found.");
+            }
+        }catch (SQLException e) {
+            throw new DataAccessException("Failed to update coins for user '" + username + "': " + e.getMessage(), e);
+        }
+    }
 }
