@@ -8,7 +8,8 @@ import at.fhtw.swen.mctg.model.dto.CardData;
 
 public class CardFactory {
     // Erstellt eine Karte basierend auf ihrem Namen (Typ, Element, etc.)
-    public Card createCard(CardData data) {
+    //durch Parsing aus dem HTTP-Body, beim Package Erstellung
+    public Card createCardFromName(CardData data) {
         String id = data.getId();
         double damage = data.getDamage();
         String name = data.getName();
@@ -28,5 +29,27 @@ public class CardFactory {
                 return MonsterCardFactory.createMonster(id, name, damage, element, monsterType);
             }
         }
-    };
+    }
+
+    public Card createCard(CardData data) {
+        String id = data.getId();
+        String name = data.getName();
+        double damage = data.getDamage();
+        String type = data.getType();
+        String subType = data.getSubType();
+        Element element = Element.fromString(data.getElement());
+        switch (type) {
+            case "spell":
+                return new Spell(id, name, damage, element);
+            case "monster":
+                if (subType == null) {
+                    //TODO is argument exception right here?
+                    throw new IllegalArgumentException("Monster type cannot be null");
+                }
+                MonsterType monsterType = MonsterType.fromString(subType);
+                return MonsterCardFactory.createMonster(id, name, damage, element, monsterType);
+            default:
+                throw new IllegalArgumentException("Unsupported card type: " + type);
+        }
+    }
 }
