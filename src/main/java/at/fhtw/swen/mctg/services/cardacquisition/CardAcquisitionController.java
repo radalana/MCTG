@@ -12,7 +12,7 @@ import at.fhtw.swen.mctg.persistence.dao.StackRepository;
 import at.fhtw.swen.mctg.persistence.dao.UserRepository;
 
 import static at.fhtw.swen.mctg.model.Package.PACKAGE_PRICE;
-
+//TODO только 1 пакет юзер купил его, и потом может купить его еще раз ФИКСИТ!
 public class CardAcquisitionController extends Controller {
     public Response acquisiteCards(String token) {
         UnitOfWork unitOfWork = new UnitOfWork();
@@ -34,8 +34,8 @@ public class CardAcquisitionController extends Controller {
             int packageId = new PackageDao(unitOfWork).getRandomPackageId();
 
             CardDao cardDao = new CardDao(unitOfWork);
-            cardDao.assignCardsToStack(packageId, userStackId);
-            cardDao.clearPackageId(packageId);
+            cardDao.assignCardsToStack(userStackId, packageId);
+            new PackageDao(unitOfWork).delete(packageId);
             user.spendFiveCoins();
             userRepository.updateCoins(user);
             unitOfWork.commitTransaction();

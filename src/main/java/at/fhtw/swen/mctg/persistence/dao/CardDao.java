@@ -58,15 +58,6 @@ public class CardDao {
         }
     }
 
-    public void clearPackageId(int packageId) {
-        String sql = "UPDATE cards SET package_id = NULL WHERE package_id = ?";
-        try (PreparedStatement preparedStatement = this.unitOfWork.prepareStatement(sql)) {
-            preparedStatement.setInt(1, packageId);
-            preparedStatement.executeUpdate();
-        } catch (SQLException e) {
-            throw new DataAccessException("Failed to clear package ID: " + e.getMessage(), e);
-        }
-    }
     public List<Card> getCardsByStackId(int stackId) {
         String sql = "SELECT * FROM cards WHERE stack_id = ?";
         try (PreparedStatement preparedStatement = this.unitOfWork.prepareStatement(sql)) {

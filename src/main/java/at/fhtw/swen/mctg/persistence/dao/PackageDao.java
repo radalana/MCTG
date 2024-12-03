@@ -46,5 +46,17 @@ public class PackageDao {
             throw new DataAccessException("Failed to fetch a random package ID: " + e.getMessage(), e);
         }
     }
+    public void delete(int packageId) {
+        String sqlQuery = "DELETE FROM packages WHERE id = ?";
+        try (PreparedStatement preparedStatement = this.unitOfWork.prepareStatement(sqlQuery)) {
+            preparedStatement.setInt(1, packageId);
+            int rowsAffected = preparedStatement.executeUpdate();
+            if (rowsAffected == 0) {
+                throw new DataAccessException("No package found with ID: " + packageId);//не должно быть в ответе
+            }
+        } catch (SQLException e) {
+            throw new DataAccessException("Failed to delete package with ID: " + packageId, e);
+        }
+    }
 
 }
