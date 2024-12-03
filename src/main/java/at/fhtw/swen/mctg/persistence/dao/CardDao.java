@@ -1,12 +1,17 @@
 package at.fhtw.swen.mctg.persistence.dao;
 
 import at.fhtw.swen.mctg.core.cards.Monster;
+import at.fhtw.swen.mctg.core.cards.factories.CardFactory;
 import at.fhtw.swen.mctg.model.Card;
+import at.fhtw.swen.mctg.model.dto.CardData;
 import at.fhtw.swen.mctg.persistence.DataAccessException;
 import at.fhtw.swen.mctg.persistence.UnitOfWork;
 
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
 public class CardDao {
@@ -60,6 +65,31 @@ public class CardDao {
             preparedStatement.executeUpdate();
         } catch (SQLException e) {
             throw new DataAccessException("Failed to clear package ID: " + e.getMessage(), e);
+        }
+    }
+    public List<Card> getCardsByStackId(int stackId) {
+        String sql = "SELECT * FROM cards WHERE stack_id = ?";
+        try (PreparedStatement preparedStatement = this.unitOfWork.prepareStatement(sql)) {
+            preparedStatement.setInt(1, stackId);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            ArrayList<CardData> cardsData = new ArrayList<>();
+            while (resultSet.next()) {
+                CardData cardData = new CardData(
+                        resultSet.getString(1),
+                        resultSet.getString(2),
+                        resultSet.getString(3),
+                        resultSet.getString(4),
+                        resultSet.getDouble(5),
+                        resultSet.getString(6)
+                );
+                cardsData.add(cardData);
+            }
+            CardFactory cardFactory = new CardFactory();
+            return cardsData.stream()
+                    .map(cardFactory::createCard)
+                    .toList();
+        } catch (SQLException e) {
+            throw new DataAccessException("Failed to get cards by stack ID: " + e.getMessage(), e);
         }
     }
 }
