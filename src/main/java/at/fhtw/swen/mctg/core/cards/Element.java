@@ -14,6 +14,9 @@ public enum Element {
     }
 
     public static Element fromString(String value) {
+        if (value == null || value.isBlank()) {
+            return null;
+        }
         if (value.equalsIgnoreCase("Regular")) {
             return NORMAL;
         }
