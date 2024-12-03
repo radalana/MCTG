@@ -15,7 +15,6 @@ import at.fhtw.swen.mctg.persistence.dao.PackageDao;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 
-import javax.xml.crypto.Data;
 import java.util.List;
 
 public class PackageController extends Controller {
@@ -27,7 +26,7 @@ public class PackageController extends Controller {
             List<CardData> cardsData= this.getObjectMapper().readValue(request.getBody(), new TypeReference<List<CardData>>(){});
             CardFactory cardFactory = new CardFactory();
             List<Card> cards = cardsData.stream()
-                    .map(cardFactory::createCard)
+                    .map(cardFactory::createCardFromName)
                     .toList();
                 Package cardPackage = new Package();
                 int packageId = new PackageDao(unitOfWork).save(cardPackage);

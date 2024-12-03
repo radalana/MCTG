@@ -1,4 +1,4 @@
-package at.fhtw.swen.mctg.services.Cards;
+package at.fhtw.swen.mctg.services.cards;
 
 import at.fhtw.swen.mctg.httpserver.http.HttpStatus;
 import at.fhtw.swen.mctg.httpserver.http.Method;

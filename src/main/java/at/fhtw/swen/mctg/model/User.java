@@ -3,6 +3,7 @@ package at.fhtw.swen.mctg.model;
 import lombok.Getter;
 
 import java.util.Collection;
+import java.util.List;
 
 public class User {
     @Getter
@@ -32,6 +33,9 @@ public class User {
         this.stack = stack;
     }
 
+    public void addCardsToStack(List<Card> cards) {
+        stack.addAll(cards);
+    }
     public void spendFiveCoins() {
         if (coins < Package.PACKAGE_PRICE) {
             throw new IllegalStateException("Not enough coins to buy a package. Required: " + Package.PACKAGE_PRICE + ", Available: " + coins);

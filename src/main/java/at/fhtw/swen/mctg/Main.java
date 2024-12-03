@@ -1,7 +1,6 @@
 package at.fhtw.swen.mctg;
 
-import at.fhtw.swen.mctg.httpserver.server.Service;
-import at.fhtw.swen.mctg.services.Cards.StackService;
+import at.fhtw.swen.mctg.services.cards.StackService;
 import at.fhtw.swen.mctg.services.login.AuthenticationService;
 import at.fhtw.swen.mctg.services.packages.PackageService;
 import at.fhtw.swen.mctg.services.registration.RegistrationService;

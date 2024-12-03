@@ -1,4 +1,4 @@
-package at.fhtw.swen.mctg.services;
+package at.fhtw.swen.mctg.services.battle;
 
 import at.fhtw.swen.mctg.model.Card;
 import at.fhtw.swen.mctg.model.Deck;
