@@ -19,6 +19,9 @@ public class CardAcquisitionController extends Controller {
         try(unitOfWork) {
             UserRepository userRepository = new UserRepository(unitOfWork);
             User user = userRepository.findUserByToken(token);
+            if (user == null) {
+                return new Response(HttpStatus.UNAUTHORIZED, "User not found, please login first");
+            }
             int availableCoins = user.getCoins();
             if (availableCoins < PACKAGE_PRICE) {
                 return new Response(

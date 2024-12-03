@@ -54,8 +54,7 @@ public class UserRepository {
                         resultSet.getInt("coins")
                 );
             } else {
-                //TODO change to optional?
-                throw new DataAccessException("User not found");
+                return null;
             }
         }catch (SQLException e) {
             throw  new DataAccessException(e);
