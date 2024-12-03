@@ -7,6 +7,7 @@ import at.fhtw.swen.mctg.model.Card;
 import at.fhtw.swen.mctg.model.dto.CardData;
 
 public class CardFactory {
+    // Erstellt eine Karte basierend auf ihrem Namen (Typ, Element, etc.)
     public Card createCard(CardData data) {
         String id = data.getId();
         double damage = data.getDamage();
