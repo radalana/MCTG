@@ -9,11 +9,8 @@ import at.fhtw.swen.mctg.services.login.AuthenticationService;
 
 public class DeckService implements Service {
     private final DeckController deckController;
-    private final AuthenticationService authenticationService;
-
     public DeckService(AuthenticationService authenticationService) {
-        this.deckController = new DeckController();
-        this.authenticationService = authenticationService;
+        this.deckController = new DeckController(authenticationService);
     }
 
     @Override
@@ -21,10 +18,9 @@ public class DeckService implements Service {
         Method requestMethod = request.getMethod();
 
         //TODO extract logic in method of authentification service
-        String token = request.getHeaderMap().getHeader("Authorization");
-        token = authenticationService.extractToken(token);
+
         return switch (requestMethod) {
-            case Method.GET -> deckController.listCardsFromDeck(token);
+            case Method.GET -> deckController.listCardsFromDeck(request);
             case Method.PUT -> deckController.configureDeck(request);
             default -> new Response(
                     HttpStatus.BAD_REQUEST,
