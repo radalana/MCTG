@@ -12,6 +12,8 @@ import com.fasterxml.jackson.core.type.TypeReference;
 
 import java.util.Map;
 
+import static at.fhtw.swen.mctg.httpserver.http.MessageConstants.INTERNAL_SERVER_ERROR;
+
 //session
 public class LoginController extends Controller {
 
@@ -42,14 +44,14 @@ public class LoginController extends Controller {
             System.err.println("Json parsing error: " + e.getMessage());
             return new Response(
                 HttpStatus.INTERNAL_SERVER_ERROR,
-                    "{ \"message\" : \"Internal server error. Please try later.\" }"
+                    INTERNAL_SERVER_ERROR
             );
         }catch (DataAccessException e){
             System.out.println("Database error: " + e.getMessage());
             //e.printStackTrace();
             return new Response(
                     HttpStatus.INTERNAL_SERVER_ERROR,
-                    "{ \"message\" : \"Service temporarily unavailable. Please try again later.\" }"
+                    INTERNAL_SERVER_ERROR
             );
         }catch (IllegalArgumentException e) {
             return new Response(
@@ -60,7 +62,7 @@ public class LoginController extends Controller {
             System.err.println("Login controller: " + e.getMessage());
             return new Response(
                     HttpStatus.INTERNAL_SERVER_ERROR,
-                    "{ \"message\" : \"Service temporarily unavailable. Please try again later.\" }"
+                    INTERNAL_SERVER_ERROR
             );
         }
 

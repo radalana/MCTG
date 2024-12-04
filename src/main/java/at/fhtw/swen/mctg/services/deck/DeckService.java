@@ -7,6 +7,8 @@ import at.fhtw.swen.mctg.httpserver.server.Response;
 import at.fhtw.swen.mctg.httpserver.server.Service;
 import at.fhtw.swen.mctg.services.login.AuthenticationService;
 
+import static at.fhtw.swen.mctg.httpserver.http.MessageConstants.INVALID_HTTP_METHOD;
+
 public class DeckService implements Service {
     private final DeckController deckController;
     public DeckService(AuthenticationService authenticationService) {
@@ -24,7 +26,7 @@ public class DeckService implements Service {
             case Method.PUT -> deckController.configureDeck(request);
             default -> new Response(
                     HttpStatus.BAD_REQUEST,
-                    "{ \"message\", \"Bad request\"}"
+                    INVALID_HTTP_METHOD
             );
         };
     }

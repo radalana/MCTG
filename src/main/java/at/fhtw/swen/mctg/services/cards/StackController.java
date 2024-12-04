@@ -13,13 +13,17 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import java.util.List;
 import java.util.Map;
 
+import static at.fhtw.swen.mctg.httpserver.http.MessageConstants.INTERNAL_SERVER_ERROR;
+import static at.fhtw.swen.mctg.httpserver.http.MessageConstants.USER_NOT_FOUND;
+
+
 public class StackController extends Controller {
     public Response listAllCards(String token) {
         try(UnitOfWork unitOfWork = new UnitOfWork()) {
             UserRepository userRepository = new UserRepository(unitOfWork);
             User user = userRepository.findUserByToken(token);
             if (user == null) {
-                return new Response(HttpStatus.UNAUTHORIZED, "{ \"message\": \"User not found, please login first\"}");
+                return new Response(HttpStatus.UNAUTHORIZED, USER_NOT_FOUND);
             }
             int stackId = new StackRepository(unitOfWork).findStackByUsername(user.getLogin());
             CardService cardService = new CardService(new CardDao(unitOfWork));
@@ -31,7 +35,7 @@ public class StackController extends Controller {
             System.err.println("Token: " + token); // Входной параметр
             System.err.println("Error message: " + e.getMessage());
             e.printStackTrace();
-            return new Response(HttpStatus.INTERNAL_SERVER_ERROR, "{ \"message\" : \"Internal Server Error\" }");
+            return new Response(HttpStatus.INTERNAL_SERVER_ERROR, INTERNAL_SERVER_ERROR);
         }
 
     }

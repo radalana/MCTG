@@ -11,6 +11,7 @@ import at.fhtw.swen.mctg.persistence.dao.PackageDao;
 import at.fhtw.swen.mctg.persistence.dao.StackRepository;
 import at.fhtw.swen.mctg.persistence.dao.UserRepository;
 
+import static at.fhtw.swen.mctg.httpserver.http.MessageConstants.*;
 import static at.fhtw.swen.mctg.model.Package.PACKAGE_PRICE;
 //TODO только 1 пакет юзер купил его, и потом может купить его еще раз ФИКСИТ!
 public class CardAcquisitionController extends Controller {
@@ -20,13 +21,13 @@ public class CardAcquisitionController extends Controller {
             UserRepository userRepository = new UserRepository(unitOfWork);
             User user = userRepository.findUserByToken(token);
             if (user == null) {
-                return new Response(HttpStatus.UNAUTHORIZED, "User not found, please login first");
+                return new Response(HttpStatus.UNAUTHORIZED, USER_NOT_FOUND);
             }
             int availableCoins = user.getCoins();
             if (availableCoins < PACKAGE_PRICE) {
                 return new Response(
                         HttpStatus.BAD_REQUEST,
-                        "{ \"message\": \"Not enough coins available\"}"
+                        NOT_ENOUGH_COINS
                 );
             }
 
@@ -41,16 +42,19 @@ public class CardAcquisitionController extends Controller {
             unitOfWork.commitTransaction();
             return new Response(
                     HttpStatus.OK,
-                    "{ \"message\": \"Card acquisition successful\"}"
+                    CARDS_PURCHASED_SUCCESSFULLY
             );
         } catch (DataAccessException e) {
+            //TODO другой  response!!!
                 return new Response(HttpStatus.UNAUTHORIZED,
                         "{ \"message\": " + e.getMessage() + "}");
         } catch (Exception e) {
             unitOfWork.rollbackTransaction();
+            //TODO more logic errors login
+            System.err.println(e.getMessage());
             return new Response(
                     HttpStatus.INTERNAL_SERVER_ERROR,
-                    "{ \"message\": \"" + e.getMessage() + "\"}"
+                            INTERNAL_SERVER_ERROR
             );
         }
     }

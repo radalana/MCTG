@@ -7,6 +7,8 @@ import at.fhtw.swen.mctg.httpserver.server.Response;
 import at.fhtw.swen.mctg.httpserver.server.Service;
 import at.fhtw.swen.mctg.services.login.AuthenticationService;
 
+import static at.fhtw.swen.mctg.httpserver.http.MessageConstants.REQUEST_BODY_NOT_ALLOWED;
+
 public class StackService implements Service {
     private final StackController stackController;
     private final AuthenticationService authenticationService;
@@ -25,6 +27,6 @@ public class StackService implements Service {
         if (requestMethod == Method.GET && request.getBody() == null) {
             return this.stackController.listAllCards(token);
         }
-        return new Response(HttpStatus.BAD_REQUEST, "{ \"message\", \"Bad request to view your cards\"}");
+        return new Response(HttpStatus.BAD_REQUEST, REQUEST_BODY_NOT_ALLOWED);
     }
 }
