@@ -12,8 +12,18 @@ public class CardService {
     public CardService(CardDao cardDao) {
         this.cardDao = cardDao;
     }
-    public List<Map<String, Object>> getCardsAsMap(int stackId) {
+
+    public List<Map<String, Object>> getAllCardsAsMap(int stackId) {
         List<Card> cards = cardDao.getCardsByStackId(stackId);
+        return convertCardsToMap(cards);
+    }
+
+    public List<Map<String, Object>> getCardsFromDeckAsMap(int stackId) {
+        List<Card> cards = cardDao.getCardsInDeckByStackId(stackId);
+        return convertCardsToMap(cards);
+    }
+
+    private List<Map<String, Object>> convertCardsToMap(List<Card> cards) {
         return cards.stream().map(card -> {
             Map<String, Object> map = new HashMap<>();
             map.put("id", card.getId());

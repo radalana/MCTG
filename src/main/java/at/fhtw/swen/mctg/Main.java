@@ -1,6 +1,7 @@
 package at.fhtw.swen.mctg;
 
 import at.fhtw.swen.mctg.services.cards.StackService;
+import at.fhtw.swen.mctg.services.deck.DeckService;
 import at.fhtw.swen.mctg.services.login.AuthenticationService;
 import at.fhtw.swen.mctg.services.packages.PackageService;
 import at.fhtw.swen.mctg.services.registration.RegistrationService;
@@ -32,6 +33,7 @@ public class Main{
         router.addService("/packages", new PackageService());
         router.addService("/transactions/packages", new CardAcquisitionService(authenticationService));
         router.addService("/cards", new StackService(authenticationService));
+        router.addService("/deck", new DeckService(authenticationService));
         return router;
     }
 }

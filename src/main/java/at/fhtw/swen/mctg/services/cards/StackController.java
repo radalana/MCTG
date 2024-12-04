@@ -23,7 +23,7 @@ public class StackController extends Controller {
             }
             int stackId = new StackRepository(unitOfWork).findStackByUsername(user.getLogin());
             CardService cardService = new CardService(new CardDao(unitOfWork));
-            List<Map<String, Object>> cardsAsMap = cardService.getCardsAsMap(stackId);
+            List<Map<String, Object>> cardsAsMap = cardService.getAllCardsAsMap(stackId);
             String json = new ObjectMapper().writeValueAsString(cardsAsMap);
             return new Response(HttpStatus.OK, json);
         }catch (Exception e) {

@@ -15,7 +15,7 @@ import java.util.List;
 import java.util.UUID;
 
 public class CardDao {
-    private UnitOfWork unitOfWork;
+    private final UnitOfWork unitOfWork;
     public CardDao(UnitOfWork unitOfWork) {
         this.unitOfWork = unitOfWork;
     }
@@ -58,8 +58,19 @@ public class CardDao {
         }
     }
 
+    //for GET/stack
     public List<Card> getCardsByStackId(int stackId) {
         String sql = "SELECT * FROM cards WHERE stack_id = ?";
+        return getCards(sql, stackId);
+    }
+
+    //for GET/deck
+    public List<Card> getCardsInDeckByStackId(int stackId) {
+        String sql = "SELECT * FROM cards WHERE stack_id = ? AND is_in_deck = TRUE";
+        return getCards(sql, stackId);
+    }
+
+    private List<Card> getCards(String sql, int stackId) {
         try (PreparedStatement preparedStatement = this.unitOfWork.prepareStatement(sql)) {
             preparedStatement.setInt(1, stackId);
             ResultSet resultSet = preparedStatement.executeQuery();
@@ -80,7 +91,7 @@ public class CardDao {
                     .map(cardFactory::createCard)
                     .toList();
         } catch (SQLException e) {
-            throw new DataAccessException("Failed to get cards by stack ID: " + e.getMessage(), e);
+            throw new DataAccessException("Failed to execute card query: " + e.getMessage(), e);
         }
     }
 }

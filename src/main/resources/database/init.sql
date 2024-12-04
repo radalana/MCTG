@@ -38,7 +38,8 @@ CREATE TABLE cards
     package_id INTEGER,
     FOREIGN KEY (package_id) REFERENCES packages(id) ON DELETE SET NULL,
     stack_id INTEGER DEFAULT NULL,
-    FOREIGN KEY (stack_id) REFERENCES stacks(id) ON DELETE SET NULL
+    FOREIGN KEY (stack_id) REFERENCES stacks(id) ON DELETE SET NULL,
+    is_in_deck BOOLEAN DEFAULT FALSE
 );
 
 INSERT INTO users (username, password, token)

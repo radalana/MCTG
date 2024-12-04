@@ -11,7 +11,4 @@ public class Deck extends CardSet {
     public Deck() {
         super(SIZE);
     }
-
-
-
 }
