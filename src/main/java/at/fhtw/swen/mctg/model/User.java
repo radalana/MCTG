@@ -13,6 +13,7 @@ public class User {
     @Getter
     private String token;
     private Collection<Card> stack;
+    @Getter
     private Deck deck; //TODO max 4 define es class maybe in Array List
     int stat;
     @Getter
@@ -41,10 +42,6 @@ public class User {
             throw new IllegalStateException("Not enough coins to buy a package. Required: " + Package.PACKAGE_PRICE + ", Available: " + coins);
         }
         coins -= 5;
-    }
-
-    public Deck getDeck() {
-        return deck;
     }
 
     private Deck chooseDeck() {return null;}

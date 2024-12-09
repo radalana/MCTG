@@ -34,6 +34,7 @@ public class Main{
         router.addService("/transactions/packages", new CardAcquisitionService(authenticationService));
         router.addService("/cards", new StackService(authenticationService));
         router.addService("/deck", new DeckService(authenticationService));
+        router.addService('/battles', new BattleService(authenticationService));
         return router;
     }
 }
