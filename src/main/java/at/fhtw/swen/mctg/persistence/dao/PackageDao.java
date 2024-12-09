@@ -32,10 +32,10 @@ public class PackageDao {
         }
     }
 
-    // Wird beim Paketkauf verwendet, um eine zufällige Paket-ID auszuwählen.
-    public int getRandomPackageId() {
-        String sqlQuery = "SELECT id FROM packages ORDER BY RANDOM() LIMIT 1";
-        try (PreparedStatement preparedStatement = this.unitOfWork.prepareStatement(sqlQuery)) {
+    // Wird verwendet, um die ID des ältesten Pakets anhand des Erstellungsdatums auszuwählen.
+    public int getFirstCreatedPackageId() {
+        String sql = "SELECT * FROM packages ORDER BY created_at ASC LIMIT 1";
+        try (PreparedStatement preparedStatement = this.unitOfWork.prepareStatement(sql)) {
             ResultSet resultSet = preparedStatement.executeQuery();
             if (resultSet.next()) {
                 return resultSet.getInt("id");
@@ -43,9 +43,10 @@ public class PackageDao {
                 throw new DataAccessException("No packages available.");
             }
         } catch (SQLException e) {
-            throw new DataAccessException("Failed to fetch a random package ID: " + e.getMessage(), e);
+            throw new DataAccessException("Failed to fetch a oldest package ID: " + e.getMessage(), e);
         }
     }
+
     public void delete(int packageId) {
         String sqlQuery = "DELETE FROM packages WHERE id = ?";
         try (PreparedStatement preparedStatement = this.unitOfWork.prepareStatement(sqlQuery)) {
