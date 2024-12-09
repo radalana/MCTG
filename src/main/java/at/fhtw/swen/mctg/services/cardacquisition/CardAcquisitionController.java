@@ -32,7 +32,7 @@ public class CardAcquisitionController extends Controller {
             }
 
             int userStackId = new StackRepository(unitOfWork).findStackByUsername(user.getLogin());
-            int packageId = new PackageDao(unitOfWork).getRandomPackageId();
+            int packageId = new PackageDao(unitOfWork).getFirstCreatedPackageId();
 
             CardDao cardDao = new CardDao(unitOfWork);
             cardDao.assignCardsToStack(userStackId, packageId);
@@ -46,7 +46,7 @@ public class CardAcquisitionController extends Controller {
             );
         } catch (DataAccessException e) {
             //TODO другой  response!!!
-                return new Response(HttpStatus.UNAUTHORIZED,
+                return new Response(HttpStatus.BAD_REQUEST,
                         "{ \"message\": " + e.getMessage() + "}");
         } catch (Exception e) {
             unitOfWork.rollbackTransaction();
