@@ -6,7 +6,7 @@ run:
 test-login:
 	./testlogin.sh pause
 test:
-	./test1.sh pause
+	/bin/bash -i ./test12.sh pause
 full-test:
 	./MonsterTradingCards.sh pause
 create-packs:
