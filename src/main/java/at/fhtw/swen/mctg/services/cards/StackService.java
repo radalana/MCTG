@@ -21,12 +21,15 @@ public class StackService implements Service {
     @Override
     public Response handleRequest(Request request) {
         Method requestMethod = request.getMethod();
-
-        String token = request.getHeaderMap().getHeader("Authorization");
-        token = authenticationService.extractToken(token);
-        if (requestMethod == Method.GET && request.getBody() == null) {
-            return this.stackController.listAllCards(token);
+        try {
+            String token = request.getHeaderMap().getHeader("Authorization");
+            token = authenticationService.extractToken(token);
+            if (requestMethod == Method.GET && request.getBody() == null) {
+                return this.stackController.listAllCards(token);
+            }
+            return new Response(HttpStatus.BAD_REQUEST, REQUEST_BODY_NOT_ALLOWED);
+        } catch (IllegalArgumentException e) {
+            return new Response(HttpStatus.UNAUTHORIZED, "{ \"message\": \"" + e.getMessage() + "\" }");
         }
-        return new Response(HttpStatus.BAD_REQUEST, REQUEST_BODY_NOT_ALLOWED);
     }
 }

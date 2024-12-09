@@ -30,7 +30,7 @@ public class StackController extends Controller {
             List<Map<String, Object>> cardsAsMap = cardService.getAllCardsAsMap(stackId);
             String json = new ObjectMapper().writeValueAsString(cardsAsMap);
             return new Response(HttpStatus.OK, json);
-        }catch (Exception e) {
+        } catch (Exception e) {
             System.err.println("Error occurred in /GET/cards:");
             System.err.println("Token: " + token); // Входной параметр
             System.err.println("Error message: " + e.getMessage());
