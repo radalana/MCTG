@@ -70,6 +70,73 @@ public class CardDao {
         return getCards(sql, stackId);
     }
 
+    //TODO refactor extract duplicates
+    public boolean areCardsWithIdExist(List<String> cardsIdList) {
+        if (cardsIdList == null || cardsIdList.isEmpty()) {
+            System.err.println("лол");
+            return false;
+        }
+        String placeholders = String.join(",", cardsIdList.stream().map(id -> "?").toList());
+        String sql = "SELECT COUNT(*) FROM cards WHERE id IN (" + placeholders + ")";
+        try (PreparedStatement preparedStatement = this.unitOfWork.prepareStatement(sql)) {
+            for (int i = 0; i < cardsIdList.size(); i++) {
+                preparedStatement.setObject(i + 1, UUID.fromString(cardsIdList.get(i)));
+            }
+            ResultSet resultSet = preparedStatement.executeQuery();
+            if (resultSet.next()) {
+                return resultSet.getInt(1) == cardsIdList.size();
+            }else {
+                System.err.println("что-то здесь");
+                return false;
+            }
+
+        } catch (SQLException e) {
+            throw new DataAccessException("Failed to check if cards with provided IDs exist. SQL " + e.getMessage(), e);
+        }
+    }
+
+    public boolean areCardsInStackWithId(List<String> cardsIdList, int stackId) {
+        System.err.println("Stack Id: " + stackId);
+        //TODO вынести в DEck controller
+        if (cardsIdList == null || cardsIdList.isEmpty()) {
+            return false;
+        }
+        String placeholders = String.join(",", cardsIdList.stream().map(id -> "?").toList());
+        String sql = "SELECT COUNT(*) FROM cards WHERE stack_id = ? AND id IN (" + placeholders + ")";
+        try (PreparedStatement preparedStatement = this.unitOfWork.prepareStatement(sql)) {
+            preparedStatement.setInt(1, stackId);
+            for (int i = 0; i < cardsIdList.size(); i++) {
+                System.err.println("id: " + cardsIdList.get(i));
+                preparedStatement.setObject(i+2, UUID.fromString(cardsIdList.get(i)));
+            }
+            ResultSet resultSet = preparedStatement.executeQuery();
+            if (resultSet.next()) {
+                int count = resultSet.getInt(1);
+                System.err.println(count);
+                return count == cardsIdList.size();
+            }
+            return false;
+        } catch (SQLException e) {
+            throw new DataAccessException("Failed to count cards in stack with stack_id = " + stackId
+                    + ". SQL error: " + e.getMessage(), e);
+        }
+    }
+
+    public int countCardsInDeck(int stackId) {
+        String sql = "SELECT COUNT(*) FROM cards WHERE stack_id = ? AND is_in_deck = TRUE ";
+        try (PreparedStatement preparedStatement = this.unitOfWork.prepareStatement(sql)) {
+            preparedStatement.setInt(1, stackId);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            if (resultSet.next()) {
+                return resultSet.getInt(1);
+            } else {
+                throw new DataAccessException("Failed count cards in deck");
+            }
+        }catch(SQLException e) {
+            throw new DataAccessException("SELECT COUNT(*) failed count cards in deck", e);
+        }
+    }
+
     private List<Card> getCards(String sql, int stackId) {
         try (PreparedStatement preparedStatement = this.unitOfWork.prepareStatement(sql)) {
             preparedStatement.setInt(1, stackId);
@@ -92,6 +159,22 @@ public class CardDao {
                     .toList();
         } catch (SQLException e) {
             throw new DataAccessException("Failed to execute card query: " + e.getMessage(), e);
+        }
+    }
+
+    public void setDeckFlagForCards(List<String> cardsIdList) {
+        String placeholders = String.join(",", cardsIdList.stream().map(id -> "?").toList()); //или просто строка из ??
+        String sql = "UPDATE cards SET is_in_deck = TRUE WHERE id IN (" + placeholders + ")";
+        try (PreparedStatement preparedStatement = this.unitOfWork.prepareStatement(sql)) {
+            for (int i = 0; i < cardsIdList.size(); i++) {
+                preparedStatement.setObject(i+1, UUID.fromString(cardsIdList.get(i)));
+            }
+            int updatedRows = preparedStatement.executeUpdate();
+            if (updatedRows < cardsIdList.size()) {
+                throw new DataAccessException("Update incomplete. Expected to update " + cardsIdList.size() + " cards, but only " + updatedRows + " rows were modified.");
+            }
+        } catch (SQLException e) {
+            throw new DataAccessException("Failed to update is_in_deck. SQL error: " + e.getMessage(), e);
         }
     }
 }
