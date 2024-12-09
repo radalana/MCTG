@@ -21,10 +21,14 @@ public class CardAcquisitionService implements Service {
         Method requestMethod = request.getMethod();
 
         String token = request.getHeaderMap().getHeader("Authorization");
-        token = authenticationService.extractToken(token);
-        if (requestMethod == Method.POST  && request.getBody() == null) {
-            return this.controller.acquisiteCards(token);
+        try {
+            token = authenticationService.extractToken(token);
+            if (requestMethod == Method.POST  && request.getBody() == null) {
+                return this.controller.acquisiteCards(token);
+            }
+            return new Response(HttpStatus.BAD_REQUEST, REQUEST_BODY_NOT_ALLOWED);
+        }catch(IllegalArgumentException e) {
+            return new Response(HttpStatus.UNAUTHORIZED, "{ \"message\": \"" + e.getMessage() + "\" }");
         }
-        return new Response(HttpStatus.BAD_REQUEST, REQUEST_BODY_NOT_ALLOWED);
     }
 }
