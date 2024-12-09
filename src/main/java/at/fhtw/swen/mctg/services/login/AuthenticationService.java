@@ -26,7 +26,9 @@ public class AuthenticationService {
             } else {
                 throw new IllegalArgumentException("Invalid username or password");
             }
-        }catch (Exception e) {
+        } catch (IllegalArgumentException e) {
+            throw e;
+        } catch (Exception e) {
             throw new DataAccessException("Error during authentication: " + e.getMessage(), e);
         }
     }
