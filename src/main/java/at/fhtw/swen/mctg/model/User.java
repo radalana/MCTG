@@ -7,6 +7,8 @@ import java.util.List;
 
 public class User {
     @Getter
+    private int id;
+    @Getter
     private final String login;
     @Getter
     private String password;
@@ -23,11 +25,13 @@ public class User {
         this.login = login;
         this.password = password;
     }
-    public User(String login, Deck deck) {
+    public User(int id, String login, Deck deck) {
+        this.id = id;
         this.login = login;
         this.deck = deck; //TODO убрать deck после RoundServiceTest
     }
-    public User(String login, String password, String token, int coins) {
+    public User(int id, String login, String password, String token, int coins) {
+        this.id = id;
         this.login = login;
         this.password = password;
         this.coins = coins;

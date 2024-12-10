@@ -6,11 +6,9 @@ import at.fhtw.swen.mctg.model.Battle;
 import at.fhtw.swen.mctg.model.Card;
 import at.fhtw.swen.mctg.model.Deck;
 import at.fhtw.swen.mctg.model.User;
+import at.fhtw.swen.mctg.persistence.DataAccessException;
 import at.fhtw.swen.mctg.persistence.UnitOfWork;
-import at.fhtw.swen.mctg.persistence.dao.BattleRepository;
-import at.fhtw.swen.mctg.persistence.dao.CardDao;
-import at.fhtw.swen.mctg.persistence.dao.StackRepository;
-import at.fhtw.swen.mctg.persistence.dao.UserRepository;
+import at.fhtw.swen.mctg.persistence.dao.*;
 
 import java.util.List;
 
@@ -34,15 +32,17 @@ public class BattleController {
            deck.addCard((Card) cards);
 
            //запрос на battle
-           User opponent; // = findOpponent();
-           //если есть кто ждет battle
-                runBattle(user, opponent);
-            new BattleRepository(unitOfWork).save(battle);
-            //вернуть отвтет выиграл или нет
-           //иначе (т.е opponent == null) сохраняить запрос
-           //вернуть ответ с accepted
-           return new Response(HttpStatus.ACCEPTED, "stated wil be updated bla bla ckeck later");
-
+           BattleRequestsRepository battleRequestsRepo = new BattleRequestsRepository(unitOfWork);
+           User opponent  = findOpponent(battleRequestsRepo); //search if there are any requests for a battle
+           if (opponent == null) {
+               battleRequestsRepo.save(user.getId());
+               return new Response(HttpStatus.ACCEPTED, "{ \"message\": \"Battle request submitted. No opponents are available at the moment. The battle will be processed once an opponent is found.\" }");
+           } else {
+               //if there is opponent for battle
+               Battle battle = startBattle(user, opponent);
+               //new BattleRepository(unitOfWork).save(battle);
+               return new Response(HttpStatus.NOT_IMPLEMENTED, "battle not implemented");
+           }
        }catch (Exception e) {
            System.err.println(e.getMessage());
            return new Response(HttpStatus.INTERNAL_SERVER_ERROR, INTERNAL_SERVER_ERROR);
@@ -54,5 +54,13 @@ public class BattleController {
        return new CardDao(unitOfWork).getCardsInDeckByStackId(stackId);
    }
 
-   private void runBattle(User user1, User user2) {}
+   private User findOpponent(BattleRequestsRepository battleRequestsRepository) throws DataAccessException {
+       return battleRequestsRepository.findUserOfEarliestRequest();
+   }
+   private at.fhtw.swen.mctg.model.Battle startBattle(User user1, User user2) {
+       //get deck1 und get deck2
+       Deck deck1 = user1.getDeck(); //пока пустой нужно из дб получить deck
+       Deck deck2 = user2.getDeck();
+       battle(deck1, deck2);
+   }
 }
