@@ -51,6 +51,27 @@ CREATE TABLE battle_requests
     created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
 );
 
+CREATE TABLE battles
+(
+    id INT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
+    user1_id INT NOT NULL,
+    user2_id INT NOT NULL,
+    battle_time TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (user1_id) REFERENCES users(id),
+    FOREIGN KEY (user2_id) REFERENCES users(id)
+);
+
+CREATE TABLE rounds
+(
+    id INT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
+    battle_id INT NOT NULL,
+    winner_id INT,
+    played_card_id uuid,
+    round_number INT NOT NULL,
+    FOREIGN KEY (winner_id) REFERENCES users(id),
+    FOREIGN KEY (battle_id) REFERENCES battles(id)
+);
+
 INSERT INTO users (username, password, token)
 VALUES
     ('john_doe', 'password123', 'token_john'),
