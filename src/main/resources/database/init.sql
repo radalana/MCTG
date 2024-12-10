@@ -43,6 +43,14 @@ CREATE TABLE cards
     is_in_deck BOOLEAN DEFAULT FALSE
 );
 
+CREATE TABLE battle_requests
+(
+    id INT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
+    user_id INTEGER,
+    FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE SET NULL,
+    created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
+);
+
 INSERT INTO users (username, password, token)
 VALUES
     ('john_doe', 'password123', 'token_john'),
