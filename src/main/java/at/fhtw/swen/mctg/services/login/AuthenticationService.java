@@ -4,6 +4,7 @@ import at.fhtw.swen.mctg.model.User;
 import at.fhtw.swen.mctg.persistence.DataAccessException;
 import at.fhtw.swen.mctg.persistence.UnitOfWork;
 import at.fhtw.swen.mctg.persistence.dao.StackRepository;
+import at.fhtw.swen.mctg.persistence.dao.StatsRepository;
 import at.fhtw.swen.mctg.persistence.dao.UserRepository;
 
 
@@ -38,7 +39,8 @@ public class AuthenticationService {
             User user = new User(username, password);
             int userId = new UserRepository(unitOfWork).save(user);
             //TODO fix create stack
-            int stackId = new StackRepository(unitOfWork).create(userId);
+            int stackId = new StackRepository(unitOfWork).create(userId);//Erstellen leeres Stack
+            new StatsRepository(unitOfWork).create(userId);//Erstellen Stats
             unitOfWork.commitTransaction();
         }catch (Exception e) {
             unitOfWork.rollbackTransaction();
