@@ -25,7 +25,7 @@ public class BattleService implements Service {
         try {
             String token = request.getHeaderMap().getHeader("Authorization");
             token = authenticationService.extractToken(token);
-            if (requestMethod == Method.POST && request.getBody() != null) {
+            if (requestMethod == Method.POST && request.getBody() == null) {
                 return this.battleController.joinBattle(token);
             }
             return new Response(HttpStatus.BAD_REQUEST, REQUEST_BODY_NOT_ALLOWED);

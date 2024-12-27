@@ -9,8 +9,11 @@ import java.util.List;
 public abstract class CardSet {
     @Getter
     protected List<Card> cards;
-    private final int size;
+    private int size;
 
+    public CardSet() {
+        cards = new ArrayList<>();
+    }
     public CardSet(int size) {
         this.cards = new ArrayList<>();
         this.size = size;
@@ -22,6 +25,10 @@ public abstract class CardSet {
         this.cards = cards;
         this.size = size;
     }
+    public CardSet(List<Card> cards) {
+        this.cards = cards;
+        this.size = cards.size();
+    }
     public void addCard(Card card) {
         if (cards.size() < size) {
             cards.add(card);
@@ -29,9 +36,9 @@ public abstract class CardSet {
             throw new IllegalStateException("Max size of " + size + " cards reached!");
         }
     }
-    public boolean addCards(Card ...cards) {
-        if (this.cards.size() + cards.length <= size) {
-            this.cards.addAll(List.of(cards));
+    public boolean addCards(List<Card> newCards) {
+        if (this.cards.size() + newCards.size() <= size) {
+            this.cards.addAll(newCards);
             return true;
         }
         return false;
@@ -41,11 +48,19 @@ public abstract class CardSet {
         return cards.remove(card);
     }
 
+    public boolean isEmpty() {
+        return cards.isEmpty();
+    }
+
     public Card get(int i) {
         return cards.get(i);
     }
     public int getCount() {
         return cards.size();
+    }
+
+    public void clear() {
+        cards.clear();
     }
 
 }

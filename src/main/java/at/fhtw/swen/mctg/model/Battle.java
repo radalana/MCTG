@@ -1,24 +1,23 @@
 package at.fhtw.swen.mctg.model;
 
 import at.fhtw.swen.mctg.model.User;
+import lombok.Getter;
+import lombok.Setter;
 
+import java.util.ArrayList;
 import java.util.List;
-
+@Getter
 public class Battle {
-    static final int  MAX_ROUNDS = 100;
-    private final User participant1;
-    private final User participant2;
-    List<String> log;
-    List<Round> rounds;
+    private int id;
+    private final List<Round> rounds;
+    private final int numberOfRounds;
+    private final BattleResult user1BattleResult;
+    private final BattleResult user2BattleResult;
 
-    public Battle(User user1, User user2){
-        participant1 = user1;
-        participant2 = user2;
+    public Battle(List<Round> rounds,BattleResult user1BattleResult,BattleResult user2BattleResult) {
+        this.rounds = rounds;
+        this.numberOfRounds = rounds.size();
+        this.user1BattleResult = user1BattleResult;
+        this.user2BattleResult = user2BattleResult;
     }
-    public void launch(){
-        for(int i = 0; i < MAX_ROUNDS; i++) {
-            Round round = new Round();
-            //TODO round.start(card1, card2);
-        }
-    };
 }

@@ -9,6 +9,7 @@ import at.fhtw.swen.mctg.persistence.UnitOfWork;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 
 public class BattleRequestsRepository {
     private final UnitOfWork unitOfWork;
@@ -17,7 +18,7 @@ public class BattleRequestsRepository {
     }
     //save request for a battle
     public void save(int userId) {
-        String sql = "UPDATE battle_requests SET user_id = ?";
+        String sql = "INSERT INTO battle_requests (user_id) VALUES (?)";
         try(PreparedStatement preparedStatement = this.unitOfWork.prepareStatement(sql)) {
             preparedStatement.setInt(1, userId);
             preparedStatement.executeUpdate();
@@ -25,9 +26,9 @@ public class BattleRequestsRepository {
             throw new DataAccessException("Failed to save battle request", e);
         }
     }
-
     //find opponent
     public User findUserOfEarliestRequest() {
+        //TODO 2 mal 1 request zu verschiden users kann zuruck bla bla
         String sql ="""
         SELECT u.*
         FROM battle_requests br
@@ -39,13 +40,13 @@ public class BattleRequestsRepository {
             ResultSet resultSet = preparedStatement.executeQuery();
             if (resultSet.next()) {
                 return new User(
-                        resultSet.getString("username"),
-                        new Deck() //TODO not sure
+                        resultSet.getInt("id"),
+                        resultSet.getString("username")
                 );
             }
             return null;
         } catch (SQLException e) {
-            throw new DataAccessException("findUserOfEarliestRequest", e);
+            throw new DataAccessException("findUserOfEarliestRequest " + e.getMessage(), e);
         }
     }
 }
