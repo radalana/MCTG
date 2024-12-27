@@ -72,7 +72,21 @@ CREATE TABLE battles
     FOREIGN KEY (user2_result_id) REFERENCES battles_results(id)
 );
 
+CREATE TABLE user_stats (
+    user_id INT REFERENCES users(id) ON DELETE CASCADE,
+    wins INT DEFAULT 0,
+    losses INT DEFAULT 0,
+    draws INT DEFAULT 0,
+    total_battles INT DEFAULT 0,
+    elo INT DEFAULT 100,
+    PRIMARY KEY (user_id)
+);
 
+CREATE VIEW scoreboard AS
+SELECT u.username, st.elo
+FROM user_stats st
+JOIN users u ON u.id = st.user_id
+ORDER BY st.elo DESC;
 
 INSERT INTO users (username, password, token)
 VALUES
