@@ -13,11 +13,10 @@ import java.util.List;
 
 import static at.fhtw.swen.mctg.httpserver.http.MessageConstants.INTERNAL_SERVER_ERROR;
 import static at.fhtw.swen.mctg.httpserver.http.MessageConstants.USER_NOT_FOUND;
-//import static at.fhtw.swen.mctg.model.Battle.MAX_ROUNDS;
 
 public class BattleController {
    public Response joinBattle(String token) {
-       //check if deck configured
+       //uberprüfe ob Deck konfiguriert ist
        try(UnitOfWork unitOfWork = new UnitOfWork()) {
            User user = new UserRepository(unitOfWork).findUserByToken(token);
            if (user == null) {
@@ -28,13 +27,9 @@ public class BattleController {
            if (cards.isEmpty()) {
                return new Response(HttpStatus.BAD_REQUEST, "{ \"message\": \"Deck is empty. To start battle configure a stack.\" }\n");
            }
-           /*
-           false
-           Deck deck = user.getDeck();
-           deck.addCard(cards);
-            */
+
            user.getStack().addCards(cards);
-           //запрос на battle
+
            BattleRequestsRepository battleRequestsRepo = new BattleRequestsRepository(unitOfWork);
            synchronized (this) {
                //TODO for opponent deck herunterladen
@@ -56,8 +51,14 @@ public class BattleController {
                    int userResultId = new BattleResultRepository(unitOfWork).save(battle.getUser1BattleResult());
                    int opponentResultId = new BattleResultRepository(unitOfWork).save(battle.getUser2BattleResult());
                    new BattleRepository(unitOfWork).save(battle, userResultId, opponentResultId);
-                   //update stats
-                   //update scoreboard
+
+                   StatsRepository stateRepo = new StatsRepository(unitOfWork);
+
+                   Stats userStats = stateRepo.findStats(user.getId());
+                   Stats opponentStats = stateRepo.findStats(opponent.getId());
+
+                   System.out.println(userStats);
+                   System.out.println(opponentStats);
                    unitOfWork.commitTransaction();
                    return new Response(HttpStatus.OK, "{ \"message\": \"Check your stat to see result of a battle with " + opponent.getLogin() + ".\"}\n");
                }
@@ -68,7 +69,30 @@ public class BattleController {
            return new Response(HttpStatus.INTERNAL_SERVER_ERROR, INTERNAL_SERVER_ERROR);
        }
    }
+   /*
+   private void updateStates(Stats userStats, Stats opponentStats, Battle battle) {
+       int userScore = battle.getUser1BattleResult().getResult();
+       int opponentScore = battle.getUser2BattleResult().getResult();
 
+       if (userScore > opponentScore) {
+           updateStatesELO(userStats, opponentStats);
+       }else if (opponentScore > userScore) {
+           updateStatesELO(opponentStats, userStats);
+       }else {
+           userStats.addDraw();
+           opponentStats.addDraw();
+       }
+
+       userStats.icreamentBattle();
+       opponentStats.increamentBattle();
+   }
+   private void updateStatesELO(Stats winnerStats, Stats looserStats) {
+       winnerStats.increaseElo();
+       winnerStats.addWin();
+       loserStats.decreaseElo();
+       loserStats.addLoose();
+   }
+    */
    private List<Card> getUserDeck(User user, UnitOfWork unitOfWork) {
        int stackId = new StackRepository(unitOfWork).findStackByUsername(user.getLogin());
        return new CardDao(unitOfWork).getCardsInDeckByStackId(stackId);
