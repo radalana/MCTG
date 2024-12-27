@@ -3,13 +3,15 @@ package at.fhtw.swen.mctg.core.cards.monsters;
 import at.fhtw.swen.mctg.core.cards.Element;
 import at.fhtw.swen.mctg.core.cards.Monster;
 import at.fhtw.swen.mctg.core.cards.MonsterType;
+import at.fhtw.swen.mctg.model.Card;
 
 public class Elf extends Monster {
     public Elf(String id, String name, double damage, Element element) {
         super(id, name, damage, element, MonsterType.ELF);
     }
     @Override
-    public void attack() {
+    public int fight(Card opponent) {
         System.out.println("Shoots an arrow");
+        return 0;
     }
 }

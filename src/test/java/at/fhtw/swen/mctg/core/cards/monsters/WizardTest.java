@@ -71,10 +71,10 @@ class WizardTest {
     @DisplayName("Wizard(Normal, 1.0)  fights against Normal spell(1.0) -> draw")
     void testFightWizardNormalSpell() {
         Card wizard = new Wizard("Wizard", "Wizard", 1.0, Element.NORMAL);
-        Card fire = new Spell("Spell", "WaterSpell", 1.0, Element.NORMAL);
+        Card normalSpell = new Spell("Spell", "WaterSpell", 1.0, Element.NORMAL);
 
-        assertEquals(0, wizard.fight(fire));
-        assertEquals(0, fire.fight(wizard));
+        assertEquals(0, wizard.fight(normalSpell));
+        assertEquals(0, normalSpell.fight(wizard));
     }
     //WaterWizard vs water, fire, normal
     //FireWizard vs water, fire, normal

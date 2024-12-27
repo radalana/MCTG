@@ -8,7 +8,7 @@ test-login:
 test:
 	/bin/bash -i ./test12.sh pause
 full-test:
-	./MonsterTradingCards.sh pause
+	/bin/bash -i ./MonsterTradingCards.sh pause
 create-packs:
 	./test_create_packages.sh pause
 up:
@@ -19,4 +19,11 @@ reinit-db:
 	docker-compose down -v
 	docker-compose build
 	docker-compose up -d
+	
+battle:
+	echo "17) battle"
+	curl -i -X POST http://localhost:10001/battles --header "Authorization: Bearer kienboec-mtcgToken" &
+	curl -i -X POST http://localhost:10001/battles --header "Authorization: Bearer altenhof-mtcgToken"
+	wait
+
 

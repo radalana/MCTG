@@ -12,7 +12,7 @@ class KnightTest {
 
     @Test
     @DisplayName("The armor of Knights is so heavy that WaterSpells make them drown them instantly.")
-    void fight() {
+    void testFightKnightVsWatterSpell() {
         Card knight = new Knight("knight", "knight", 5.0, Element.NORMAL);
         Card waterSpell = new Spell("waterSpell", "waterSpell", 1.0, Element.WATER);
         assertEquals(-1, knight.fight(waterSpell));

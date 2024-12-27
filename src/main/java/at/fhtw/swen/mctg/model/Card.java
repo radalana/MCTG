@@ -1,6 +1,7 @@
 package at.fhtw.swen.mctg.model;
 
 
+import at.fhtw.swen.mctg.core.ElementFactors;
 import at.fhtw.swen.mctg.core.cards.Element;
 import lombok.Getter;
 
@@ -23,7 +24,17 @@ public abstract class Card {
     public Card(double damage) {
         this.damage = damage;
     }
-    public abstract void attack();
+
+    public int fight(Card opponent){
+        if (this == opponent) {
+            throw new IllegalArgumentException("Cannot fight the same card");
+        }
+        //System.err.println("I am in card fight");
+        //TODO logic if card against itself - exception
+        Element opponentElement = opponent.getElement();
+        double effectiveness = ElementFactors.getMultiplier(element, opponentElement);
+        return Double.compare(getDamage()*effectiveness, opponent.getDamage());
+    }
     public abstract boolean isMonsterType();
 
     @Override

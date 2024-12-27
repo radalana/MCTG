@@ -19,6 +19,14 @@ public abstract class Monster extends Card {
     }
 
     @Override
+    public int fight(Card opponent) {
+        //The Element type does not effect pure monster fights
+        if (opponent instanceof Monster) {
+             return Double.compare(this.getDamage(), opponent.getDamage());
+        }
+        return super.fight(opponent);
+    }
+    @Override
     public boolean isMonsterType() {
         return true;
     }
