@@ -26,7 +26,7 @@ public class BattleController {
            //getDeck
            List<Card> cards = getUserDeck(user, unitOfWork);
            if (cards.isEmpty()) {
-               return new Response(HttpStatus.BAD_REQUEST, "{ \"message\": \"Deck is empty. To start battle configure a stack.\" }");
+               return new Response(HttpStatus.BAD_REQUEST, "{ \"message\": \"Deck is empty. To start battle configure a stack.\" }\n");
            }
            /*
            false
@@ -42,13 +42,13 @@ public class BattleController {
                if (opponent == null) {
                    battleRequestsRepo.save(user.getId());
                    unitOfWork.commitTransaction();
-                   return new Response(HttpStatus.ACCEPTED, "{ \"message\": \"Battle request submitted. No opponents are available at the moment. The battle will be processed once an opponent is found.\" }");
+                   return new Response(HttpStatus.ACCEPTED, "{ \"message\": \"Battle request submitted. No opponents are available at the moment. The battle will be processed once an opponent is found.\" }\n");
 
                } else {
                    //if there is opponent for battle
                    List<Card> opponentCards = getUserDeck(opponent, unitOfWork);
                    if (opponentCards.isEmpty()) {
-                       return new Response(HttpStatus.BAD_REQUEST, "{ \"message\": \"Deck is empty. To start battle configure a stack.\" }");
+                       return new Response(HttpStatus.BAD_REQUEST, "{ \"message\": \"Deck is empty. To start battle configure a stack.\" }\n");
                    }
                    opponent.getStack().addCards(cards);
                    BattleEngine engine = new BattleEngine(user, opponent);
@@ -59,7 +59,7 @@ public class BattleController {
                    //update stats
                    //update scoreboard
                    unitOfWork.commitTransaction();
-                   return new Response(HttpStatus.NOT_IMPLEMENTED, "battle not implemented");
+                   return new Response(HttpStatus.OK, "{ \"message\": \"Check your stat to see result of a battle with " + opponent.getLogin() + ".\"}\n");
                }
            }
        }catch (Exception e) {
