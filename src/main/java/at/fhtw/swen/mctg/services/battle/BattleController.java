@@ -45,7 +45,11 @@ public class BattleController {
                    if (opponentCards.isEmpty()) {
                        return new Response(HttpStatus.BAD_REQUEST, "{ \"message\": \"Deck is empty. To start battle configure a stack.\" }\n");
                    }
-                   opponent.getStack().addCards(cards);
+                   opponent.getDeck().addCards(opponentCards);
+                   System.out.println("-----joinBattle---------");
+                   System.err.println(user.getLogin() + " " + user.getDeck());
+                   System.err.println(opponent.getLogin() + " " + opponent.getDeck());
+                   //start battle
                    BattleEngine engine = new BattleEngine(user, opponent);
                    Battle battle = engine.startBattle();
                    int userResultId = new BattleResultRepository(unitOfWork).save(battle.getUser1BattleResult());
