@@ -57,8 +57,10 @@ public class BattleController {
                    Stats userStats = stateRepo.findStats(user.getId());
                    Stats opponentStats = stateRepo.findStats(opponent.getId());
 
-                   System.out.println(userStats);
-                   System.out.println(opponentStats);
+                   updateStates(userStats, opponentStats, battle);
+                   stateRepo.save(userStats);
+                   stateRepo.save(opponentStats);
+
                    unitOfWork.commitTransaction();
                    return new Response(HttpStatus.OK, "{ \"message\": \"Check your stat to see result of a battle with " + opponent.getLogin() + ".\"}\n");
                }
@@ -69,30 +71,23 @@ public class BattleController {
            return new Response(HttpStatus.INTERNAL_SERVER_ERROR, INTERNAL_SERVER_ERROR);
        }
    }
-   /*
+//TODO должна может быть вынести отдельно в логику states
    private void updateStates(Stats userStats, Stats opponentStats, Battle battle) {
        int userScore = battle.getUser1BattleResult().getResult();
        int opponentScore = battle.getUser2BattleResult().getResult();
 
        if (userScore > opponentScore) {
-           updateStatesELO(userStats, opponentStats);
+           userStats.recordWin();
+           opponentStats.recordLoss();
        }else if (opponentScore > userScore) {
-           updateStatesELO(opponentStats, userStats);
+           userStats.recordLoss();
+           opponentStats.recordWin();
        }else {
-           userStats.addDraw();
-           opponentStats.addDraw();
+           userStats.recordDraw();
+           opponentStats.recordDraw();
        }
+   }
 
-       userStats.icreamentBattle();
-       opponentStats.increamentBattle();
-   }
-   private void updateStatesELO(Stats winnerStats, Stats looserStats) {
-       winnerStats.increaseElo();
-       winnerStats.addWin();
-       loserStats.decreaseElo();
-       loserStats.addLoose();
-   }
-    */
    private List<Card> getUserDeck(User user, UnitOfWork unitOfWork) {
        int stackId = new StackRepository(unitOfWork).findStackByUsername(user.getLogin());
        return new CardDao(unitOfWork).getCardsInDeckByStackId(stackId);
