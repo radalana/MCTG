@@ -8,13 +8,14 @@ public class Deck extends CardSet {
     public static final int EXACT_CARDS_REQUIRED = 4;
     private final Random random;
 
-    private List<Card> cards;
+    //private List<Card> cards;
     public Deck() {
         super(EXACT_CARDS_REQUIRED);
         random = new Random();
+
     }
 
-    public Card getRandomCard() {
+    public Card pickRandomCard() {
         if (cards.isEmpty()) {
             throw new IllegalStateException("Deck is empty");
         }
@@ -28,5 +29,13 @@ public class Deck extends CardSet {
 
     public List<Card> getDeck() {
         return cards;
+    }
+
+    @Override
+    public String toString() {
+        return cards.stream()
+                .map(Card::getName)
+                .toList()
+                .toString();
     }
 }
