@@ -59,11 +59,14 @@ class BattleEngineTest {
                 .thenReturn(false)
                 .thenReturn(true);
 
-        doReturn(new Round(user1, user2, new Wizard("1", "1", 1.0, Element.NORMAL)))
-                .doReturn(new Round(user1, user2, new Wizard("2", "2", 1.0, Element.NORMAL)))
-                .doReturn(new Round(user1, user2, new Wizard("3", "3", 2.0, Element.NORMAL)))
-                .doReturn(new Round(user1, user2, new Wizard("4", "4", 3.0, Element.NORMAL)))
-                .doReturn(new Round(user1, user2, new Wizard("4", "4", 3.0, Element.NORMAL)))
+        Card card1 = new Wizard("1", "1", 1.0, Element.NORMAL);
+        Card card2 = new Wizard("5", "5", 4.0, Element.NORMAL);
+        card1.setOwnerName(user1.getLogin());
+        card2.setOwnerName(user2.getLogin());
+                doReturn(new Round(card1, card2,  1.0))
+                .doReturn(new Round(card1, card2, 1.0))
+                .doReturn(new Round(card1, card2, 1.0))
+                .doReturn(new Round(card1, card2, 1.0))
                 .when(roundEngine).run();
 
         Battle battle = battleEngine.startBattle();
@@ -95,6 +98,7 @@ class BattleEngineTest {
                 .thenReturn(false)
                         .thenReturn(true);
 
+        /*
         doReturn(new Round(user1, user2, new Wizard("1", "1", 1.0, Element.NORMAL)))// nach dem 1.Round: user1 - 5 Karten | user2 - 3 Karten
                 .doReturn(new Round(user1, user2, new Wizard("2", "2", 1.0, Element.NORMAL)))// nach dem 2.Round: user1 - 6 Karten | user2 - 2 Karten
                 .doReturn(new Round(user1, user2, new Wizard("3", "3", 2.0, Element.NORMAL)))// nach dem 3.Round: user1 - 7 Karten | user2 - 1 Karten
@@ -102,6 +106,20 @@ class BattleEngineTest {
                 .doReturn(new Round(null, null, null))//nach 5. Round:  dem user1 - 6 Karten | user2 - 2 Karten
                 .doReturn(new Round(user1, user2, new Wizard("4", "4", 4.0, Element.NORMAL)))// nach 6.Round: user1 - 7 Karten | user2 - 1 Karten
                 .doReturn(new Round(user1, user2, new Wizard("4", "4", 4.0, Element.NORMAL)))// nach 7.Round: user1 - 8 Karten | user2 - 0 Karten
+                .when(roundEngine).run();
+
+         */
+        Card card1 = new Wizard("1", "1", 1.0, Element.NORMAL);
+        Card card2 = new Wizard("5", "5", 4.0, Element.NORMAL);
+        card1.setOwnerName(user1.getLogin());
+        card2.setOwnerName(user2.getLogin());
+        doReturn(new Round(card1, card2, 1.0))
+                .doReturn(new Round(card1, card2, 1.0))
+                .doReturn(new Round(card1, card2, 1.0))
+                .doReturn(new Round(card2, card1, 1.0))
+                .doReturn(new Round(card2, card1, 1.0, true))
+                .doReturn(new Round(card1, card2, 1.0))
+                .doReturn(new Round(card1, card2, 1.0))
                 .when(roundEngine).run();
 
         Battle battle = battleEngine.startBattle();
@@ -113,12 +131,16 @@ class BattleEngineTest {
     @DisplayName("Alle Rounds unentschieden, Battle endet nach 100 Rounds")
     @Test
     void startBattle_max_100_rounds() {
+        Card card1 = new Wizard("1", "1", 1.0, Element.NORMAL);
+        Card card2 = new Wizard("5", "5", 4.0, Element.NORMAL);
+        card1.setOwnerName(user1.getLogin());
+        card2.setOwnerName(user2.getLogin());
         when(deckA.isEmpty())
                 .thenReturn(false);
         when(deckB.isEmpty())
                 .thenReturn(false);
 
-        doReturn(new Round(null, null, null)).when(roundEngine).run();
+        doReturn(new Round(card1, card2, 1.0, true)).when(roundEngine).run();
 
         Battle battle = battleEngine.startBattle();
         assertEquals(100, battle.getNumberOfRounds());

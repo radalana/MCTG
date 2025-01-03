@@ -49,6 +49,7 @@ public abstract class CardSet {
     }
 
     public boolean isEmpty() {
+        System.out.println("---------isEmpty------------");
         return cards.isEmpty();
     }
 

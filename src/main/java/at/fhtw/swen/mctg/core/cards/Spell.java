@@ -10,7 +10,7 @@ public class Spell extends Card {
         super(id, name, damage, element);
     }
     @Override
-    public int fight(Card opponent) {
+    public int fight(Card opponent, double effectiveness) {
         if (getElement() == Element.WATER) {
             if (opponent instanceof Knight) {
                 return 1;
@@ -21,7 +21,7 @@ public class Spell extends Card {
             return -1;
         }
         System.out.println("Spell");
-        return super.fight(opponent);
+        return super.fight(opponent, effectiveness);
     }
     @Override
     public boolean isMonsterType() {

@@ -28,19 +28,25 @@ public class BattleController {
                return new Response(HttpStatus.BAD_REQUEST, "{ \"message\": \"Deck is empty. To start battle configure a stack.\" }\n");
            }
 
-           user.getStack().addCards(cards);
+           boolean a = user.getDeck().addCards(cards);
+           System.err.println("add cards to deck: " + a);
+           Deck deck = user.getDeck();
+           System.out.println("deck: " + deck.getCards());
 
            BattleRequestsRepository battleRequestsRepo = new BattleRequestsRepository(unitOfWork);
            synchronized (this) {
                //TODO for opponent deck herunterladen
                User opponent = findOpponent(battleRequestsRepo); //search if there are any requests for a battle
                if (opponent == null) {
+                   System.err.println(user.getLogin() + " creates request for a battle");
                    battleRequestsRepo.save(user.getId());
                    unitOfWork.commitTransaction();
                    return new Response(HttpStatus.ACCEPTED, "{ \"message\": \"Battle request submitted. No opponents are available at the moment. The battle will be processed once an opponent is found.\" }\n");
 
                } else {
-                   //if there is opponent for battle
+                   System.err.println(user.getLogin() + " plays with " + opponent.getLogin());
+                   //Delete record of opponent's request from battle_requests
+                   battleRequestsRepo.delete(opponent.getId());
                    List<Card> opponentCards = getUserDeck(opponent, unitOfWork);
                    if (opponentCards.isEmpty()) {
                        return new Response(HttpStatus.BAD_REQUEST, "{ \"message\": \"Deck is empty. To start battle configure a stack.\" }\n");
@@ -52,23 +58,36 @@ public class BattleController {
                    //start battle
                    BattleEngine engine = new BattleEngine(user, opponent);
                    Battle battle = engine.startBattle();
+
+                   //save battle in db
                    int userResultId = new BattleResultRepository(unitOfWork).save(battle.getUser1BattleResult());
                    int opponentResultId = new BattleResultRepository(unitOfWork).save(battle.getUser2BattleResult());
                    new BattleRepository(unitOfWork).save(battle, userResultId, opponentResultId);
 
+
+                   //Update user's and opponent's stats accordingly in db
                    StatsRepository stateRepo = new StatsRepository(unitOfWork);
 
                    Stats userStats = stateRepo.findStats(user.getId());
                    Stats opponentStats = stateRepo.findStats(opponent.getId());
 
                    updateStates(userStats, opponentStats, battle);
+
                    stateRepo.save(userStats);
                    stateRepo.save(opponentStats);
 
+                   System.err.println("Battle statistics: " + battle);
+                   List<Round> rounds = battle.getRounds();
+                   for (Round round : rounds) {
+                       System.out.println(round);
+                   }
+
                    unitOfWork.commitTransaction();
-                   return new Response(HttpStatus.OK, "{ \"message\": \"Check your stat to see result of a battle with " + opponent.getLogin() + ".\"}\n");
+                   return new Response(HttpStatus.OK, battle.getRounds().toString());
                }
            }
+       }catch (IllegalArgumentException e) {
+           return new Response(HttpStatus.BAD_REQUEST, e.getMessage());
        }catch (Exception e) {
            System.err.println(e.getMessage());
            e.printStackTrace();
@@ -94,7 +113,9 @@ public class BattleController {
 
    private List<Card> getUserDeck(User user, UnitOfWork unitOfWork) {
        int stackId = new StackRepository(unitOfWork).findStackByUsername(user.getLogin());
-       return new CardDao(unitOfWork).getCardsInDeckByStackId(stackId);
+       List<Card> cards = new CardDao(unitOfWork).getCardsInDeckByStackId(stackId);
+       cards.forEach(card -> card.setOwnerName(user.getLogin()));
+       return cards;
    }
 
    private User findOpponent(BattleRequestsRepository battleRequestsRepository) throws DataAccessException {

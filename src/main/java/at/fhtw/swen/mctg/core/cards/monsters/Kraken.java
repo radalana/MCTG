@@ -13,13 +13,13 @@ public class Kraken extends Monster {
     }
 
     @Override
-    public int fight(Card opponent) {
+    public int fight(Card opponent, double effectiveness) {
         if (opponent instanceof Spell) {
             System.out.println("is immune against " + opponent.getName());
             return 1;
         }
         System.out.println("Smashes with tentacles");
-        return super.fight(opponent);
+        return super.fight(opponent, effectiveness);
     }
 
 

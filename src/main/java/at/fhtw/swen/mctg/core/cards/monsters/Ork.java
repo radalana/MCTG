@@ -10,11 +10,12 @@ public class Ork extends Monster {
         super(id, name, damage, element, MonsterType.ORK);
     }
     @Override
-    public int fight(Card opponent) {
+    public int fight(Card opponent, double effectiveness) {
         System.out.println("Swings a giant axe");
         if (opponent instanceof Wizard) {
+            System.out.println("Ork is controlled by wizard");
             return -1;
         }
-        return super.fight(opponent);
+        return super.fight(opponent, effectiveness);
     }
 }

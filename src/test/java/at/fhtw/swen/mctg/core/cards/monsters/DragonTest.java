@@ -15,7 +15,7 @@ class DragonTest {
         Card dragon = new Dragon("dragon", "dragon", 5.0, Element.WATER);
         Card fireElf = new Elf("fire elf", "fire elf", 1.0, Element.FIRE);
 
-        assertEquals(0, dragon.fight(fireElf));
-        assertEquals(0, fireElf.fight(dragon));
+        assertEquals(0, dragon.fight(fireElf, 1.0));
+        assertEquals(0, fireElf.fight(dragon, 1.0));
     }
 }

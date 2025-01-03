@@ -10,7 +10,7 @@ public class Elf extends Monster {
         super(id, name, damage, element, MonsterType.ELF);
     }
     @Override
-    public int fight(Card opponent) {
+    public int fight(Card opponent, double effectiveness) {
         System.out.println("Shoots an arrow");
         return 0;
     }

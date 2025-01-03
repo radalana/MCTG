@@ -12,7 +12,7 @@ public class Dragon extends Monster {
         super(id, name, damage, type, MonsterType.DRAGON);
     }
     @Override
-    public int fight(Card opponent) {
+    public int fight(Card opponent, double effectiveness) {
         if (opponent instanceof Goblin) {
             return 1;
         }
@@ -21,7 +21,7 @@ public class Dragon extends Monster {
             return 0;
         }
         System.out.println("Breath fire");
-        return super.fight(opponent);
+        return super.fight(opponent, effectiveness);
     }
 
 }

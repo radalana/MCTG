@@ -1,7 +1,10 @@
 build:
 	mvn clean package
 run:
-	mvn clean package exec:java	
+	mvn clean package exec:java
+	
+run-no-tests:
+	mvn clean package -DskipTests exec:java
 	
 test-login:
 	./testlogin.sh pause

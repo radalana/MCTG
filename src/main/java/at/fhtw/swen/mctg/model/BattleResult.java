@@ -11,4 +11,9 @@ public class BattleResult {
         this.userId = userId;
         this.result = result;
     }
+
+    @Override
+    public String toString() {
+        return "user: " + userId + ", result: " + result;
+    }
 }

@@ -26,9 +26,16 @@ public class  ElementFactors {
                 )
         );
     }
-
-    public static double getMultiplier(Element attacker, Element defender) {
-        return elementsFactors.getOrDefault(attacker, Map.of())
-                .getOrDefault(defender, 1.0);
+    //TODO logic if card does not have any element
+    public static double getMultiplier(Element element1, Element element2) {
+        System.err.println("------getMultiplier--------");
+        if (element1 != null && element2 != null) {
+            return elementsFactors.get(element1).get(element2);
+        }
+        //if card does not have element, it is weaker all others cards with elements
+        if (element1 == null) {
+            return  1/3.0;
+        }
+        return 3.0;
     }
 }

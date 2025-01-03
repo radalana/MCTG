@@ -15,7 +15,7 @@ class GoblinTest {
         Card goblin = new Goblin("goblin", "goblin", 5.0, Element.NORMAL);
         Card dragon = new Dragon("dragon", "dragon", 1.0, Element.FIRE);
 
-        assertEquals(-1, goblin.fight(dragon));
-        assertEquals(1, dragon.fight(goblin));
+        assertEquals(-1, goblin.fight(dragon, 1.0));
+        assertEquals(1, dragon.fight(goblin, 1.0));
     }
 }

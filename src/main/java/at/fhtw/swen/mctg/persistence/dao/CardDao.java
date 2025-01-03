@@ -106,7 +106,7 @@ public class CardDao {
         try (PreparedStatement preparedStatement = this.unitOfWork.prepareStatement(sql)) {
             preparedStatement.setInt(1, stackId);
             for (int i = 0; i < cardsIdList.size(); i++) {
-                System.err.println("id: " + cardsIdList.get(i));
+               // System.err.println("id: " + cardsIdList.get(i));
                 preparedStatement.setObject(i+2, UUID.fromString(cardsIdList.get(i)));
             }
             ResultSet resultSet = preparedStatement.executeQuery();

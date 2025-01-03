@@ -5,23 +5,14 @@ import lombok.Getter;
 import java.util.Collection;
 import java.util.List;
 
+@Getter
 public class User {
-    @Getter
     private int id;
-    @Getter
     private final String login;
-    @Getter
     private String password;
-    @Getter
-    private String token;
-    @Getter
     private Stack stack;
-    @Getter
-    //private Deck deck; //TODO max 4 define es class maybe in Array List
     int stat;
-    @Getter
     int coins = 20;
-
 
     //TODO deck in counstruction for test
     public User(String login, String password) {

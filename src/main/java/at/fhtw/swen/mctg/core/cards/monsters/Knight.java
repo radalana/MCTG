@@ -12,12 +12,12 @@ public class Knight extends Monster {
     }
 
     @Override
-    public int fight(Card opponent) {
+    public int fight(Card opponent, double effectiveness) {
         if (opponent instanceof Spell && opponent.getElement() == Element.WATER) {
             System.out.println("Knight was drown");
             return -1;
         }
         System.out.println("Strikes with a sword");
-        return super.fight(opponent);
+        return super.fight(opponent, effectiveness);
     }
 }

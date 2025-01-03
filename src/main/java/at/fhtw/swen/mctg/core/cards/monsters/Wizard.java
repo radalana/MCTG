@@ -13,13 +13,13 @@ public class Wizard extends Monster {
     }
 
     @Override
-    public int fight(Card opponent) {
+    public int fight(Card opponent, double effectiveness) {
         if (opponent instanceof Ork) {
             System.out.println("Controls Ork " + opponent.getName());
             return 1;
         }
         System.out.println("Casts a fireball");
-        return super.fight(opponent);
+        return super.fight(opponent, effectiveness);
     }
 
 }

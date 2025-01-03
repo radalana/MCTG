@@ -1,7 +1,6 @@
 package at.fhtw.swen.mctg.core.engine;
 
 import at.fhtw.swen.mctg.core.cards.Element;
-import at.fhtw.swen.mctg.core.cards.Monster;
 import at.fhtw.swen.mctg.core.cards.monsters.Ork;
 import at.fhtw.swen.mctg.model.Card;
 import at.fhtw.swen.mctg.model.Deck;
@@ -45,13 +44,14 @@ class RoundEngineTest {
         Card cardA = new Ork("ork1", "Ork1", 100.0, Element.NORMAL);
         Card cardB = new Ork("ork2", "Ork2", 5.0, Element.NORMAL);
 
-        when(deckA.getRandomCard()).thenReturn(cardA);
-        when(deckB.getRandomCard()).thenReturn(cardB);
+        when(deckA.pickRandomCard()).thenReturn(cardA);
+        when(deckB.pickRandomCard()).thenReturn(cardB);
         Round round = roundEngine.run();
         assertNotNull(round);
-        assertEquals(user1, round.getWinner());
-        assertEquals(user2, round.getLooser());
-        assertEquals(cardB, round.getDefeatedCard());
+        assertEquals(1.0, round.getEffectiveness());
+        assertEquals(cardA, round.getWinnerCard());
+        assertEquals(cardB, round.getLooserCard());
+        assertFalse(round.isDraw());
 
         verify(deckA).addCard(cardB);
         verify(deckB).removeCard(cardB);
@@ -63,14 +63,13 @@ class RoundEngineTest {
         Card cardA = new Ork("ork1", "Ork1", 1.0, Element.NORMAL);
         Card cardB = new Ork("ork2", "Ork2", 1.0, Element.NORMAL);
 
-        when(deckA.getRandomCard()).thenReturn(cardA);
-        when(deckB.getRandomCard()).thenReturn(cardB);
+        when(deckA.pickRandomCard()).thenReturn(cardA);
+        when(deckB.pickRandomCard()).thenReturn(cardB);
 
         Round round = roundEngine.run();
         assertNotNull(round);
-        assertNull(round.getWinner());
-        assertNull(round.getLooser());
-        assertNull(round.getDefeatedCard());
+        assertEquals(1.0, round.getEffectiveness());
+        assertTrue(round.isDraw());
 
         verify(deckA, never()).addCard(cardB);
         verify(deckB, never()).removeCard(cardB);

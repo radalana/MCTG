@@ -15,7 +15,7 @@ class KnightTest {
     void testFightKnightVsWatterSpell() {
         Card knight = new Knight("knight", "knight", 5.0, Element.NORMAL);
         Card waterSpell = new Spell("waterSpell", "waterSpell", 1.0, Element.WATER);
-        assertEquals(-1, knight.fight(waterSpell));
-        assertEquals(1, waterSpell.fight(knight));
+        assertEquals(-1, knight.fight(waterSpell, 1.0));
+        assertEquals(1, waterSpell.fight(knight, 1.0));
     }
 }

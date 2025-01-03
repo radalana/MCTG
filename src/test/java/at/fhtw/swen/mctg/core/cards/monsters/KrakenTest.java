@@ -1,5 +1,6 @@
 package at.fhtw.swen.mctg.core.cards.monsters;
 
+import at.fhtw.swen.mctg.core.ElementFactors;
 import at.fhtw.swen.mctg.core.cards.Element;
 import at.fhtw.swen.mctg.core.cards.Spell;
 import at.fhtw.swen.mctg.model.Card;
@@ -17,8 +18,8 @@ class KrakenTest {
         Card fireSpell = new Spell("fireSpell", "fireSpell", 1.0, Element.FIRE);
 
         //Fire element is stronger than Normal element, but Kraken is immune to all spells
-
-        assertEquals(1, kraken.fight(fireSpell));
-        assertEquals(-1, fireSpell.fight(kraken));
+        double effectiveness = ElementFactors.getMultiplier(kraken.getElement(), fireSpell.getElement());
+        assertEquals(1, kraken.fight(fireSpell, effectiveness));
+        assertEquals(-1, fireSpell.fight(kraken, effectiveness));
     }
 }

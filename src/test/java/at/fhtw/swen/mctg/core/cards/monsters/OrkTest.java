@@ -15,8 +15,8 @@ class OrkTest {
       Card ork = new Ork("ork", "ork", 5.0, Element.NORMAL);
       Card wizard = new Wizard("wizard", "wizard", 1.0, Element.NORMAL);
 
-      assertEquals(-1, ork.fight(wizard));
-      assertEquals(1, wizard.fight(ork));
+      assertEquals(-1, ork.fight(wizard, 1.0));
+      assertEquals(1, wizard.fight(ork, 1.0));
   }
 
   //Test fight against other Monster, that Elements does not effect
@@ -26,8 +26,8 @@ class OrkTest {
       Card ork = new Ork("ork", "ork", 1.5, Element.FIRE);
       Card kraken = new Kraken("kraken", "kraken", 1.0, Element.WATER);
 
-      assertEquals(1, ork.fight(kraken));
-      assertEquals(-1, kraken.fight(ork));
+      assertEquals(1, ork.fight(kraken, 1.0));
+      assertEquals(-1, kraken.fight(ork, 1.0));
   }
   //Test against Spell
   @Test
@@ -36,7 +36,7 @@ class OrkTest {
       Card ork = new Ork("ork", "ork", 1.0, Element.FIRE);
       Card water = new Spell("spell", "water", 1.0, Element.WATER);
 
-      assertEquals(-1, ork.fight(water));
-      assertEquals(1, water.fight(ork));
+      assertEquals(-1, ork.fight(water, 1.0));
+      assertEquals(1, water.fight(ork, 1.0));
   }
 }

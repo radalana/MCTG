@@ -8,7 +8,6 @@ import java.util.ArrayList;
 import java.util.List;
 @Getter
 public class Battle {
-    private int id;
     private final List<Round> rounds;
     private final int numberOfRounds;
     private final BattleResult user1BattleResult;
@@ -19,5 +18,10 @@ public class Battle {
         this.numberOfRounds = rounds.size();
         this.user1BattleResult = user1BattleResult;
         this.user2BattleResult = user2BattleResult;
+    }
+
+    @Override
+    public String toString() {
+        return "Number in rounds: " + numberOfRounds + " ,\n" + user1BattleResult.toString() + " vs\n" + user2BattleResult.toString();
     }
 }

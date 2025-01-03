@@ -13,8 +13,8 @@ class WizardTest {
     void testFightWizardVsWizardNormal() {
         Wizard wizardA = new Wizard("a", "WizardA", 10.0, Element.NORMAL);
         Wizard wizardB = new Wizard("b", "WizardB", 1.0, Element.NORMAL);
-        assertEquals(1, wizardA.fight(wizardB));
-        assertEquals(-1, wizardB.fight(wizardA));
+        assertEquals(1, wizardA.fight(wizardB, 1.0));
+        assertEquals(-1, wizardB.fight(wizardA, 1.0));
     }
 
     @Test
@@ -22,8 +22,8 @@ class WizardTest {
     void testFightWizardWaterVsWizardFire() {
         Wizard wizardA = new Wizard("a", "WizardA", 1.0, Element.WATER);
         Wizard wizardB = new Wizard("b", "WizardB", 1.0, Element.FIRE);
-        assertEquals(0, wizardA.fight(wizardB));
-        assertEquals(0, wizardB.fight(wizardA));
+        assertEquals(0, wizardA.fight(wizardB, 1.0));
+        assertEquals(0, wizardB.fight(wizardA, 1.0));
     }
 
     @Test
@@ -31,8 +31,8 @@ class WizardTest {
     void testFightWizardOrks() {
         Wizard wizard = new Wizard("Wizard", "Wizard", 1.0, Element.NORMAL);
         Ork ork = new Ork("Ork", "Ork", 100.0, Element.NORMAL);
-        assertEquals(1, wizard.fight(ork));
-        assertEquals(-1, ork.fight(wizard));
+        assertEquals(1, wizard.fight(ork, 1.0));
+        assertEquals(-1, ork.fight(wizard, 1.0));
     }
 
     @Test
@@ -40,8 +40,8 @@ class WizardTest {
     void testFightWizardKnight() {
         Card wizard = new Wizard("Wizard", "Wizard", 1.0, Element.NORMAL);
         Card knight = new Knight("Knight", "Knight", 2.0, Element.WATER);
-        assertEquals(-1, wizard.fight(knight));
-        assertEquals(1, knight.fight(wizard));
+        assertEquals(-1, wizard.fight(knight, 1.0));
+        assertEquals(1, knight.fight(wizard, 1.0));
     }
 
 
@@ -53,8 +53,8 @@ class WizardTest {
         Card wizard = new Wizard("Wizard", "Wizard", 1.0, Element.NORMAL);
         Card water = new Spell("Spell", "WaterSpell", 1.0, Element.WATER);
 
-        assertEquals(1, wizard.fight(water));
-        assertEquals(-1, water.fight(wizard));
+        assertEquals(1, wizard.fight(water, 1.0));
+        assertEquals(-1, water.fight(wizard, 1.0));
     }
 
     @Test
@@ -63,8 +63,8 @@ class WizardTest {
         Card wizard = new Wizard("Wizard", "Wizard", 1.0, Element.NORMAL);
         Card fire = new Spell("Spell", "WaterSpell", 1.0, Element.FIRE);
 
-        assertEquals(-1, wizard.fight(fire));
-        assertEquals(1, fire.fight(wizard));
+        assertEquals(-1, wizard.fight(fire, 1.0));
+        assertEquals(1, fire.fight(wizard, 1.0));
     }
 
     @Test
@@ -73,8 +73,8 @@ class WizardTest {
         Card wizard = new Wizard("Wizard", "Wizard", 1.0, Element.NORMAL);
         Card normalSpell = new Spell("Spell", "WaterSpell", 1.0, Element.NORMAL);
 
-        assertEquals(0, wizard.fight(normalSpell));
-        assertEquals(0, normalSpell.fight(wizard));
+        assertEquals(0, wizard.fight(normalSpell, 1.0));
+        assertEquals(0, normalSpell.fight(wizard, 1.0));
     }
     //WaterWizard vs water, fire, normal
     //FireWizard vs water, fire, normal

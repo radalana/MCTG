@@ -43,7 +43,7 @@ public class UserRepository {
             throw new IllegalArgumentException("Token cannot be null or empty");
         }
         String sql = "SELECT * FROM users WHERE token = ?";
-        System.out.println("Token in findUserByToken: " + token);
+        //System.out.println("Token in findUserByToken: " + token);
         try(PreparedStatement preparedStatement = this.unitOfWork.prepareStatement(sql)) {
             preparedStatement.setString(1, token);
             ResultSet resultSet = preparedStatement.executeQuery();
