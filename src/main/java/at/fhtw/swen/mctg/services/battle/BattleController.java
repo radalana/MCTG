@@ -76,14 +76,23 @@ public class BattleController {
                    stateRepo.save(userStats);
                    stateRepo.save(opponentStats);
 
-                   System.err.println("Battle statistics: " + battle);
+                   /*System.err.println("Battle statistics: " + battle);
                    List<Round> rounds = battle.getRounds();
                    for (Round round : rounds) {
                        System.out.println(round);
-                   }
+                   }*/
 
                    unitOfWork.commitTransaction();
-                   return new Response(HttpStatus.OK, battle.getRounds().toString());
+                   String result = String.format("----- Battle summary-----\n\n"
+                           + "\tRounds played: %d\n"
+                           + "\t%s won %d rounds\n"
+                           + "\t%s won %d rounds\n"
+                           + "\tThe battle had %d draw rounds\n",
+                   battle.getNumberOfRounds(), user.getLogin(), battle.getUser1BattleResult().getResult(),
+                   opponent.getLogin(), battle.getUser2BattleResult().getResult(), battle.getDrawRounds());
+
+
+                   return new Response(HttpStatus.OK, battle.getRounds().toString() + result);
                }
            }
        }catch (IllegalArgumentException e) {
