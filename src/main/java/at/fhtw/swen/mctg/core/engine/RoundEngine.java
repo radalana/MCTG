@@ -25,8 +25,12 @@ public class RoundEngine {
         int result =  startFight(card1, card2, effectiveness);
 
         if (result > 0) {
+            user1.getDeck().addCard(card2);
+            user2.getDeck().removeCard(card2);
             return new Round(card1, card2, effectiveness, false);
         }if (result < 0) {
+            user2.getDeck().addCard(card1);
+            user1.getDeck().removeCard(card1);
             return new Round(card2, card1, effectiveness, false);
         } else {
             return new Round(card1, card2, effectiveness, true);
