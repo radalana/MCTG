@@ -13,8 +13,8 @@ public class CardService {
         this.cardDao = cardDao;
     }
 
-    public List<Map<String, Object>> getAllCardsAsMap(int stackId) {
-        List<Card> cards = cardDao.getCardsByStackId(stackId);
+    public List<Map<String, Object>> getAllCardsAsMap(int userId) {
+        List<Card> cards = cardDao.getCardsByUserId(userId);
         return convertCardsToMap(cards);
     }
 

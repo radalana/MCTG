@@ -59,9 +59,9 @@ public class CardDao {
     }
 
     //for GET/stack
-    public List<Card> getCardsByStackId(int stackId) {
-        String sql = "SELECT * FROM cards WHERE stack_id = ?";
-        return getCards(sql, stackId);
+    public List<Card> getCardsByUserId(int userId) {
+        String sql = "SELECT * FROM cards WHERE user_id = ?";
+        return getCards(sql, userId);
     }
 
     //for GET/deck
@@ -137,9 +137,9 @@ public class CardDao {
         }
     }
 
-    private List<Card> getCards(String sql, int stackId) {
+    private List<Card> getCards(String sql, int userId) {
         try (PreparedStatement preparedStatement = this.unitOfWork.prepareStatement(sql)) {
-            preparedStatement.setInt(1, stackId);
+            preparedStatement.setInt(1, userId);
             ResultSet resultSet = preparedStatement.executeQuery();
             ArrayList<CardData> cardsData = new ArrayList<>();
             while (resultSet.next()) {
