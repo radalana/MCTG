@@ -20,7 +20,10 @@ public class Request {
         if (this.pathParts == null || this.pathParts.isEmpty()) {
             return null;
         }
-        return '/' + String.join("/", this.pathParts);
+        System.out.println("Request.java getServiceRoute()");
+        System.out.println("this.pathParts: " + this.pathParts);
+        //return '/' + String.join("/", this.pathParts);
+        return "/" + this.pathParts.getFirst();
     }
 
     public String getPathname() {
@@ -66,5 +69,8 @@ public class Request {
 
     public String getBody() {
         return body;
+    }
+    public List<String> getPathParts() {
+        return pathParts;
     }
 }
