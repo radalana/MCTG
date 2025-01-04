@@ -18,13 +18,6 @@ CREATE TABLE packages
     created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
 );
 
-CREATE TABLE stacks
-(
-    id INT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
-    user_id INT UNIQUE,
-    FOREIGN KEY (user_id) REFERENCES Users(id) ON DELETE CASCADE
-);
-
 CREATE TABLE cards
 (
     id uuid PRIMARY KEY DEFAULT gen_random_uuid(),
@@ -38,8 +31,8 @@ CREATE TABLE cards
     element varchar(255) CHECK ( element IN ('water', 'fire', 'normal')),
     package_id INTEGER,
     FOREIGN KEY (package_id) REFERENCES packages(id) ON DELETE SET NULL,
-    stack_id INTEGER DEFAULT NULL,
-    FOREIGN KEY (stack_id) REFERENCES stacks(id) ON DELETE SET NULL,
+    user_id INTEGER DEFAULT NULL,
+    FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE SET NULL,
     is_in_deck BOOLEAN DEFAULT FALSE
 );
 
