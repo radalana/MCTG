@@ -23,6 +23,7 @@ public class BattleController {
                return new Response(HttpStatus.UNAUTHORIZED, USER_NOT_FOUND);
            }
            //getDeck
+           //int stackId = new StackRepository(unitOfWork).findStackByUsername(user.getLogin());
            List<Card> cards = getUserDeck(user, unitOfWork);
            if (cards.isEmpty()) {
                return new Response(HttpStatus.BAD_REQUEST, "{ \"message\": \"Deck is empty. To start battle configure a stack.\" }\n");
@@ -47,6 +48,7 @@ public class BattleController {
                    System.err.println(user.getLogin() + " plays with " + opponent.getLogin());
                    //Delete record of opponent's request from battle_requests
                    battleRequestsRepo.delete(opponent.getId());
+                   //int stackOppId = new StackRepository(unitOfWork).findStackByUsername(opponent.getLogin());
                    List<Card> opponentCards = getUserDeck(opponent, unitOfWork);
                    if (opponentCards.isEmpty()) {
                        return new Response(HttpStatus.BAD_REQUEST, "{ \"message\": \"Deck is empty. To start battle configure a stack.\" }\n");
@@ -121,8 +123,8 @@ public class BattleController {
    }
 
    private List<Card> getUserDeck(User user, UnitOfWork unitOfWork) {
-       int stackId = new StackRepository(unitOfWork).findStackByUsername(user.getLogin());
-       List<Card> cards = new CardDao(unitOfWork).getCardsInDeckByStackId(stackId);
+
+       List<Card> cards = new CardDao(unitOfWork).getCardsInDeckByUserId(user.getId());
        cards.forEach(card -> card.setOwnerName(user.getLogin()));
        return cards;
    }
