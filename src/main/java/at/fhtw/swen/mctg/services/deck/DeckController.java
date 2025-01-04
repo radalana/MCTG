@@ -41,9 +41,9 @@ public class DeckController extends Controller {
             if (user == null) {
                 return new Response(HttpStatus.UNAUTHORIZED, USER_NOT_FOUND);
             }
-            int stackId = new StackRepository(unitOfWork).findStackByUsername(user.getLogin());
+            //int stackId = new StackRepository(unitOfWork).findStackByUsername(user.getLogin());
             CardService cardService = new CardService(new CardDao(unitOfWork));
-            List<Map<String, Object>> cardsAsMap = cardService.getCardsFromDeckAsMap(stackId);
+            List<Map<String, Object>> cardsAsMap = cardService.getCardsFromDeckAsMap(user.getId());
             String json = new ObjectMapper().writeValueAsString(cardsAsMap);
             return new Response(HttpStatus.OK, json);
         }catch (Exception e) {

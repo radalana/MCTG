@@ -18,8 +18,8 @@ public class CardService {
         return convertCardsToMap(cards);
     }
 
-    public List<Map<String, Object>> getCardsFromDeckAsMap(int stackId) {
-        List<Card> cards = cardDao.getCardsInDeckByStackId(stackId);
+    public List<Map<String, Object>> getCardsFromDeckAsMap(int userId) {
+        List<Card> cards = cardDao.getCardsInDeckByUserId(userId);
         return convertCardsToMap(cards);
     }
 

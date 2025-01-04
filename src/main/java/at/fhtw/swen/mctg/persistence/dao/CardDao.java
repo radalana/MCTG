@@ -65,9 +65,9 @@ public class CardDao {
     }
 
     //for GET/deck
-    public List<Card> getCardsInDeckByStackId(int stackId) {
-        String sql = "SELECT * FROM cards WHERE stack_id = ? AND is_in_deck = TRUE";
-        return getCards(sql, stackId);
+    public List<Card> getCardsInDeckByUserId(int userId) {
+        String sql = "SELECT * FROM cards WHERE user_id = ? AND is_in_deck = TRUE";
+        return getCards(sql, userId);
     }
 
     //TODO refactor extract duplicates
