@@ -47,10 +47,10 @@ public class CardDao {
         }
     }
 
-    public void assignCardsToStack(int userStackId, int packageId) {
-        String sql = "UPDATE cards SET stack_id = ? WHERE package_id = ?";
+    public void assignCardsToUser(int userId, int packageId) {
+        String sql = "UPDATE cards SET user_id = ? WHERE package_id = ?";
         try (PreparedStatement preparedStatement = this.unitOfWork.prepareStatement(sql)) {
-            preparedStatement.setInt(1, userStackId);
+            preparedStatement.setInt(1, userId);
             preparedStatement.setInt(2, packageId);
             preparedStatement.executeUpdate();
         } catch (SQLException e) {

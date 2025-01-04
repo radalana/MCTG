@@ -8,7 +8,6 @@ import at.fhtw.swen.mctg.persistence.DataAccessException;
 import at.fhtw.swen.mctg.persistence.UnitOfWork;
 import at.fhtw.swen.mctg.persistence.dao.CardDao;
 import at.fhtw.swen.mctg.persistence.dao.PackageDao;
-import at.fhtw.swen.mctg.persistence.dao.StackRepository;
 import at.fhtw.swen.mctg.persistence.dao.UserRepository;
 
 import static at.fhtw.swen.mctg.httpserver.http.MessageConstants.*;
@@ -30,12 +29,11 @@ public class CardAcquisitionController extends Controller {
                         NOT_ENOUGH_COINS
                 );
             }
-
-            int userStackId = new StackRepository(unitOfWork).findStackByUsername(user.getLogin());
+            
             int packageId = new PackageDao(unitOfWork).getFirstCreatedPackageId();
 
             CardDao cardDao = new CardDao(unitOfWork);
-            cardDao.assignCardsToStack(userStackId, packageId);
+            cardDao.assignCardsToUser(user.getId(), packageId);
             new PackageDao(unitOfWork).delete(packageId);
             user.spendFiveCoins();
             userRepository.updateCoins(user);

@@ -39,7 +39,6 @@ public class AuthenticationService {
             User user = new User(username, password);
             int userId = new UserRepository(unitOfWork).save(user);
             //TODO fix create stack
-            int stackId = new StackRepository(unitOfWork).create(userId);//Erstellen leeres Stack
             new StatsRepository(unitOfWork).create(userId);//Erstellen Stats
             unitOfWork.commitTransaction();
         }catch (Exception e) {
