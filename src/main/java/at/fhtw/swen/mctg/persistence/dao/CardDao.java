@@ -73,7 +73,6 @@ public class CardDao {
     //TODO refactor extract duplicates
     public boolean areCardsWithIdExist(List<String> cardsIdList) {
         if (cardsIdList == null || cardsIdList.isEmpty()) {
-            System.err.println("лол");
             return false;
         }
         String placeholders = String.join(",", cardsIdList.stream().map(id -> "?").toList());
@@ -86,7 +85,6 @@ public class CardDao {
             if (resultSet.next()) {
                 return resultSet.getInt(1) == cardsIdList.size();
             }else {
-                System.err.println("что-то здесь");
                 return false;
             }
 
@@ -95,16 +93,16 @@ public class CardDao {
         }
     }
 
-    public boolean areCardsInStackWithId(List<String> cardsIdList, int stackId) {
-        System.err.println("Stack Id: " + stackId);
+    public boolean areCardsBelongToUserId(List<String> cardsIdList, int userId) {
+        //System.err.println("User Id: " + userId);
         //TODO вынести в DEck controller
         if (cardsIdList == null || cardsIdList.isEmpty()) {
             return false;
         }
         String placeholders = String.join(",", cardsIdList.stream().map(id -> "?").toList());
-        String sql = "SELECT COUNT(*) FROM cards WHERE stack_id = ? AND id IN (" + placeholders + ")";
+        String sql = "SELECT COUNT(*) FROM cards WHERE user_id = ? AND id IN (" + placeholders + ")";
         try (PreparedStatement preparedStatement = this.unitOfWork.prepareStatement(sql)) {
-            preparedStatement.setInt(1, stackId);
+            preparedStatement.setInt(1, userId);
             for (int i = 0; i < cardsIdList.size(); i++) {
                // System.err.println("id: " + cardsIdList.get(i));
                 preparedStatement.setObject(i+2, UUID.fromString(cardsIdList.get(i)));
@@ -117,15 +115,15 @@ public class CardDao {
             }
             return false;
         } catch (SQLException e) {
-            throw new DataAccessException("Failed to count cards in stack with stack_id = " + stackId
+            throw new DataAccessException("Failed to count cards in stack for user with id = " + userId
                     + ". SQL error: " + e.getMessage(), e);
         }
     }
 
-    public int countCardsInDeck(int stackId) {
-        String sql = "SELECT COUNT(*) FROM cards WHERE stack_id = ? AND is_in_deck = TRUE ";
+    public int countCardsInDeck(int userId) {
+        String sql = "SELECT COUNT(*) FROM cards WHERE user_id = ? AND is_in_deck = TRUE ";
         try (PreparedStatement preparedStatement = this.unitOfWork.prepareStatement(sql)) {
-            preparedStatement.setInt(1, stackId);
+            preparedStatement.setInt(1, userId);
             ResultSet resultSet = preparedStatement.executeQuery();
             if (resultSet.next()) {
                 return resultSet.getInt(1);

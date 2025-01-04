@@ -8,7 +8,6 @@ import at.fhtw.swen.mctg.model.User;
 import at.fhtw.swen.mctg.persistence.DataAccessException;
 import at.fhtw.swen.mctg.persistence.UnitOfWork;
 import at.fhtw.swen.mctg.persistence.dao.CardDao;
-import at.fhtw.swen.mctg.persistence.dao.StackRepository;
 import at.fhtw.swen.mctg.persistence.dao.UserRepository;
 import at.fhtw.swen.mctg.services.cards.CardService;
 import at.fhtw.swen.mctg.services.login.AuthenticationService;
@@ -81,15 +80,15 @@ public class DeckController extends Controller {
             }
 
             //Check if the provided cards belong to the user
-            int stackId = new StackRepository(unitOfWork).findStackByUsername(user.getLogin());
+            //int stackId = new StackRepository(unitOfWork).findStackByUsername(user.getLogin());
             //TODO refactor areCardsInStackWithId имплементировать здесь? а запрос в дао, потому что там не должна выполняться логика на сравнение
-            if (!cardDao.areCardsInStackWithId(cardsIdList, stackId)) { //cards are in stack, that belong to this user
+            if (!cardDao.areCardsBelongToUserId(cardsIdList, user.getId())) { //cards are in stack, that belong to this user
                 //TODO and show original from before:
                 return new Response(HttpStatus.BAD_REQUEST, CARDS_NOT_IN_STACK);
             }
 
             //does user already has active cards (in deck)
-            if (!isUsersDeckEmpty(stackId, cardDao)) {
+            if (!isUsersDeckEmpty(user.getId(), cardDao)) {
                 return new Response(HttpStatus.BAD_REQUEST, DECK_ALREADY_EXISTS);
             }
 
@@ -102,8 +101,8 @@ public class DeckController extends Controller {
         }
     }
 
-    private boolean isUsersDeckEmpty(int userStackId, CardDao cardDao) throws DataAccessException {
-        return cardDao.countCardsInDeck(userStackId) == 0;
+    private boolean isUsersDeckEmpty(int userId, CardDao cardDao) throws DataAccessException {
+        return cardDao.countCardsInDeck(userId) == 0;
     }
 
     private void addCardsInDeck(List<String> cards, CardDao cardDao) throws DataAccessException {
