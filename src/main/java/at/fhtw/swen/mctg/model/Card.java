@@ -11,7 +11,7 @@ public abstract class Card {
     private String id;
     private String name;
     private final double damage;
-    private Element element;
+    private Element element = null;
     @Setter
     private String ownerName;
     public Card(String id, String Name, double Damage, Element element) {
@@ -44,6 +44,13 @@ public abstract class Card {
         //double effectiveness = ElementFactors.getMultiplier(element, opponentElement);
         System.out.println("effectiveness: " + effectiveness);
         return Double.compare(getDamage()*effectiveness, opponent.getDamage());
+    }
+
+    public String getElementAsString() {
+        if (element == null) {
+            return "no element";
+        }
+        return element.getValue();
     }
 
     public abstract boolean isMonsterType();

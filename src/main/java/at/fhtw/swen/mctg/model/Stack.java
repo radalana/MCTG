@@ -22,4 +22,25 @@ public class Stack extends CardSet {
         deck.clear();
     }
 
+
+    @Override
+    public String toString() {
+        StringBuilder builder = new StringBuilder();
+        builder.append("Stack{");
+        for (Card card : cards) {
+            builder.append(card.getName());
+        }
+        builder.append("}");
+        builder.append("Deck{");
+        for (Card card : deck.getDeck()) {
+            builder.append(card.getName()).
+                    append(": (").
+                    append(card.getDamage()).
+                    append(") + id( ").
+                    append(card.getId()).
+                    append(" )");
+        }
+        builder.append("}");
+        return builder.toString();
+    }
 }

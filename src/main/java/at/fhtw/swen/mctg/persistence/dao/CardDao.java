@@ -3,6 +3,7 @@ package at.fhtw.swen.mctg.persistence.dao;
 import at.fhtw.swen.mctg.core.cards.Monster;
 import at.fhtw.swen.mctg.core.cards.factories.CardFactory;
 import at.fhtw.swen.mctg.model.Card;
+import at.fhtw.swen.mctg.model.User;
 import at.fhtw.swen.mctg.model.dto.CardData;
 import at.fhtw.swen.mctg.persistence.DataAccessException;
 import at.fhtw.swen.mctg.persistence.UnitOfWork;
@@ -173,6 +174,47 @@ public class CardDao {
             }
         } catch (SQLException e) {
             throw new DataAccessException("Failed to update is_in_deck. SQL error: " + e.getMessage(), e);
+        }
+    }
+
+    public void updateOwnership(User user) {
+        int userId = user.getId();
+        if (user.getDeck().isEmpty()) {
+            return;
+        }
+        List<String> cardsIdList = user.getDeck().getCards()
+                .stream()
+                .map(Card::getId)
+                .toList();
+        String placeholders = String.join(",", cardsIdList.stream().map(id -> "?").toList());
+        String sql = "UPDATE cards SET user_id = ? where id IN (" + placeholders + ")";
+        try(PreparedStatement preparedStatement = this.unitOfWork.prepareStatement(sql)) {
+            preparedStatement.setInt(1, userId);
+            for (int i = 0; i < cardsIdList.size(); i++) {
+                preparedStatement.setObject(i + 2, UUID.fromString(cardsIdList.get(i)));
+            }
+            preparedStatement.executeUpdate();
+        }catch (SQLException e) {
+            throw new DataAccessException("Failed to update card ownership for " + user.getLogin() + ". SQL error: " + e.getMessage(), e);
+        }
+
+        /*
+        новый план:
+            "UPDATE cards SET user_id = NULL where is_in_deck = TRUE" - карты участвовашие в битве не принадлежат пользователю
+            "UPDATE cards SET user_id = user.id() where id IN (" listId ")" - присовить юзеру выигранные карты
+            "UPDATE cards SET is_in_deck = FALSE where user_id = user.id()"
+         */
+
+    }
+
+    public void unsetDeckFlag(User user) {
+        int userId = user.getId();
+        String sql = "UPDATE cards SET is_in_deck = FALSE WHERE user_id = ?";
+        try(PreparedStatement preparedStatement = this.unitOfWork.prepareStatement(sql)) {
+            preparedStatement.setInt(1, userId);
+            preparedStatement.executeUpdate();
+        }catch (SQLException e) {
+            throw new DataAccessException("Failed to UPDATE is_in_deck = FALSE for "+ user.getLogin() + ". SQL error: " + e.getMessage(), e);
         }
     }
 }

@@ -78,23 +78,32 @@ public class BattleController {
                    stateRepo.save(userStats);
                    stateRepo.save(opponentStats);
 
-                   /*System.err.println("Battle statistics: " + battle);
-                   List<Round> rounds = battle.getRounds();
-                   for (Round round : rounds) {
-                       System.out.println(round);
-                   }*/
+                   //reset players deck and add distribute cared to new owner
+                   CardDao cardDao = new CardDao(unitOfWork);
+                   cardDao.updateOwnership(user);
+                   cardDao.unsetDeckFlag(user);
+
+                   cardDao.updateOwnership(opponent);
+                   cardDao.unsetDeckFlag(opponent);
+
+                   System.out.println("stack after battle:");
+                   System.out.println(user.getStack());
+                   System.out.println(user.getLogin() + "'s deck after battle:");
+                   System.out.println(user.getDeck());
+                   //opponent.getStack().returnDeckToStack();
+                   System.out.println(opponent.getLogin() + "'s deck after battle:");
+                   System.out.println(opponent.getDeck());
+
 
                    unitOfWork.commitTransaction();
-                   String result = String.format("----- Battle summary-----\n\n"
+                   String result = String.format("\n------ Battle summary ------\n\n"
                            + "\tRounds played: %d\n"
                            + "\t%s won %d rounds\n"
                            + "\t%s won %d rounds\n"
                            + "\tThe battle had %d draw rounds\n",
                    battle.getNumberOfRounds(), user.getLogin(), battle.getUser1BattleResult().getResult(),
                    opponent.getLogin(), battle.getUser2BattleResult().getResult(), battle.getDrawRounds());
-
-
-                   return new Response(HttpStatus.OK, battle.getRounds().toString() + result);
+                   return new Response(HttpStatus.OK, engine.getLog().toString() + result);
                }
            }
        }catch (IllegalArgumentException e) {

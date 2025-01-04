@@ -9,6 +9,8 @@ import java.util.List;
 @Getter
 public class BattleEngine {
     private static final int MAX_ROUNDS = 100;
+    //TODO dont know log better field of engine or what
+    private final List<String> log = new ArrayList<>();
     User user1;
     User user2;
     private final RoundEngine roundEngine;
@@ -33,16 +35,23 @@ public class BattleEngine {
 
     private List<Round> runRounds(Deck deck1, Deck deck2) throws IllegalArgumentException{
         List<Round> rounds = new ArrayList<>();
-        System.err.println("engine.runRounds: " + " deck1: " + deck1 + " deck2: " + deck2);
+        //System.err.println("engine.runRounds: " + " deck1: " + deck1 + " deck2: " + deck2);
         for(int i = 0; i < MAX_ROUNDS; i++) {
             System.out.println("round number: " + i);
             if (deck1.isEmpty() || deck2.isEmpty()) {
                 System.err.println("one or more decks are empty");
                 break;
             }
-            System.out.println("after check empty decks round number: " + i);
+          //  System.out.println("after check empty decks round number: " + i);
             Round round = roundEngine.run();
             round.setRoundNumber(i+1);
+            if (!round.isDraw()) {
+                log.add(round.toString());
+                Card winnerCard = round.getWinnerCard();
+                String winner = winnerCard.getOwnerName();
+                Card lostCard = round.getLooserCard();
+                lostCard.setOwnerName(winner);
+            }
             rounds.add(round);
 
         }

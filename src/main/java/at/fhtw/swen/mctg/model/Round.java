@@ -32,15 +32,15 @@ public class Round {
                             "  Card 2: %s (Player: %s, Damage: %.1f\n" +
                             "  Element Matchup: %s vs %s", roundNumber, winnerCard.getName(), winnerCard.getOwnerName(),
                     winnerCard.getDamage(), looserCard.getName(), looserCard.getOwnerName(), looserCard.getDamage(),
-                    winnerCard.getElement().getValue(), looserCard.getElement().getValue());
+                    winnerCard.getElementAsString(), looserCard.getElementAsString());
         } else {
             return String.format("Round %d:\n" +
-                            "  Winning Card: %s (Owner: %s, Damage: %.1f)\n" +
-                            "  Defeated Card: %s (Owner: %s, Damage: %.1f)\n" +
-                            "  Element Effectiveness: %.1f (%s vs %s)\n",
-                    roundNumber, winnerCard.getName(), winnerCard.getOwnerName(), winnerCard.getDamage(),
-                    looserCard.getName(), looserCard.getOwnerName(), looserCard.getDamage(),
-                    effectiveness, winnerCard.getElement().getValue(), looserCard.getElement().getValue());
+                            "  Winning Card: %s (Owner: %s, Damage: %.1f, Element: %s)\n" +
+                            "  Defeated Card: %s (Owner: %s, Damage: %.1f, Element: %s)\n" +
+                            "  Element Effectiveness: %.1f (%.2f vs %.2f)\n",
+                    roundNumber, winnerCard.getName(), winnerCard.getOwnerName(), winnerCard.getDamage(), winnerCard.getElementAsString(),
+                    looserCard.getName(), looserCard.getOwnerName(), looserCard.getDamage(), looserCard.getElementAsString(),
+                    effectiveness, winnerCard.getDamage() * effectiveness, looserCard.getDamage());
         }
 
     }

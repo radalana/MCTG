@@ -34,8 +34,8 @@ public class  ElementFactors {
         }
         //if card does not have element, it is weaker all others cards with elements
         if (element1 == null) {
-            return  1/3.0;
+            return  1/0.44;
         }
-        return 3.0;
+        return 0.44;
     }
 }

@@ -21,6 +21,7 @@ public class Deck extends CardSet {
         }
         int randomIndex = random.nextInt(cards.size());
         return cards.get(randomIndex);
+        //return cards.getLast();//debug
     }
 
     public void addCard(Card card) {
@@ -34,7 +35,7 @@ public class Deck extends CardSet {
     @Override
     public String toString() {
         return cards.stream()
-                .map(Card::getName)
+                .map(Card::getId)
                 .toList()
                 .toString();
     }
