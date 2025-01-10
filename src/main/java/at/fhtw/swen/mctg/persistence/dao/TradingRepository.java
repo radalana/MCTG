@@ -38,28 +38,57 @@ public class TradingRepository {
         }
     }
 
+    public TradeOffer findById(String id) {
+        String sql = "SELECT * FROM trading_offers WHERE id = ?";
+        try(PreparedStatement preparedStatement = this.unitOfWork.prepareStatement(sql)) {
+            UUID uuidOffer = UUID.fromString(id);
+            preparedStatement.setObject(1, uuidOffer);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            if (resultSet.next()) {
+                return mapToTradeOffer(resultSet);
+            }
+            return null;
+        }catch (SQLException e) {
+            throw new DataAccessException("Failed to execute SELECT query for TradeOffer with id " + id + "SQL Error: " + e.getMessage(), e);
+        }
+    }
+
     public List<TradeOffer> findAll() {
         String sql = "SELECT * FROM trading_offers";
         try(PreparedStatement preparedStatement = this.unitOfWork.prepareStatement(sql)) {
             ResultSet resultSet = preparedStatement.executeQuery();
             List<TradeOffer> offers = new ArrayList<>();
             while(resultSet.next()) {
-                        String id = resultSet.getString(1);
-                        String cardId = resultSet.getString(2);
-                        int userId = resultSet.getInt(3);
-                        TradingController.RequiredType requiredType = TradingController.RequiredType.fromString(resultSet.getString(4));
-                        int minDamage = resultSet.getInt(5);
-
-                        Card card = new CardDao(unitOfWork).findCardById(cardId);
-                        User trader = new UserRepository(unitOfWork).findUserById(userId);
-
-                        TradeOffer offer = new TradeOffer(id, card, trader, requiredType, minDamage);
-
-                        offers.add(offer);
+                        offers.add(mapToTradeOffer(resultSet));
             }
             return offers;
         }catch (SQLException e) {
             throw new DataAccessException("Database SELECT operation failed: " + e.getMessage(), e);
         }
+    }
+
+    public boolean delete(TradeOffer offer) {
+        String sql = "DELETE FROM trading_offers WHERE id = ?";
+        try(PreparedStatement preparedStatement = this.unitOfWork.prepareStatement(sql)) {
+            UUID uuidOffer = UUID.fromString(offer.getId());
+            preparedStatement.setObject(1, uuidOffer);
+            int result = preparedStatement.executeUpdate();
+            return result == 1;
+        }catch (SQLException e) {
+            throw new DataAccessException("Database DELETE operation failed: " + e.getMessage(), e);
+        }
+    }
+
+    private TradeOffer mapToTradeOffer(ResultSet resultSet) throws SQLException {
+        String id = resultSet.getString(1);
+        String cardId = resultSet.getString(2);
+        int userId = resultSet.getInt(3);
+        TradingController.RequiredType requiredType = TradingController.RequiredType.fromString(resultSet.getString(4));
+        int minDamage = resultSet.getInt(5);
+
+        Card card = new CardDao(unitOfWork).findCardById(cardId);
+        User trader = new UserRepository(unitOfWork).findUserById(userId);
+
+        return new TradeOffer(id, card, trader, requiredType, minDamage);
     }
 }

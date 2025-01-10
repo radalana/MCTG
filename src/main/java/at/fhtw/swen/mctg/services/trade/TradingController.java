@@ -87,8 +87,40 @@ public class TradingController extends Controller {
                             offer.getId(), offer.getTrader().getLogin(), offer.getCard().getName(), offer.getCard().getDamage(), offer.getType(), offer.getMinDamage()))
                     .toList();
 
-            return new Response(HttpStatus.OK, offers.toString() + "\n");
+            String content = "The store is empty\n";
+            if (!offers.isEmpty()) {
+                content = offers + "\n";
+            }
+            return new Response(HttpStatus.OK, content);
         } catch (Exception e) {
+            System.err.println(e.getMessage());
+            return new Response(HttpStatus.INTERNAL_SERVER_ERROR, INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    public Response deleteOffer(String token, String offerId) {
+        try(UnitOfWork unitOfWork = new UnitOfWork()) {
+            User user = new UserRepository(unitOfWork).findUserByToken(token);
+            if (user == null) {
+                return new Response(HttpStatus.UNAUTHORIZED, USER_NOT_FOUND);
+            }
+            TradingRepository tradingRepository = new TradingRepository(unitOfWork);
+            TradeOffer tradeOffer = tradingRepository.findById(offerId);
+            if (tradeOffer == null) {
+                return new Response(HttpStatus.BAD_REQUEST, "{ \"message\": \"Deal with id: " + offerId + " was not found\" }\n");
+            }
+
+            if (tradeOffer.getTrader().getId() != user.getId()) {
+                return new Response(HttpStatus.FORBIDDEN, "{ \"message\": \"Only the creator of the trade offer can delete it.\" }\n");
+            }
+
+            if (tradingRepository.delete(tradeOffer)) {
+                unitOfWork.commitTransaction();
+                return new Response(HttpStatus.NO_CONTENT, "");
+            }
+
+            return new Response(HttpStatus.INTERNAL_SERVER_ERROR, INTERNAL_SERVER_ERROR);
+        }catch (Exception e) {
             System.err.println(e.getMessage());
             return new Response(HttpStatus.INTERNAL_SERVER_ERROR, INTERNAL_SERVER_ERROR);
         }

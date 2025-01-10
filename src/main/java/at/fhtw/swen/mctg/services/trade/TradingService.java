@@ -35,7 +35,11 @@ public class TradingService implements Service {
             if (requestMethod == Method.GET && body == null) {
                 return this.tradingController.listDeals(token);
             }
-            //TODO delete
+            if (requestMethod == Method.DELETE && body == null) {
+                String dealId = request.getPathParts().get(1);
+                return this.tradingController.deleteOffer(token, dealId);
+            }
+
             return new Response(HttpStatus.NOT_IMPLEMENTED, "trading not implemented");
         }catch (IllegalArgumentException e) {
             return new Response(HttpStatus.UNAUTHORIZED, "{ \"message\": \"" + e.getMessage() + "\" }");
