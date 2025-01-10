@@ -2,23 +2,24 @@ package at.fhtw.swen.mctg.services.trade;
 
 import at.fhtw.swen.mctg.model.Card;
 import at.fhtw.swen.mctg.model.User;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NonNull;
 
+@Getter
+@NonNull
 public class TradeOffer {
-    private User trader;
-    private Card card;
-    private Requirement claim;
+    private String id;
+    private String cardId;
+    private int traderId;
+    private TradingController.RequiredType type;
+    private int minDamage;
 
-    public TradeOffer(User trader, Card card, Requirement claim) {
-        this.trader = trader;
-        this.card = card;
-        this.claim = claim;
-    }
-
-    public User getTrader() {
-        return this.trader;
-    }
-
-    public Card getCard() {
-        return this.card;
+    public TradeOffer(String id, String cardId, int traderId, TradingController.RequiredType type, int minDamage) {
+        this.id = id;
+        this.cardId = cardId;
+        this.traderId = traderId;
+        this.type = type;
+        this.minDamage = minDamage;
     }
 }

@@ -81,6 +81,16 @@ FROM user_stats st
 JOIN users u ON u.id = st.user_id
 ORDER BY st.elo DESC;
 
+CREATE TABLE trading_offers (
+    id uuid PRIMARY KEY DEFAULT gen_random_uuid(),
+    card_id uuid,
+    user_id INT,
+    required_type VARCHAR(50),
+    min_damage INT,
+    FOREIGN KEY (card_id) REFERENCES cards(id),
+    FOREIGN KEY (user_id) REFERENCES users(id)
+);
+
 INSERT INTO users (username, password, token)
 VALUES
     ('john_doe', 'password123', 'token_john'),

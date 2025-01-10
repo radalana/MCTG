@@ -11,5 +11,5 @@ public class MessageConstants {
     public static final String NOT_ENOUGH_COINS = "{ \"message\": \"Not enough coins available.\" }";
     public static final String CARDS_PURCHASED_SUCCESSFULLY = "{ \"message\": \"You have successfully acquired new cards.\" }";
     public static final String INVALID_HTTP_METHOD = "{ \"message\": \"Invalid HTTP method for this endpoint.\" }";
-
+    public static final String INVALID_JSON_FORMAT = "{ \"message\": \"Invalid JSON format.\" }";
 }

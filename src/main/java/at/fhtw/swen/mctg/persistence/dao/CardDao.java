@@ -217,4 +217,38 @@ public class CardDao {
             throw new DataAccessException("Failed to UPDATE is_in_deck = FALSE for "+ user.getLogin() + ". SQL error: " + e.getMessage(), e);
         }
     }
+
+    public boolean getIsInDeckFlag(String cardId) {
+        String sql = "SELECT is_in_deck FROM cards WHERE id = ?";
+        try(PreparedStatement preparedStatement = this.unitOfWork.prepareStatement(sql)) {
+            UUID uuid = UUID.fromString(cardId);
+            preparedStatement.setObject(1, uuid);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            if (resultSet.next()) {
+                return resultSet.getBoolean(1);
+            }
+            throw new DataAccessException("Card with id: " + cardId + " does not exist");
+        } catch (SQLException e) {
+            throw new DataAccessException("Database SELECT operation failed. SQL error: " + e.getMessage(), e);
+        }
+    }
+
+    public int getUserId(String cardId) {
+        String sql = "SELECT user_id FROM cards WHERE id = ?";
+        try(PreparedStatement preparedStatement = this.unitOfWork.prepareStatement(sql)) {
+            UUID uuid = UUID.fromString(cardId);
+            preparedStatement.setObject(1, uuid);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            if (resultSet.next()) {
+                int userId = resultSet.getInt(1);
+                if (resultSet.wasNull()) {
+                    throw new DataAccessException("Card with id: " + cardId + " has no associated user (user_id is NULL).");
+                }
+                return userId;
+            }
+            throw new DataAccessException("Card with id: " + cardId + " does not exist");
+        } catch (SQLException e) {
+            throw new DataAccessException("Database SELECT operation failed. SQL error: " + e.getMessage(), e);
+        }
+    }
 }

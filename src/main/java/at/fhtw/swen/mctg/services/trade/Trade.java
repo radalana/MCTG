@@ -5,6 +5,7 @@ import at.fhtw.swen.mctg.model.User;
 //in Service package
 public class Trade {
     public static void trade(TradeOffer offer1, TradeOffer offer2) {
+        /*
         Card card1 = offer1.getCard();
         Card card2 = offer2.getCard();
         //TODO boolean card1MeetsClaim = checkCardAgainstRequirements(offer1.getCard(), offer2.getRequirment();
@@ -19,5 +20,7 @@ public class Trade {
 
         //TODO    store.delete(card1, card2);
         //}
+
+         */
     }
 }
