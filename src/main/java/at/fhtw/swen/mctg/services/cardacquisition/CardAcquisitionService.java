@@ -19,7 +19,12 @@ public class CardAcquisitionService implements Service {
     @Override
     public Response handleRequest(Request request) {
         Method requestMethod = request.getMethod();
-
+        //System.out.println("Card Acquisition");
+        //System.out.println("Path Name: " + request.getPathname());
+        var pathParts = request.getPathParts();
+        if (!pathParts.get(1).equals("packages")) {
+            return new Response(HttpStatus.NOT_FOUND, "");
+        }
         String token = request.getHeaderMap().getHeader("Authorization");
         try {
             token = authenticationService.extractToken(token);

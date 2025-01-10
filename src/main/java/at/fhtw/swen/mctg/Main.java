@@ -10,6 +10,7 @@ import at.fhtw.swen.mctg.httpserver.server.Server;
 import at.fhtw.swen.mctg.httpserver.utils.Router;
 import at.fhtw.swen.mctg.services.login.LoginService;
 import  at.fhtw.swen.mctg.services.cardacquisition.CardAcquisitionService;
+import at.fhtw.swen.mctg.services.trade.TradingService;
 
 import java.io.IOException;
 
@@ -32,10 +33,11 @@ public class Main{
         router.addService("/sessions", new LoginService(authenticationService));
         router.addService("/users", new RegistrationService(authenticationService));
         router.addService("/packages", new PackageService());
-        router.addService("/transactions/packages", new CardAcquisitionService(authenticationService));
+        router.addService("/transactions", new CardAcquisitionService(authenticationService));
         router.addService("/cards", new StackService(authenticationService));
         router.addService("/deck", new DeckService(authenticationService));
         router.addService("/battles", new BattleService(authenticationService));
+        router.addService("/tradings", new TradingService(authenticationService));
         return router;
     }
 }

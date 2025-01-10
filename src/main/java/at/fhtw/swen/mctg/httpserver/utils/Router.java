@@ -15,6 +15,7 @@ public class Router {
 
     //реши какой сервис запустить
     public Service resolve(String route) {
+        System.out.println("Router.java: route: " + route);
         return this.serviceRegistry.get(route);
     }
 }
