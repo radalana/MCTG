@@ -136,9 +136,16 @@ public class CardDao {
         }
     }
 
-    private List<Card> getCards(String sql, int userId) {
+    private List<Card> getCards(String sql, Object parameter) {
         try (PreparedStatement preparedStatement = this.unitOfWork.prepareStatement(sql)) {
-            preparedStatement.setInt(1, userId);
+            if (parameter instanceof Integer) {
+                preparedStatement.setInt(1, (Integer) parameter);
+            } else if (parameter instanceof String) {
+                UUID uuid = UUID.fromString((String) parameter);
+                preparedStatement.setObject(1, uuid);
+            } else {
+                throw new IllegalArgumentException("Unsupported parameter type: " + parameter.getClass().getSimpleName());
+            }
             ResultSet resultSet = preparedStatement.executeQuery();
             ArrayList<CardData> cardsData = new ArrayList<>();
             while (resultSet.next()) {
@@ -250,5 +257,10 @@ public class CardDao {
         } catch (SQLException e) {
             throw new DataAccessException("Database SELECT operation failed. SQL error: " + e.getMessage(), e);
         }
+    }
+
+    public Card findCardById(String id) {
+        String sql = "SELECT * FROM cards WHERE id = ?";
+        return getCards(sql, id).getFirst();
     }
 }

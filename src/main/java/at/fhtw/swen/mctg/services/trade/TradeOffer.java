@@ -7,18 +7,20 @@ import lombok.Getter;
 import lombok.NonNull;
 
 @Getter
-@NonNull
 public class TradeOffer {
-    private String id;
-    private String cardId;
-    private int traderId;
-    private TradingController.RequiredType type;
-    private int minDamage;
+    @NonNull
+    private final String id;
+    @NonNull
+    private final Card card;
+    @NonNull
+    private final User trader;
+    private final TradingController.RequiredType type;
+    private final int minDamage;
 
-    public TradeOffer(String id, String cardId, int traderId, TradingController.RequiredType type, int minDamage) {
+    public TradeOffer(String id, Card card, User trader, TradingController.RequiredType type, int minDamage) {
         this.id = id;
-        this.cardId = cardId;
-        this.traderId = traderId;
+        this.card = card;
+        this.trader = trader;
         this.type = type;
         this.minDamage = minDamage;
     }

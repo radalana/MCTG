@@ -3,6 +3,7 @@ package at.fhtw.swen.mctg.services.trade;
 import at.fhtw.swen.mctg.core.controller.Controller;
 import at.fhtw.swen.mctg.httpserver.http.HttpStatus;
 import at.fhtw.swen.mctg.httpserver.server.Response;
+import at.fhtw.swen.mctg.model.Card;
 import at.fhtw.swen.mctg.model.User;
 import at.fhtw.swen.mctg.persistence.UnitOfWork;
 import at.fhtw.swen.mctg.persistence.dao.CardDao;
@@ -11,6 +12,7 @@ import at.fhtw.swen.mctg.persistence.dao.UserRepository;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 
+import java.util.List;
 import java.util.Map;
 
 import static at.fhtw.swen.mctg.httpserver.http.MessageConstants.*;
@@ -53,11 +55,13 @@ public class TradingController extends Controller {
             if (cardDao.getIsInDeckFlag(cardToTradeId)) {
                 return new Response(HttpStatus.BAD_REQUEST, "{ \"message\": \"Cards in deck are blocked for trading\" }\n");
             }
-
+            Card cardToTrade = cardDao.findCardById(cardToTradeId);
+            if (cardToTrade == null) {
+                return new Response(HttpStatus.BAD_REQUEST, "{ \"message\": \"Card not found\" }\n");
+            }
             //check type of required card
             RequiredType requiredType = RequiredType.fromString(type.toUpperCase());
-
-            TradeOffer offer = new TradeOffer(dealId, cardToTradeId, user.getId(), requiredType, minDamage);
+            TradeOffer offer = new TradeOffer(dealId, cardToTrade, user, requiredType, minDamage);
             new TradingRepository(unitOfWork).save(offer);
             unitOfWork.commitTransaction();
             return new Response(HttpStatus.CREATED, "{ \"message\": \"Card with id: " + cardToTradeId + " was pushed into store\" }\n");
@@ -72,7 +76,24 @@ public class TradingController extends Controller {
 
     }
     public Response listDeals(String token) {
-        return new Response(HttpStatus.NOT_IMPLEMENTED, "show deals not implemented");
+        try(UnitOfWork unitOfWork = new UnitOfWork()) {
+            User user = new UserRepository(unitOfWork).findUserByToken(token);
+            if (user == null) {
+                return new Response(HttpStatus.UNAUTHORIZED, USER_NOT_FOUND);
+            }
+            List<TradeOffer> offersList =  new TradingRepository(unitOfWork).findAll();
+            List<String> offers = offersList.stream()
+                    .map(offer -> String.format("Deal id: %s. User %s offers %s (%.1f damage) and wants \"%s with min %d damage\"\n",
+                            offer.getId(), offer.getTrader().getLogin(), offer.getCard().getName(), offer.getCard().getDamage(), offer.getType(), offer.getMinDamage()))
+                    .toList();
+
+            return new Response(HttpStatus.OK, offers.toString() + "\n");
+        } catch (Exception e) {
+            System.err.println(e.getMessage());
+            return new Response(HttpStatus.INTERNAL_SERVER_ERROR, INTERNAL_SERVER_ERROR);
+        }
+
+
     }
 
 }

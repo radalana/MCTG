@@ -110,4 +110,22 @@ public class UserRepository {
             throw new DataAccessException("Failed to update coins for user '" + username + "': " + e.getMessage(), e);
         }
     }
+
+    public User findUserById(int id) {
+        String sql = "SELECT * FROM users WHERE id = ?";
+        try(PreparedStatement preparedStatement = this.unitOfWork.prepareStatement(sql)) {
+            preparedStatement.setInt(1, id);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            if (resultSet.next()) {
+                return new User(
+                        resultSet.getInt("id"),
+                        resultSet.getString("username")
+                );
+            } else {
+                return null;
+            }
+        }catch (SQLException e) {
+            throw  new DataAccessException(e);
+        }
+    }
 }
