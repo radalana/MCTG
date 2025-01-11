@@ -1,5 +1,6 @@
 package at.fhtw.swen.mctg.services.packages;
 
+import at.fhtw.swen.mctg.exceptions.MissingTokenException;
 import at.fhtw.swen.mctg.httpserver.http.HttpStatus;
 import at.fhtw.swen.mctg.httpserver.http.Method;
 import at.fhtw.swen.mctg.httpserver.server.Request;
@@ -17,24 +18,20 @@ public class PackageService extends BaseService {
     }
     @Override
     public Response handleRequest(Request request) {
-        Method requestMethod = request.getMethod();
-        String token = getTokenFromRequest(request);
+        try {
+            Method requestMethod = request.getMethod();
+            String token = getTokenFromRequest(request);
 
-        //2.если токен существует
-        //когда решится многопоточность, и чтобы вызывать метод из объекта isTokenValid
-        if (token == null || token.isEmpty()) {
-            return new Response(HttpStatus.UNAUTHORIZED, "{ \"message\", \"Access token is missing or invalid\"}");
-        }
-        //TODO проверить токен с токеном из базы данных
-        //3. если токен админа можно, соотвутсвующий метод можно назвать isAdmin
-        if (!token.equals("Bearer admin-mtcgToken")) {
-            return new Response(HttpStatus.FORBIDDEN, "{ \"message\", \"You don't have permission to access this resource.\"}");
-        }
-        if (requestMethod == Method.POST && request.getBody() != null) {
+            if (!token.equals("Bearer admin-mtcgToken")) {
+                return new Response(HttpStatus.FORBIDDEN, "{ \"message\", \"You don't have permission to access this resource.\"}");
+            }
+            if (requestMethod == Method.POST && request.getBody() != null) {
                 return this.packageController.createPackage(request);
+            }
+            return new Response(HttpStatus.BAD_REQUEST, NO_CARDS_PROVIDED);
+        }catch (MissingTokenException e) {
+            return new Response(HttpStatus.UNAUTHORIZED, "{ \"message\": \"" + e.getMessage() + "\" }");
         }
-        return new Response(HttpStatus.BAD_REQUEST, NO_CARDS_PROVIDED);
 
-        //request.getHeaderMap().print();
     }
 }

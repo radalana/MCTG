@@ -31,9 +31,7 @@ public class BattleController {
            }
 
            boolean a = user.getDeck().addCards(cards);
-           System.err.println("add cards to deck: " + a);
            Deck deck = user.getDeck();
-           System.out.println("deck: " + deck.getCards());
 
            BattleRequestsRepository battleRequestsRepo = new BattleRequestsRepository(unitOfWork);
            synchronized (this) {

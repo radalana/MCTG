@@ -1,5 +1,6 @@
 package at.fhtw.swen.mctg.services.deck;
 
+import at.fhtw.swen.mctg.exceptions.MissingTokenException;
 import at.fhtw.swen.mctg.httpserver.http.HttpStatus;
 import at.fhtw.swen.mctg.httpserver.http.Method;
 import at.fhtw.swen.mctg.httpserver.server.Request;
@@ -18,17 +19,21 @@ public class DeckService extends BaseService {
 
     @Override
     public Response handleRequest(Request request) {
-        Method requestMethod = request.getMethod();
+        try{
+            Method requestMethod = request.getMethod();
+            String token = getTokenFromRequest(request);
 
-        String token = getTokenFromRequest(request);
+            return switch (requestMethod) {
+                case Method.GET -> deckController.listCardsFromDeck(request, token);
+                case Method.PUT -> deckController.configureDeck(request, token);
+                default -> new Response(
+                        HttpStatus.BAD_REQUEST,
+                        INVALID_HTTP_METHOD
+                );
+            };
+        }catch (MissingTokenException e) {
+            return new Response(HttpStatus.UNAUTHORIZED,  e.getMessage() + "\n");
+        }
 
-        return switch (requestMethod) {
-            case Method.GET -> deckController.listCardsFromDeck(request, token);
-            case Method.PUT -> deckController.configureDeck(request, token);
-            default -> new Response(
-                    HttpStatus.BAD_REQUEST,
-                    INVALID_HTTP_METHOD
-            );
-        };
     }
 }

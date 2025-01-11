@@ -67,10 +67,4 @@ public class AuthenticationService {
         return data != null && !data.trim().isEmpty();
     }
 
-    public String extractToken(String token) {
-        if (token == null || !token.startsWith("Bearer ")) {
-            throw new IllegalArgumentException("User is not logged in");
-        }
-        return token.substring("Bearer ".length());
-    }
 }

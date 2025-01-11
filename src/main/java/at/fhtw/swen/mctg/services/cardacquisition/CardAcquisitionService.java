@@ -1,5 +1,6 @@
 package at.fhtw.swen.mctg.services.cardacquisition;
 
+import at.fhtw.swen.mctg.exceptions.MissingTokenException;
 import at.fhtw.swen.mctg.httpserver.http.HttpStatus;
 import at.fhtw.swen.mctg.httpserver.http.Method;
 import at.fhtw.swen.mctg.httpserver.server.Request;
@@ -29,7 +30,7 @@ public class CardAcquisitionService extends BaseService{
                 return this.controller.acquisiteCards(token);
             }
             return new Response(HttpStatus.BAD_REQUEST, REQUEST_BODY_NOT_ALLOWED);
-        }catch(IllegalArgumentException e) {
+        }catch(MissingTokenException e) {
             return new Response(HttpStatus.UNAUTHORIZED, "{ \"message\": \"" + e.getMessage() + "\" }");
         }
     }
