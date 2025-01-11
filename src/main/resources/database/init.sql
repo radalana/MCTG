@@ -92,6 +92,17 @@ CREATE TABLE trading_offers (
     FOREIGN KEY (user_id) REFERENCES users(id)
 );
 
+CREATE TABLE trading_deals (
+    id INT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
+    offer_id uuid,
+    recipient_id INT,
+    card_id uuid,
+    trade_time TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY  (offer_id) REFERENCES trading_offers(id),
+    FOREIGN KEY (recipient_id) REFERENCES users(id),
+    FOREIGN KEY (card_id) REFERENCES cards(id)
+);
+
 INSERT INTO users (username, password, token)
 VALUES
     ('john_doe', 'password123', 'token_john'),
