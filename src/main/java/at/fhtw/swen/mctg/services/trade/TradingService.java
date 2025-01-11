@@ -32,36 +32,29 @@ public class TradingService extends BaseService {
     }
 
     private Response handleGET(Request request) throws MissingTokenException {
-        String token = getTokenFromRequest(request);
-        String body = request.getBody();
-        if (body == null) {
+        String token = getTokenFromRequest(request);;
+        if (request.getBody() == null) {
             return this.tradingController.listDeals(token);
         }
-        return createBadRequestResponse();
+        return new Response(HttpStatus.BAD_REQUEST, MessageConstants.REQUEST_BODY_NOT_ALLOWED);
     }
     private Response handleDELETE(Request request) throws MissingTokenException{
         String token = getTokenFromRequest(request);
-        String body = request.getBody();
         if (request.getPathParts().size() < 2) {
-            return createBadRequestResponse();
+            return new Response(HttpStatus.BAD_REQUEST, "");
         }
-        if (body == null) {
+        if (request.getBody() == null) {
             String dealId = request.getPathParts().get(1);
             return this.tradingController.deleteOffer(token, dealId);
         }
-        return createBadRequestResponse();
+        return new Response(HttpStatus.BAD_REQUEST, MessageConstants.REQUEST_BODY_NOT_ALLOWED);
     }
     private Response handlePOST(Request request) throws MissingTokenException{
         String token = getTokenFromRequest(request);
-        String body = request.getBody();
         if (request.getPathParts().size() > 1) {
             String dealId = request.getPathParts().get(1);
-            return this.tradingController.completeDeal(token, dealId, body);
+            return this.tradingController.completeDeal(token, dealId, request.getBody());
         }
-        return this.tradingController.createTradingDeal(token, body);
-    }
-
-    private Response createBadRequestResponse() {
-        return new Response(HttpStatus.BAD_REQUEST, "");
+        return this.tradingController.createTradingDeal(token, request.getBody());
     }
 }
