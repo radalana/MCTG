@@ -22,26 +22,45 @@ public class TradingService extends BaseService {
         try {
             String token = getTokenFromRequest(request);
             String body = request.getBody();
-            if (requestMethod == Method.POST && body != null) {
-                if (request.getPathParts().size() > 1) {
-                    String dealId = request.getPathParts().get(1);
-                    return this.tradingController.completeDeal(token, dealId, body);
-                }
-                return this.tradingController.createTradingDeal(token, body);
-            }
-            if (requestMethod == Method.GET && body == null) {
-                return this.tradingController.listDeals(token);
-            }
-            if (requestMethod == Method.DELETE && body == null) {
-                String dealId = request.getPathParts().get(1);
-                return this.tradingController.deleteOffer(token, dealId);
-            }
 
-            return new Response(HttpStatus.NOT_IMPLEMENTED, "trading not implemented");
+            return switch (requestMethod) {
+                case GET -> handleGET(token, body);
+                case DELETE -> handleDELETE(request, token, body);
+                case POST -> handlePOST(request, token, body);
+                default -> new Response(HttpStatus.BAD_REQUEST, "");
+            };
         }catch (IllegalArgumentException e) {
             return new Response(HttpStatus.UNAUTHORIZED, "{ \"message\": \"" + e.getMessage() + "\" }");
         }catch (IndexOutOfBoundsException e) {
             return new Response(HttpStatus.NOT_FOUND, "{ \"message\": \"" + e.getMessage() + "\" }");
         }
+    }
+
+    private Response handleGET(String token, String body) {
+        if (body == null) {
+            return this.tradingController.listDeals(token);
+        }
+        return createBadRequestResponse();
+    }
+    private Response handleDELETE(Request request, String token, String body) {
+        if (request.getPathParts().size() < 2) {
+            return createBadRequestResponse();
+        }
+        if (body == null) {
+            String dealId = request.getPathParts().get(1);
+            return this.tradingController.deleteOffer(token, dealId);
+        }
+        return createBadRequestResponse();
+    }
+    private Response handlePOST(Request request, String token, String body) {
+        if (request.getPathParts().size() > 1) {
+            String dealId = request.getPathParts().get(1);
+            return this.tradingController.completeDeal(token, dealId, body);
+        }
+        return this.tradingController.createTradingDeal(token, body);
+    }
+
+    private Response createBadRequestResponse() {
+        return new Response(HttpStatus.BAD_REQUEST, "");
     }
 }
