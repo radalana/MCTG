@@ -1,7 +1,5 @@
-package at.fhtw.swen.mctg.persistence.dao;
+package at.fhtw.swen.mctg.persistence.dao.battle;
 
-import at.fhtw.swen.mctg.model.Card;
-import at.fhtw.swen.mctg.model.Deck;
 import at.fhtw.swen.mctg.model.User;
 import at.fhtw.swen.mctg.persistence.DataAccessException;
 import at.fhtw.swen.mctg.persistence.UnitOfWork;
@@ -9,7 +7,6 @@ import at.fhtw.swen.mctg.persistence.UnitOfWork;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.ArrayList;
 
 public class BattleRequestsRepository {
     private final UnitOfWork unitOfWork;

@@ -6,7 +6,6 @@ import at.fhtw.swen.mctg.httpserver.server.Request;
 import at.fhtw.swen.mctg.httpserver.server.Response;
 
 import at.fhtw.swen.mctg.persistence.DataAccessException;
-import at.fhtw.swen.mctg.persistence.dao.UserRepository;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 

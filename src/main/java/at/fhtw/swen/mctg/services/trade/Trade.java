@@ -2,25 +2,21 @@ package at.fhtw.swen.mctg.services.trade;
 
 import at.fhtw.swen.mctg.model.Card;
 import at.fhtw.swen.mctg.model.User;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+
 //in Service package
+@Getter
+@AllArgsConstructor
 public class Trade {
-    public static void trade(TradeOffer offer1, TradeOffer offer2) {
-        /*
-        Card card1 = offer1.getCard();
-        Card card2 = offer2.getCard();
-        //TODO boolean card1MeetsClaim = checkCardAgainstRequirements(offer1.getCard(), offer2.getRequirment();
-        //TODO boolean card2MeetsClaim = checkCardAgainstRequirements(offer1.getCard(), offer2.getRequirment();
-        User trader1 = offer1.getTrader();
-        User trader2 = offer2.getTrader();
-        //TODO if (card1MeetsClaim && card2MeetsClaim) {
-        //TODO   trader1.addCardToStack(card2);
-        //TODO  trader1.deleteCardFromStack(card1); //create class STack??? to implement add/delete
-        //TODO  trader2.addCardToStack(card1);
-        //TODO  trader2.deleteCardFromStack(card2);
+    private int id;
+    private TradeOffer offer;
+    private User tradeRecipient;
+    private Card cardToTrade;
 
-        //TODO    store.delete(card1, card2);
-        //}
-
-         */
+    public Trade(TradeOffer offer, User tradeRecipient, Card cardToTrade) {
+        this.offer = offer;
+        this.tradeRecipient = tradeRecipient;
+        this.cardToTrade = cardToTrade;
     }
 }

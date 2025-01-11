@@ -1,6 +1,8 @@
-package at.fhtw.swen.mctg.persistence;
+package at.fhtw.swen.mctg.persistence.dao.battle;
 
 import at.fhtw.swen.mctg.model.BattleResult;
+import at.fhtw.swen.mctg.persistence.DataAccessException;
+import at.fhtw.swen.mctg.persistence.UnitOfWork;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;

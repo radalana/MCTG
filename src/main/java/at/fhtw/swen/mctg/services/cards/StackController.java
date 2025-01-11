@@ -5,9 +5,8 @@ import at.fhtw.swen.mctg.httpserver.http.HttpStatus;
 import at.fhtw.swen.mctg.httpserver.server.Response;
 import at.fhtw.swen.mctg.model.User;
 import at.fhtw.swen.mctg.persistence.UnitOfWork;
-import at.fhtw.swen.mctg.persistence.dao.CardDao;
-import at.fhtw.swen.mctg.persistence.dao.StackRepository;
-import at.fhtw.swen.mctg.persistence.dao.UserRepository;
+import at.fhtw.swen.mctg.persistence.dao.cards.CardDao;
+import at.fhtw.swen.mctg.persistence.dao.user.UserRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import java.util.List;

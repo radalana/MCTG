@@ -1,4 +1,4 @@
-package at.fhtw.swen.mctg.persistence.dao;
+package at.fhtw.swen.mctg.persistence.dao.cards;
 
 import at.fhtw.swen.mctg.persistence.DataAccessException;
 import at.fhtw.swen.mctg.persistence.UnitOfWork;
@@ -6,7 +6,6 @@ import at.fhtw.swen.mctg.persistence.UnitOfWork;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.Stack;
 
 public class StackRepository {
     private final UnitOfWork unitOfWork;

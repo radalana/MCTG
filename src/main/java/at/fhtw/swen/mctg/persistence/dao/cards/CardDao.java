@@ -1,4 +1,4 @@
-package at.fhtw.swen.mctg.persistence.dao;
+package at.fhtw.swen.mctg.persistence.dao.cards;
 
 import at.fhtw.swen.mctg.core.cards.Monster;
 import at.fhtw.swen.mctg.core.cards.factories.CardFactory;

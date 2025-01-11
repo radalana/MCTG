@@ -1,4 +1,4 @@
-package at.fhtw.swen.mctg.persistence.dao;
+package at.fhtw.swen.mctg.persistence.dao.user;
 
 import at.fhtw.swen.mctg.model.Stats;
 import at.fhtw.swen.mctg.persistence.DataAccessException;

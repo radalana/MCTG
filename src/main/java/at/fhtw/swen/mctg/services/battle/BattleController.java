@@ -3,11 +3,15 @@ package at.fhtw.swen.mctg.services.battle;
 import at.fhtw.swen.mctg.httpserver.http.HttpStatus;
 import at.fhtw.swen.mctg.httpserver.server.Response;
 import at.fhtw.swen.mctg.model.*;
-import at.fhtw.swen.mctg.persistence.BattleResultRepository;
+import at.fhtw.swen.mctg.persistence.dao.battle.BattleResultRepository;
 import at.fhtw.swen.mctg.persistence.DataAccessException;
 import at.fhtw.swen.mctg.persistence.UnitOfWork;
-import at.fhtw.swen.mctg.persistence.dao.*;
 import at.fhtw.swen.mctg.core.engine.BattleEngine;
+import at.fhtw.swen.mctg.persistence.dao.battle.BattleRepository;
+import at.fhtw.swen.mctg.persistence.dao.battle.BattleRequestsRepository;
+import at.fhtw.swen.mctg.persistence.dao.cards.CardDao;
+import at.fhtw.swen.mctg.persistence.dao.user.StatsRepository;
+import at.fhtw.swen.mctg.persistence.dao.user.UserRepository;
 
 import java.util.List;
 
@@ -80,10 +84,10 @@ public class BattleController {
 
                    //reset players deck and add distribute cared to new owner
                    CardDao cardDao = new CardDao(unitOfWork);
-                   cardDao.updateOwnership(user);
+                   cardDao.updateDeckOwnership(user);
                    cardDao.unsetDeckFlag(user);
 
-                   cardDao.updateOwnership(opponent);
+                   cardDao.updateDeckOwnership(opponent);
                    cardDao.unsetDeckFlag(opponent);
 
                    System.out.println("stack after battle:");

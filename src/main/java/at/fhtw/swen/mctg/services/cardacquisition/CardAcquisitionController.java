@@ -6,9 +6,9 @@ import at.fhtw.swen.mctg.httpserver.server.Response;
 import at.fhtw.swen.mctg.model.User;
 import at.fhtw.swen.mctg.persistence.DataAccessException;
 import at.fhtw.swen.mctg.persistence.UnitOfWork;
-import at.fhtw.swen.mctg.persistence.dao.CardDao;
-import at.fhtw.swen.mctg.persistence.dao.PackageDao;
-import at.fhtw.swen.mctg.persistence.dao.UserRepository;
+import at.fhtw.swen.mctg.persistence.dao.cards.CardDao;
+import at.fhtw.swen.mctg.persistence.dao.cards.PackageDao;
+import at.fhtw.swen.mctg.persistence.dao.user.UserRepository;
 
 import static at.fhtw.swen.mctg.httpserver.http.MessageConstants.*;
 import static at.fhtw.swen.mctg.model.Package.PACKAGE_PRICE;

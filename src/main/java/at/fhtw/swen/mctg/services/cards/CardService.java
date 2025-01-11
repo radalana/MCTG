@@ -1,7 +1,7 @@
 package at.fhtw.swen.mctg.services.cards;
 
 import at.fhtw.swen.mctg.model.Card;
-import at.fhtw.swen.mctg.persistence.dao.CardDao;
+import at.fhtw.swen.mctg.persistence.dao.cards.CardDao;
 
 import java.util.HashMap;
 import java.util.List;

@@ -10,8 +10,8 @@ import at.fhtw.swen.mctg.model.Package;
 import at.fhtw.swen.mctg.model.dto.CardData;
 import at.fhtw.swen.mctg.persistence.DataAccessException;
 import at.fhtw.swen.mctg.persistence.UnitOfWork;
-import at.fhtw.swen.mctg.persistence.dao.CardDao;
-import at.fhtw.swen.mctg.persistence.dao.PackageDao;
+import at.fhtw.swen.mctg.persistence.dao.cards.CardDao;
+import at.fhtw.swen.mctg.persistence.dao.cards.PackageDao;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 

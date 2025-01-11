@@ -1,10 +1,11 @@
-package at.fhtw.swen.mctg.persistence.dao;
+package at.fhtw.swen.mctg.persistence.dao.trade;
 
 import at.fhtw.swen.mctg.model.Card;
 import at.fhtw.swen.mctg.model.User;
 import at.fhtw.swen.mctg.persistence.DataAccessException;
 import at.fhtw.swen.mctg.persistence.UnitOfWork;
-import at.fhtw.swen.mctg.services.trade.Trade;
+import at.fhtw.swen.mctg.persistence.dao.cards.CardDao;
+import at.fhtw.swen.mctg.persistence.dao.user.UserRepository;
 import at.fhtw.swen.mctg.services.trade.TradeOffer;
 import at.fhtw.swen.mctg.services.trade.TradingController;
 
@@ -15,9 +16,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
-public class TradingRepository {
+public class TradeOfferRepository {
     private final UnitOfWork unitOfWork;
-    public TradingRepository(UnitOfWork unitOfWork) {
+    public TradeOfferRepository(UnitOfWork unitOfWork) {
         this.unitOfWork = unitOfWork;
     }
 

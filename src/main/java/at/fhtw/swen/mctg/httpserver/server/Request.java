@@ -20,8 +20,8 @@ public class Request {
         if (this.pathParts == null || this.pathParts.isEmpty()) {
             return null;
         }
-        System.out.println("Request.java getServiceRoute()");
-        System.out.println("this.pathParts: " + this.pathParts);
+        //System.out.println("Request.java getServiceRoute()");
+        //System.out.println("this.pathParts: " + this.pathParts);
         //return '/' + String.join("/", this.pathParts);
         return "/" + this.pathParts.getFirst();
     }
