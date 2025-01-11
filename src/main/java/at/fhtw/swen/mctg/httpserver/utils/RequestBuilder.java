@@ -7,6 +7,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.Locale;
+import java.util.Map;
 
 //
 public class RequestBuilder {
@@ -52,8 +53,9 @@ public class RequestBuilder {
         Boolean hasParams = path.contains("?");
         if (hasParams) {
             String[] pathParts = path.split("\\?");//[" https://google.com/search", "query=apple&category=fruits"]
+            Map<String, String> params = QueryUtils.parseQueryString(pathParts[1]);
             request.setPathname(pathParts[0]);
-            request.setParams(pathParts[1]);
+            request.setParams(params);
         }else {
             request.setPathname(path);
             request.setParams(null);

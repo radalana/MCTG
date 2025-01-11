@@ -28,6 +28,13 @@ public class DeckController extends Controller {
     private static final String CARDS_NOT_IN_STACK = "{ \"message\": \"Some selected cards do not belong to your stack. Please select valid cards.\" }";
     public Response listCardsFromDeck(Request request, String token) {
         try (UnitOfWork unitOfWork = new UnitOfWork()) {
+            Map<String, String> params = request.getParams();
+            if (params != null && params.containsKey("format")) {
+                String format = params.get("format");
+                if (format.equals("plain")) {
+                    return new Response(HttpStatus.NOT_IMPLEMENTED, "Plain decks");
+                }
+            }
             if (request.getBody() != null) {
                 return new Response(HttpStatus.BAD_REQUEST, REQUEST_BODY_NOT_ALLOWED);
             }

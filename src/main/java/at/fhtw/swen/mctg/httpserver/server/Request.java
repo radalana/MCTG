@@ -2,16 +2,23 @@ package at.fhtw.swen.mctg.httpserver.server;
 
 import at.fhtw.swen.mctg.httpserver.http.Method;
 import com.sun.net.httpserver.Headers;
+import lombok.Getter;
+import lombok.Setter;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 public class Request {
     private Method method;
     private String urlContent;
+    @Getter
     private String pathname;
     private List<String> pathParts;
-    private String params;
+    @Getter
+    @Setter
+    private Map<String, String> params;
+    @Getter
     private HeaderMap headerMap = new HeaderMap();
     private String body;
 
@@ -26,10 +33,6 @@ public class Request {
         return "/" + this.pathParts.getFirst();
     }
 
-    public String getPathname() {
-        return pathname;
-    }
-
     public void setPathname(String pathname) {
         // "game/users/123"
         this.pathname = pathname;
@@ -40,17 +43,6 @@ public class Request {
                 this.pathParts.add(part);
             }
         }
-    }
-
-    public String getParams() {
-        return params;
-    }
-    public void setParams(String params) {
-        this.params = params;
-    }
-
-    public HeaderMap getHeaderMap() {
-        return headerMap;
     }
 
     public void setHeaderMap(HeaderMap headerMap) {
