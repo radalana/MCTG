@@ -10,9 +10,7 @@ import at.fhtw.swen.mctg.services.login.AuthenticationService;
 
 public class TradingService extends BaseService {
     private final TradingController tradingController;
-    private final AuthenticationService authenticationService;
-    public TradingService(AuthenticationService authenticationService) {
-        this.authenticationService = authenticationService;
+    public TradingService() {
         tradingController = new TradingController();
     }
 

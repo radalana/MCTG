@@ -1,6 +1,7 @@
 package at.fhtw.swen.mctg.services.deck;
 
 import at.fhtw.swen.mctg.core.controller.Controller;
+import at.fhtw.swen.mctg.exceptions.UserNotFoundException;
 import at.fhtw.swen.mctg.httpserver.http.HttpStatus;
 import at.fhtw.swen.mctg.httpserver.server.Request;
 import at.fhtw.swen.mctg.httpserver.server.Response;
@@ -10,6 +11,7 @@ import at.fhtw.swen.mctg.persistence.UnitOfWork;
 import at.fhtw.swen.mctg.persistence.dao.cards.CardDao;
 import at.fhtw.swen.mctg.persistence.dao.user.UserRepository;
 import at.fhtw.swen.mctg.services.cards.CardService;
+import at.fhtw.swen.mctg.services.common.UserManager;
 import at.fhtw.swen.mctg.services.login.AuthenticationService;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -24,26 +26,20 @@ import static at.fhtw.swen.mctg.model.Deck.EXACT_CARDS_REQUIRED;
 public class DeckController extends Controller {
     private static final String DECK_ALREADY_EXISTS = "{ \"message\": \"Deck is already configured. You can configure your deck only once for each battle.\" }";
     private static final String CARDS_NOT_IN_STACK = "{ \"message\": \"Some selected cards do not belong to your stack. Please select valid cards.\" }";
-    private final AuthenticationService authenticationService;
-
-    public DeckController(AuthenticationService authenticationService) {
-        this.authenticationService = authenticationService;
-    }
     public Response listCardsFromDeck(Request request, String token) {
         try (UnitOfWork unitOfWork = new UnitOfWork()) {
             if (request.getBody() != null) {
                 return new Response(HttpStatus.BAD_REQUEST, REQUEST_BODY_NOT_ALLOWED);
             }
-            User user = new UserRepository(unitOfWork).findUserByToken(token);
-            if (user == null) {
-                return new Response(HttpStatus.UNAUTHORIZED, USER_NOT_FOUND);
-            }
+            User user = UserManager.validateAndFetchUser(token, unitOfWork);
 
             CardService cardService = new CardService(new CardDao(unitOfWork));
             List<Map<String, Object>> cardsAsMap = cardService.getCardsFromDeckAsMap(user.getId());
             String json = new ObjectMapper().writeValueAsString(cardsAsMap);
             return new Response(HttpStatus.OK, json);
-        }catch (Exception e) {
+        }catch(UserNotFoundException e) {
+            return new Response(HttpStatus.UNAUTHORIZED, USER_NOT_FOUND);
+        }catch(Exception e) {
             System.err.println(e.getMessage());
             return new Response(HttpStatus.INTERNAL_SERVER_ERROR,  INTERNAL_SERVER_ERROR );
         }

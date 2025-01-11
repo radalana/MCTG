@@ -13,7 +13,7 @@ import static at.fhtw.swen.mctg.httpserver.http.MessageConstants.INVALID_HTTP_ME
 public class DeckService extends BaseService {
     private final DeckController deckController;
     public DeckService(AuthenticationService authenticationService) {
-        this.deckController = new DeckController(authenticationService);
+        this.deckController = new DeckController();
     }
 
     @Override

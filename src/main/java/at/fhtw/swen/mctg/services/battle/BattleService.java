@@ -15,10 +15,8 @@ import static at.fhtw.swen.mctg.httpserver.http.MessageConstants.REQUEST_BODY_NO
 
 public class BattleService extends BaseService {
     private final BattleController battleController;
-    private final AuthenticationService authenticationService;
-    public BattleService(AuthenticationService authenticationService) {
+    public BattleService() {
         this.battleController = new BattleController();
-        this.authenticationService = authenticationService;
     }
 
     @Override

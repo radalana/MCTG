@@ -12,10 +12,8 @@ import static at.fhtw.swen.mctg.httpserver.http.MessageConstants.REQUEST_BODY_NO
 
 public class CardAcquisitionService extends BaseService{
     private final CardAcquisitionController controller;
-    private final AuthenticationService authenticationService;
-    public CardAcquisitionService(AuthenticationService authenticationService) {
+    public CardAcquisitionService() {
         this.controller = new CardAcquisitionController();
-        this.authenticationService = authenticationService;
     }
     @Override
     public Response handleRequest(Request request) {

@@ -12,11 +12,9 @@ import static at.fhtw.swen.mctg.httpserver.http.MessageConstants.REQUEST_BODY_NO
 
 public class StackService extends BaseService {
     private final StackController stackController;
-    private final AuthenticationService authenticationService;
 
-    public StackService(AuthenticationService authenticationService) {
+    public StackService() {
         this.stackController = new StackController();
-        this.authenticationService = authenticationService;
     }
 
     @Override
