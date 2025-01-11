@@ -30,6 +30,10 @@ public class TradingService implements Service {
 
 
             if (requestMethod == Method.POST && body != null) {
+                if (request.getPathParts().size() > 1) {
+                    String dealId = request.getPathParts().get(1);
+                    return this.tradingController.completeDeal(token, dealId, body);
+                }
                 return this.tradingController.createTradingDeal(token, body);
             }
             if (requestMethod == Method.GET && body == null) {
@@ -43,6 +47,8 @@ public class TradingService implements Service {
             return new Response(HttpStatus.NOT_IMPLEMENTED, "trading not implemented");
         }catch (IllegalArgumentException e) {
             return new Response(HttpStatus.UNAUTHORIZED, "{ \"message\": \"" + e.getMessage() + "\" }");
+        }catch (IndexOutOfBoundsException e) {
+            return new Response(HttpStatus.NOT_FOUND, "{ \"message\": \"" + e.getMessage() + "\" }");
         }
     }
 }

@@ -87,6 +87,7 @@ CREATE TABLE trading_offers (
     user_id INT,
     required_type VARCHAR(50),
     min_damage INT,
+    is_closed BOOLEAN DEFAULT FALSE,
     FOREIGN KEY (card_id) REFERENCES cards(id),
     FOREIGN KEY (user_id) REFERENCES users(id)
 );

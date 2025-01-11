@@ -124,8 +124,68 @@ public class TradingController extends Controller {
             System.err.println(e.getMessage());
             return new Response(HttpStatus.INTERNAL_SERVER_ERROR, INTERNAL_SERVER_ERROR);
         }
-
-
     }
 
+    public Response completeDeal(String token, String offerId, String body) {
+        try (UnitOfWork unitOfWork = new UnitOfWork()) {
+            User user = new UserRepository(unitOfWork).findUserByToken(token);
+            if (user == null) {
+                return new Response(HttpStatus.UNAUTHORIZED, USER_NOT_FOUND);
+            }
+
+            TradingRepository tradingRepository = new TradingRepository(unitOfWork);
+            TradeOffer tradeOffer = tradingRepository.findById(offerId);
+            if (tradeOffer == null) {
+                return new Response(HttpStatus.BAD_REQUEST, "{ \"message\": \"Deal with id: " + offerId + " was not found\" }\n");
+            }
+            if (tradeOffer.isClosed()) {
+                return new Response(HttpStatus.BAD_REQUEST, "{ \"message\": \"The trade offer is already closed.}\n");
+            }
+
+            if (tradeOffer.getTrader().getId() == user.getId()) {
+                return new Response(HttpStatus.BAD_REQUEST, "{ \"message\": \"Trading with yourself is not allowed.}\n");
+            }
+
+            CardDao cardDao = new CardDao(unitOfWork);
+            String cardId = body;
+            if (body.startsWith("\"") && body.endsWith("\"")) {
+                cardId = body.substring(1, body.length() - 1); // Удаляем первую и последнюю кавычки
+            }
+            Card card = cardDao.findCardById(cardId);
+            //check if the card meets the requirements
+            RequiredType requiredType = tradeOffer.getType();
+            if (!isValidType(requiredType, card)) {
+                return new Response(HttpStatus.BAD_REQUEST, "{ \"message\": \"The required card type for this trade is: " + requiredType + ". Your card type is: " + card.getClass().getSimpleName() + ".\" }\n");
+            }
+
+            if (card.getDamage() < tradeOffer.getMinDamage()) {
+                return new Response(HttpStatus.BAD_REQUEST, "{ \"message\": \"Min damage for this trade: " + tradeOffer.getMinDamage() + ". Your card damage is: " + card.getDamage() + ".\" }\n");
+            }
+
+
+            tradingRepository.closeTradeOffer(tradeOffer);
+            cardDao.updateOwnership(card, tradeOffer.getTrader());
+            cardDao.updateOwnership(tradeOffer.getCard(), user);
+            unitOfWork.commitTransaction();
+            return new Response(HttpStatus.CREATED, "success");
+
+        } catch (Exception e) {
+            System.err.println(e.getMessage());
+            e.printStackTrace();
+            return new Response(HttpStatus.INTERNAL_SERVER_ERROR, INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    private boolean isValidType(RequiredType requiredType, Card card) {
+        //no requirements for card type
+        if (requiredType == null) {
+            return true;
+        }
+
+        return switch (requiredType) {
+            case SPELL -> !card.isMonsterType();
+            case MONSTER -> card.isMonsterType();
+            default -> card.getClass().getSimpleName().equals(requiredType.toString());
+        };
+    }
 }

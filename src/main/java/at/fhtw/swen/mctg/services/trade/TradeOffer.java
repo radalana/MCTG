@@ -7,6 +7,7 @@ import lombok.Getter;
 import lombok.NonNull;
 
 @Getter
+@AllArgsConstructor
 public class TradeOffer {
     @NonNull
     private final String id;
@@ -16,6 +17,7 @@ public class TradeOffer {
     private final User trader;
     private final TradingController.RequiredType type;
     private final int minDamage;
+    private final boolean isClosed;
 
     public TradeOffer(String id, Card card, User trader, TradingController.RequiredType type, int minDamage) {
         this.id = id;
@@ -23,5 +25,6 @@ public class TradeOffer {
         this.trader = trader;
         this.type = type;
         this.minDamage = minDamage;
+        this.isClosed = false;
     }
 }

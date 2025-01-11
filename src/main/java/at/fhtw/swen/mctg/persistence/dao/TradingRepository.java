@@ -54,7 +54,7 @@ public class TradingRepository {
     }
 
     public List<TradeOffer> findAll() {
-        String sql = "SELECT * FROM trading_offers";
+        String sql = "SELECT * FROM trading_offers WHERE is_closed = FALSE";
         try(PreparedStatement preparedStatement = this.unitOfWork.prepareStatement(sql)) {
             ResultSet resultSet = preparedStatement.executeQuery();
             List<TradeOffer> offers = new ArrayList<>();
@@ -78,17 +78,27 @@ public class TradingRepository {
             throw new DataAccessException("Database DELETE operation failed: " + e.getMessage(), e);
         }
     }
-
+    public void closeTradeOffer(TradeOffer offer) {
+        String sql = "UPDATE trading_offers SET is_closed = TRUE WHERE id = ?";
+        try(PreparedStatement preparedStatement = this.unitOfWork.prepareStatement(sql)) {
+            UUID uuidOffer = UUID.fromString(offer.getId());
+            preparedStatement.setObject(1, uuidOffer);
+            preparedStatement.executeUpdate();
+        }catch (SQLException e) {
+            throw new DataAccessException("Database UPDATE operation failed: " + e.getMessage(), e);
+        }
+    }
     private TradeOffer mapToTradeOffer(ResultSet resultSet) throws SQLException {
         String id = resultSet.getString(1);
         String cardId = resultSet.getString(2);
         int userId = resultSet.getInt(3);
         TradingController.RequiredType requiredType = TradingController.RequiredType.fromString(resultSet.getString(4));
         int minDamage = resultSet.getInt(5);
+        boolean isClosed = resultSet.getBoolean(6);
 
         Card card = new CardDao(unitOfWork).findCardById(cardId);
         User trader = new UserRepository(unitOfWork).findUserById(userId);
 
-        return new TradeOffer(id, card, trader, requiredType, minDamage);
+        return new TradeOffer(id, card, trader, requiredType, minDamage, isClosed);
     }
 }

@@ -141,6 +141,7 @@ public class CardDao {
             if (parameter instanceof Integer) {
                 preparedStatement.setInt(1, (Integer) parameter);
             } else if (parameter instanceof String) {
+                System.out.println("String for uuid: " + parameter);
                 UUID uuid = UUID.fromString((String) parameter);
                 preparedStatement.setObject(1, uuid);
             } else {
@@ -184,7 +185,7 @@ public class CardDao {
         }
     }
 
-    public void updateOwnership(User user) {
+    public void updateDeckOwnership(User user) {
         int userId = user.getId();
         if (user.getDeck().isEmpty()) {
             return;
@@ -262,5 +263,18 @@ public class CardDao {
     public Card findCardById(String id) {
         String sql = "SELECT * FROM cards WHERE id = ?";
         return getCards(sql, id).getFirst();
+    }
+
+    //for trade
+    public void updateOwnership(Card card, User newOwner) {
+        String sql = "UPDATE cards SET user_id = ? WHERE id = ?";
+        try(PreparedStatement preparedStatement = this.unitOfWork.prepareStatement(sql)) {
+            UUID uuid = UUID.fromString(card.getId());
+            preparedStatement.setInt(1, newOwner.getId());
+            preparedStatement.setObject(2, uuid);
+            preparedStatement.executeUpdate();
+        }catch (SQLException e) {
+            throw new DataAccessException("Failed to update ownership for " + card.getId() + ". SQL error: " + e.getMessage(), e);
+        }
     }
 }
