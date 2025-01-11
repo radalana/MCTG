@@ -22,7 +22,7 @@ public class PackageService extends BaseService {
             Method requestMethod = request.getMethod();
             String token = getTokenFromRequest(request);
 
-            if (!token.equals("Bearer admin-mtcgToken")) {
+            if (!token.equals("admin-mtcgToken")) {
                 return new Response(HttpStatus.FORBIDDEN, "{ \"message\", \"You don't have permission to access this resource.\"}");
             }
             if (requestMethod == Method.POST && request.getBody() != null) {
