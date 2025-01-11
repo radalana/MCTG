@@ -6,9 +6,10 @@ import at.fhtw.swen.mctg.httpserver.server.Response;
 import at.fhtw.swen.mctg.model.Card;
 import at.fhtw.swen.mctg.model.User;
 import at.fhtw.swen.mctg.persistence.UnitOfWork;
-import at.fhtw.swen.mctg.persistence.dao.CardDao;
-import at.fhtw.swen.mctg.persistence.dao.TradingRepository;
-import at.fhtw.swen.mctg.persistence.dao.UserRepository;
+import at.fhtw.swen.mctg.persistence.dao.cards.CardDao;
+import at.fhtw.swen.mctg.persistence.dao.trade.TradeOfferRepository;
+import at.fhtw.swen.mctg.persistence.dao.trade.TradeRepository;
+import at.fhtw.swen.mctg.persistence.dao.user.UserRepository;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 
@@ -62,7 +63,7 @@ public class TradingController extends Controller {
             //check type of required card
             RequiredType requiredType = RequiredType.fromString(type.toUpperCase());
             TradeOffer offer = new TradeOffer(dealId, cardToTrade, user, requiredType, minDamage);
-            new TradingRepository(unitOfWork).save(offer);
+            new TradeOfferRepository(unitOfWork).save(offer);
             unitOfWork.commitTransaction();
             return new Response(HttpStatus.CREATED, "{ \"message\": \"Card with id: " + cardToTradeId + " was pushed into store\" }\n");
         }catch (JsonProcessingException e){
@@ -81,7 +82,7 @@ public class TradingController extends Controller {
             if (user == null) {
                 return new Response(HttpStatus.UNAUTHORIZED, USER_NOT_FOUND);
             }
-            List<TradeOffer> offersList =  new TradingRepository(unitOfWork).findAll();
+            List<TradeOffer> offersList =  new TradeOfferRepository(unitOfWork).findAll();
             List<String> offers = offersList.stream()
                     .map(offer -> String.format("Deal id: %s. User %s offers %s (%.1f damage) and wants \"%s with min %d damage\"\n",
                             offer.getId(), offer.getTrader().getLogin(), offer.getCard().getName(), offer.getCard().getDamage(), offer.getType(), offer.getMinDamage()))
@@ -104,7 +105,7 @@ public class TradingController extends Controller {
             if (user == null) {
                 return new Response(HttpStatus.UNAUTHORIZED, USER_NOT_FOUND);
             }
-            TradingRepository tradingRepository = new TradingRepository(unitOfWork);
+            TradeOfferRepository tradingRepository = new TradeOfferRepository(unitOfWork);
             TradeOffer tradeOffer = tradingRepository.findById(offerId);
             if (tradeOffer == null) {
                 return new Response(HttpStatus.BAD_REQUEST, "{ \"message\": \"Deal with id: " + offerId + " was not found\" }\n");
@@ -132,9 +133,18 @@ public class TradingController extends Controller {
             if (user == null) {
                 return new Response(HttpStatus.UNAUTHORIZED, USER_NOT_FOUND);
             }
+            CardDao cardDao = new CardDao(unitOfWork);
+            String cardId = body;
+            if (body.startsWith("\"") && body.endsWith("\"")) {
+                cardId = body.substring(1, body.length() - 1); // Удаляем первую и последнюю кавычки
+            }
+            //check if card is not in deck
+            if (cardDao.getIsInDeckFlag(cardId)) {
+                return new Response(HttpStatus.BAD_REQUEST, "{ \"message\": \"Cards in deck are blocked for trading\" }\n");
+            }
 
-            TradingRepository tradingRepository = new TradingRepository(unitOfWork);
-            TradeOffer tradeOffer = tradingRepository.findById(offerId);
+            TradeOfferRepository tradeOfferRepository = new TradeOfferRepository(unitOfWork);
+            TradeOffer tradeOffer = tradeOfferRepository.findById(offerId);
             if (tradeOffer == null) {
                 return new Response(HttpStatus.BAD_REQUEST, "{ \"message\": \"Deal with id: " + offerId + " was not found\" }\n");
             }
@@ -146,11 +156,6 @@ public class TradingController extends Controller {
                 return new Response(HttpStatus.BAD_REQUEST, "{ \"message\": \"Trading with yourself is not allowed.}\n");
             }
 
-            CardDao cardDao = new CardDao(unitOfWork);
-            String cardId = body;
-            if (body.startsWith("\"") && body.endsWith("\"")) {
-                cardId = body.substring(1, body.length() - 1); // Удаляем первую и последнюю кавычки
-            }
             Card card = cardDao.findCardById(cardId);
             //check if the card meets the requirements
             RequiredType requiredType = tradeOffer.getType();
@@ -162,13 +167,20 @@ public class TradingController extends Controller {
                 return new Response(HttpStatus.BAD_REQUEST, "{ \"message\": \"Min damage for this trade: " + tradeOffer.getMinDamage() + ". Your card damage is: " + card.getDamage() + ".\" }\n");
             }
 
-
-            tradingRepository.closeTradeOffer(tradeOffer);
+            Trade trade = new Trade(tradeOffer, user, card);
+            new TradeRepository(unitOfWork).save(trade);
+            tradeOfferRepository.closeTradeOffer(tradeOffer);
             cardDao.updateOwnership(card, tradeOffer.getTrader());
             cardDao.updateOwnership(tradeOffer.getCard(), user);
             unitOfWork.commitTransaction();
-            return new Response(HttpStatus.CREATED, "success");
-
+            String response = String.format("\"tradeDetails\": {\"trade initiator\": {\"name\": \"%s\", \"card traded\": \"%s (Damage: %.1f)\"},\"trade recipient\": {\"name\": \"%s\", \"card traded\": \"%s (Damage: %.1f)\"}}",
+                    tradeOffer.getTrader().getLogin(),
+                    tradeOffer.getCard().getName(),
+                    tradeOffer.getCard().getDamage(),
+                    user.getLogin(),
+                    card.getName(),
+                    card.getDamage());
+            return new Response(HttpStatus.CREATED, response + "\n");
         } catch (Exception e) {
             System.err.println(e.getMessage());
             e.printStackTrace();
