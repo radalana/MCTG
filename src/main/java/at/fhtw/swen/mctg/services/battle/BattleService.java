@@ -6,12 +6,14 @@ import at.fhtw.swen.mctg.httpserver.server.Request;
 import at.fhtw.swen.mctg.httpserver.server.Response;
 import at.fhtw.swen.mctg.httpserver.server.Service;
 import at.fhtw.swen.mctg.model.Battle;
+import at.fhtw.swen.mctg.services.common.AuthUtils;
+import at.fhtw.swen.mctg.services.common.BaseService;
 import at.fhtw.swen.mctg.services.deck.DeckController;
 import at.fhtw.swen.mctg.services.login.AuthenticationService;
 
 import static at.fhtw.swen.mctg.httpserver.http.MessageConstants.REQUEST_BODY_NOT_ALLOWED;
 
-public class BattleService implements Service {
+public class BattleService extends BaseService {
     private final BattleController battleController;
     private final AuthenticationService authenticationService;
     public BattleService(AuthenticationService authenticationService) {
@@ -23,8 +25,7 @@ public class BattleService implements Service {
     public Response handleRequest(Request request) {
         Method requestMethod = request.getMethod();
         try {
-            String token = request.getHeaderMap().getHeader("Authorization");
-            token = authenticationService.extractToken(token);
+            String token = getTokenFromRequest(request);
             if (requestMethod == Method.POST && request.getBody() == null) {
                 return this.battleController.joinBattle(token);
             }

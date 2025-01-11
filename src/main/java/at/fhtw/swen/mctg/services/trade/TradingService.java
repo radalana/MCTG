@@ -5,9 +5,10 @@ import at.fhtw.swen.mctg.httpserver.http.Method;
 import at.fhtw.swen.mctg.httpserver.server.Request;
 import at.fhtw.swen.mctg.httpserver.server.Response;
 import at.fhtw.swen.mctg.httpserver.server.Service;
+import at.fhtw.swen.mctg.services.common.BaseService;
 import at.fhtw.swen.mctg.services.login.AuthenticationService;
 
-public class TradingService implements Service {
+public class TradingService extends BaseService {
     private final TradingController tradingController;
     private final AuthenticationService authenticationService;
     public TradingService(AuthenticationService authenticationService) {
@@ -18,17 +19,9 @@ public class TradingService implements Service {
     @Override
     public Response handleRequest(Request request) {
         Method requestMethod = request.getMethod();
-        String urlParams = request.getParams();
-        //System.out.println("Url params: " + urlParams);
-
-        String pathName = request.getPathname();
-        //System.out.println("Path name: " + pathName);
         try {
-            String rawToken = request.getHeaderMap().getHeader("Authorization");
-            String token = authenticationService.extractToken(rawToken);
+            String token = getTokenFromRequest(request);
             String body = request.getBody();
-
-
             if (requestMethod == Method.POST && body != null) {
                 if (request.getPathParts().size() > 1) {
                     String dealId = request.getPathParts().get(1);

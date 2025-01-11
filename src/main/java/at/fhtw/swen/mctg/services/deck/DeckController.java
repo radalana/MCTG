@@ -29,18 +29,16 @@ public class DeckController extends Controller {
     public DeckController(AuthenticationService authenticationService) {
         this.authenticationService = authenticationService;
     }
-    public Response listCardsFromDeck(Request request) {
+    public Response listCardsFromDeck(Request request, String token) {
         try (UnitOfWork unitOfWork = new UnitOfWork()) {
             if (request.getBody() != null) {
                 return new Response(HttpStatus.BAD_REQUEST, REQUEST_BODY_NOT_ALLOWED);
             }
-            String token = request.getHeaderMap().getHeader("Authorization");
-            token = authenticationService.extractToken(token);
             User user = new UserRepository(unitOfWork).findUserByToken(token);
             if (user == null) {
                 return new Response(HttpStatus.UNAUTHORIZED, USER_NOT_FOUND);
             }
-            //int stackId = new StackRepository(unitOfWork).findStackByUsername(user.getLogin());
+
             CardService cardService = new CardService(new CardDao(unitOfWork));
             List<Map<String, Object>> cardsAsMap = cardService.getCardsFromDeckAsMap(user.getId());
             String json = new ObjectMapper().writeValueAsString(cardsAsMap);
@@ -52,13 +50,11 @@ public class DeckController extends Controller {
     }
 
 
-    public Response configureDeck(Request request) {
+    public Response configureDeck(Request request, String token) {
         if (request.getBody() == null) {
             return new Response(HttpStatus.BAD_REQUEST, NO_CARDS_PROVIDED);
         }
         try(UnitOfWork unitOfWork = new UnitOfWork()) {
-            String token = request.getHeaderMap().getHeader("Authorization");
-            token = authenticationService.extractToken(token);
             User user = new UserRepository(unitOfWork).findUserByToken(token);
             if (user == null) {
                 return new Response(HttpStatus.UNAUTHORIZED, USER_NOT_FOUND);

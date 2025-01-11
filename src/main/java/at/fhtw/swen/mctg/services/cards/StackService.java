@@ -5,11 +5,12 @@ import at.fhtw.swen.mctg.httpserver.http.Method;
 import at.fhtw.swen.mctg.httpserver.server.Request;
 import at.fhtw.swen.mctg.httpserver.server.Response;
 import at.fhtw.swen.mctg.httpserver.server.Service;
+import at.fhtw.swen.mctg.services.common.BaseService;
 import at.fhtw.swen.mctg.services.login.AuthenticationService;
 
 import static at.fhtw.swen.mctg.httpserver.http.MessageConstants.REQUEST_BODY_NOT_ALLOWED;
 
-public class StackService implements Service {
+public class StackService extends BaseService {
     private final StackController stackController;
     private final AuthenticationService authenticationService;
 
@@ -22,8 +23,7 @@ public class StackService implements Service {
     public Response handleRequest(Request request) {
         Method requestMethod = request.getMethod();
         try {
-            String token = request.getHeaderMap().getHeader("Authorization");
-            token = authenticationService.extractToken(token);
+            String token = getTokenFromRequest(request);
             if (requestMethod == Method.GET && request.getBody() == null) {
                 return this.stackController.listAllCards(token);
             }

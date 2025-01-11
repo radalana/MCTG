@@ -126,7 +126,8 @@ public class TradingController extends Controller {
             return new Response(HttpStatus.INTERNAL_SERVER_ERROR, INTERNAL_SERVER_ERROR);
         }
     }
-
+    //TODO: add test for concurrency
+    //TODO: add concurrency when to users whant to accept trade offer in the same time
     public Response completeDeal(String token, String offerId, String body) {
         try (UnitOfWork unitOfWork = new UnitOfWork()) {
             User user = new UserRepository(unitOfWork).findUserByToken(token);

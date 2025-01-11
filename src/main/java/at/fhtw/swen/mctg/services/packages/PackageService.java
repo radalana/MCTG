@@ -5,10 +5,11 @@ import at.fhtw.swen.mctg.httpserver.http.Method;
 import at.fhtw.swen.mctg.httpserver.server.Request;
 import at.fhtw.swen.mctg.httpserver.server.Response;
 import at.fhtw.swen.mctg.httpserver.server.Service;
+import at.fhtw.swen.mctg.services.common.BaseService;
 
 import static at.fhtw.swen.mctg.httpserver.http.MessageConstants.NO_CARDS_PROVIDED;
 
-public class PackageService implements Service {
+public class PackageService extends BaseService {
     private final PackageController packageController;
 
     public PackageService() {
@@ -17,10 +18,7 @@ public class PackageService implements Service {
     @Override
     public Response handleRequest(Request request) {
         Method requestMethod = request.getMethod();
-        //или здесь добавить чтобы проверил токены и все остальное
-        //1. вытащить токен из запроса
-        String token = request.getHeaderMap().getHeader("Authorization");
-        System.out.println(token);
+        String token = getTokenFromRequest(request);
 
         //2.если токен существует
         //когда решится многопоточность, и чтобы вызывать метод из объекта isTokenValid
