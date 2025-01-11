@@ -35,7 +35,7 @@ public class Main{
         router.addService("/packages", new PackageService());
         router.addService("/transactions", new CardAcquisitionService());
         router.addService("/cards", new StackService());
-        router.addService("/deck", new DeckService());
+        router.addService("/deck", new DeckService(authenticationService));
         router.addService("/battles", new BattleService());
         router.addService("/tradings", new TradingService());
         return router;

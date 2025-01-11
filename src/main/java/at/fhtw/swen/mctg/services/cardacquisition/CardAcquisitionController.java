@@ -1,6 +1,7 @@
 package at.fhtw.swen.mctg.services.cardacquisition;
 
 import at.fhtw.swen.mctg.core.controller.Controller;
+import at.fhtw.swen.mctg.exceptions.UserNotFoundException;
 import at.fhtw.swen.mctg.httpserver.http.HttpStatus;
 import at.fhtw.swen.mctg.httpserver.server.Response;
 import at.fhtw.swen.mctg.model.User;
@@ -19,9 +20,6 @@ public class CardAcquisitionController extends Controller {
         try(unitOfWork) {
             UserRepository userRepository = new UserRepository(unitOfWork);
             User user = userRepository.findUserByToken(token);
-            if (user == null) {
-                return new Response(HttpStatus.UNAUTHORIZED, USER_NOT_FOUND);
-            }
             int availableCoins = user.getCoins();
             if (availableCoins < PACKAGE_PRICE) {
                 return new Response(
@@ -42,7 +40,12 @@ public class CardAcquisitionController extends Controller {
                     HttpStatus.OK,
                     CARDS_PURCHASED_SUCCESSFULLY
             );
-        } catch (DataAccessException e) {
+        }catch (UserNotFoundException e) {
+            return new Response(
+                    HttpStatus.UNAUTHORIZED,
+                    USER_NOT_FOUND
+            );
+        }catch (DataAccessException e) {
             //TODO другой  response!!!
                 return new Response(HttpStatus.BAD_REQUEST,
                         "{ \"message\": " + e.getMessage() + "}");

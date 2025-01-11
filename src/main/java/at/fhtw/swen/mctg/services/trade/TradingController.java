@@ -10,6 +10,7 @@ import at.fhtw.swen.mctg.persistence.dao.cards.CardDao;
 import at.fhtw.swen.mctg.persistence.dao.trade.TradeOfferRepository;
 import at.fhtw.swen.mctg.persistence.dao.trade.TradeRepository;
 import at.fhtw.swen.mctg.persistence.dao.user.UserRepository;
+import at.fhtw.swen.mctg.services.common.UserManager;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 
@@ -130,10 +131,7 @@ public class TradingController extends Controller {
     //TODO: add concurrency when to users whant to accept trade offer in the same time
     public Response completeDeal(String token, String offerId, String body) {
         try (UnitOfWork unitOfWork = new UnitOfWork()) {
-            User user = new UserRepository(unitOfWork).findUserByToken(token);
-            if (user == null) {
-                return new Response(HttpStatus.UNAUTHORIZED, USER_NOT_FOUND);
-            }
+            User user = UserManager.validateAndFetchUser(token, unitOfWork);
             CardDao cardDao = new CardDao(unitOfWork);
             String cardId = body;
             if (body.startsWith("\"") && body.endsWith("\"")) {

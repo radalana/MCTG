@@ -1,5 +1,6 @@
 package at.fhtw.swen.mctg.services.battle;
 
+import at.fhtw.swen.mctg.exceptions.UserNotFoundException;
 import at.fhtw.swen.mctg.httpserver.http.HttpStatus;
 import at.fhtw.swen.mctg.httpserver.server.Response;
 import at.fhtw.swen.mctg.model.*;
@@ -12,6 +13,7 @@ import at.fhtw.swen.mctg.persistence.dao.battle.BattleRequestsRepository;
 import at.fhtw.swen.mctg.persistence.dao.cards.CardDao;
 import at.fhtw.swen.mctg.persistence.dao.user.StatsRepository;
 import at.fhtw.swen.mctg.persistence.dao.user.UserRepository;
+import at.fhtw.swen.mctg.services.common.UserManager;
 
 import java.util.List;
 
@@ -22,12 +24,7 @@ public class BattleController {
    public Response joinBattle(String token) {
        //uberprüfe ob Deck konfiguriert ist
        try(UnitOfWork unitOfWork = new UnitOfWork()) {
-           User user = new UserRepository(unitOfWork).findUserByToken(token);
-           if (user == null) {
-               return new Response(HttpStatus.UNAUTHORIZED, USER_NOT_FOUND);
-           }
-           //getDeck
-           //int stackId = new StackRepository(unitOfWork).findStackByUsername(user.getLogin());
+           User user = UserManager.validateAndFetchUser(token, unitOfWork);
            List<Card> cards = getUserDeck(user, unitOfWork);
            if (cards.isEmpty()) {
                return new Response(HttpStatus.BAD_REQUEST, "{ \"message\": \"Deck is empty. To start battle configure a stack.\" }\n");
@@ -110,6 +107,8 @@ public class BattleController {
                    return new Response(HttpStatus.OK, engine.getLog().toString() + result);
                }
            }
+       }catch (UserNotFoundException e) {
+            return new Response(HttpStatus.UNAUTHORIZED, USER_NOT_FOUND);
        }catch (IllegalArgumentException e) {
            return new Response(HttpStatus.BAD_REQUEST, e.getMessage());
        }catch (Exception e) {
