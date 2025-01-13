@@ -1,5 +1,6 @@
 package at.fhtw.swen.mctg.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
@@ -8,7 +9,7 @@ import lombok.Getter;
 public class Stats {
     private static final int LOSS = -5;
     private static final int WIN = 3;
-
+    @JsonIgnore
     private final int user_id;
     private int wins;
     private int losses;
