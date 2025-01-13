@@ -8,6 +8,8 @@ CREATE TABLE users (
     password VARCHAR (255 ) NOT NULL,
     token VARCHAR ( 255 ),
     coins INTEGER DEFAULT 20,
+    bio TEXT,
+    image varchar ( 255 ),
     last_updated TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
 );
 

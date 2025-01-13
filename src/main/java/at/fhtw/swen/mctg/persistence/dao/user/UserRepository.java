@@ -50,7 +50,8 @@ public class UserRepository {
                         resultSet.getInt("id"),
                         resultSet.getString("username"),
                         resultSet.getString("password"),
-                        resultSet.getString("token"),
+                        resultSet.getString("bio"),
+                        resultSet.getString("image"),
                         resultSet.getInt("coins")
                 );
             } else {
@@ -63,7 +64,7 @@ public class UserRepository {
     public int save(User user) {
         String sql = "INSERT INTO users (username, password) VALUES (?, ?)";
         try(PreparedStatement preparedStatement = this.unitOfWork.prepareStatement(sql, true)){
-            preparedStatement.setString(1, user.getLogin());
+            preparedStatement.setString(1, user.getUsername());
             preparedStatement.setString(2, user.getPassword());
             preparedStatement.executeUpdate();
             ResultSet generatedKeys = preparedStatement.getGeneratedKeys();
@@ -95,7 +96,7 @@ public class UserRepository {
     //beim Packagekauf
     public void updateCoins(User user) {
         String sql = "UPDATE users SET coins = ? WHERE username = ?";
-        String username = user.getLogin();
+        String username = user.getUsername();
         int coins = user.getCoins();
         try (PreparedStatement preparedStatement = this.unitOfWork.prepareStatement(sql)) {
             preparedStatement.setInt(1, coins);
