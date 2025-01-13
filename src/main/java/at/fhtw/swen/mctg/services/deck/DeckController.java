@@ -28,20 +28,18 @@ public class DeckController extends Controller {
     private static final String CARDS_NOT_IN_STACK = "{ \"message\": \"Some selected cards do not belong to your stack. Please select valid cards.\" }";
     public Response listCardsFromDeck(Request request, String token) {
         try (UnitOfWork unitOfWork = new UnitOfWork()) {
-            Map<String, String> params = request.getParams();
-            if (params != null && params.containsKey("format")) {
-                String format = params.get("format");
-                if (format.equals("plain")) {
-                    return new Response(HttpStatus.NOT_IMPLEMENTED, "Plain decks");
-                }
-            }
             if (request.getBody() != null) {
                 return new Response(HttpStatus.BAD_REQUEST, REQUEST_BODY_NOT_ALLOWED);
             }
-            User user = UserManager.validateAndFetchUser(token, unitOfWork);
 
+            User user = UserManager.validateAndFetchUser(token, unitOfWork);
             CardService cardService = new CardService(new CardDao(unitOfWork));
             List<Map<String, Object>> cardsAsMap = cardService.getCardsFromDeckAsMap(user.getId());
+
+            String plain = toPlain(cardsAsMap);
+            if (request.isParameterEqualTo("format", "plain")) {
+                return new Response(HttpStatus.OK, plain + "\n");
+            }
             String json = new ObjectMapper().writeValueAsString(cardsAsMap);
             return new Response(HttpStatus.OK, json);
         }catch(UserNotFoundException e) {
@@ -106,5 +104,15 @@ public class DeckController extends Controller {
 
     private void addCardsInDeck(List<String> cards, CardDao cardDao) throws DataAccessException {
         cardDao.setDeckFlagForCards(cards);
+    }
+
+    private String toPlain(List<Map<String, Object>> cardsAsMap) {
+        StringBuilder sb = new StringBuilder();
+        for (Map<String, Object> card : cardsAsMap) {
+            sb.append(card.get("id")).append(" | ")
+                    .append(card.get("name")).append(" | ")
+                    .append(card.get("damage")).append("\n");
+        }
+        return sb.toString();
     }
 }
