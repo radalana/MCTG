@@ -61,8 +61,8 @@ class BattleEngineTest {
 
         Card card1 = new Wizard("1", "1", 1.0, Element.NORMAL);
         Card card2 = new Wizard("5", "5", 4.0, Element.NORMAL);
-        card1.setOwnerName(user1.getLogin());
-        card2.setOwnerName(user2.getLogin());
+        card1.setOwnerName(user1.getUsername());
+        card2.setOwnerName(user2.getUsername());
                 doReturn(new Round(card1, card2,  1.0))
                 .doReturn(new Round(card1, card2, 1.0))
                 .doReturn(new Round(card1, card2, 1.0))
@@ -111,8 +111,8 @@ class BattleEngineTest {
          */
         Card card1 = new Wizard("1", "1", 1.0, Element.NORMAL);
         Card card2 = new Wizard("5", "5", 4.0, Element.NORMAL);
-        card1.setOwnerName(user1.getLogin());
-        card2.setOwnerName(user2.getLogin());
+        card1.setOwnerName(user1.getUsername());
+        card2.setOwnerName(user2.getUsername());
         doReturn(new Round(card1, card2, 1.0))
                 .doReturn(new Round(card1, card2, 1.0))
                 .doReturn(new Round(card1, card2, 1.0))
@@ -133,8 +133,8 @@ class BattleEngineTest {
     void startBattle_max_100_rounds() {
         Card card1 = new Wizard("1", "1", 1.0, Element.NORMAL);
         Card card2 = new Wizard("5", "5", 4.0, Element.NORMAL);
-        card1.setOwnerName(user1.getLogin());
-        card2.setOwnerName(user2.getLogin());
+        card1.setOwnerName(user1.getUsername());
+        card2.setOwnerName(user2.getUsername());
         when(deckA.isEmpty())
                 .thenReturn(false);
         when(deckB.isEmpty())

@@ -203,7 +203,7 @@ public class CardDao {
             }
             preparedStatement.executeUpdate();
         }catch (SQLException e) {
-            throw new DataAccessException("Failed to update card ownership for " + user.getLogin() + ". SQL error: " + e.getMessage(), e);
+            throw new DataAccessException("Failed to update card ownership for " + user.getUsername() + ". SQL error: " + e.getMessage(), e);
         }
 
         /*
@@ -222,7 +222,7 @@ public class CardDao {
             preparedStatement.setInt(1, userId);
             preparedStatement.executeUpdate();
         }catch (SQLException e) {
-            throw new DataAccessException("Failed to UPDATE is_in_deck = FALSE for "+ user.getLogin() + ". SQL error: " + e.getMessage(), e);
+            throw new DataAccessException("Failed to UPDATE is_in_deck = FALSE for "+ user.getUsername() + ". SQL error: " + e.getMessage(), e);
         }
     }
 

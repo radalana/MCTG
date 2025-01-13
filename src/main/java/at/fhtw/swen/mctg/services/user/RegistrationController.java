@@ -1,4 +1,4 @@
-package at.fhtw.swen.mctg.services.registration;
+package at.fhtw.swen.mctg.services.user;
 
 import at.fhtw.swen.mctg.persistence.DataAccessException;
 import at.fhtw.swen.mctg.core.controller.Controller;

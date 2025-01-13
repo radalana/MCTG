@@ -86,7 +86,7 @@ public class TradingController extends Controller {
             List<TradeOffer> offersList =  new TradeOfferRepository(unitOfWork).findAll();
             List<String> offers = offersList.stream()
                     .map(offer -> String.format("Deal id: %s. User %s offers %s (%.1f damage) and wants \"%s with min %d damage\"\n",
-                            offer.getId(), offer.getTrader().getLogin(), offer.getCard().getName(), offer.getCard().getDamage(), offer.getType(), offer.getMinDamage()))
+                            offer.getId(), offer.getTrader().getUsername(), offer.getCard().getName(), offer.getCard().getDamage(), offer.getType(), offer.getMinDamage()))
                     .toList();
 
             String content = "The store is empty\n";
@@ -173,10 +173,10 @@ public class TradingController extends Controller {
             cardDao.updateOwnership(tradeOffer.getCard(), user);
             unitOfWork.commitTransaction();
             String response = String.format("\"tradeDetails\": {\"trade initiator\": {\"name\": \"%s\", \"card traded\": \"%s (Damage: %.1f)\"},\"trade recipient\": {\"name\": \"%s\", \"card traded\": \"%s (Damage: %.1f)\"}}",
-                    tradeOffer.getTrader().getLogin(),
+                    tradeOffer.getTrader().getUsername(),
                     tradeOffer.getCard().getName(),
                     tradeOffer.getCard().getDamage(),
-                    user.getLogin(),
+                    user.getUsername(),
                     card.getName(),
                     card.getDamage());
             return new Response(HttpStatus.CREATED, response + "\n");

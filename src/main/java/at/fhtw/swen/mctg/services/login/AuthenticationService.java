@@ -20,7 +20,7 @@ public class AuthenticationService {
             User user = userRepository.findByUsername(username);
             if (user.getPassword().equals(password)) {
                 String token = generateToken(username);
-                userRepository.updateToken(user.getLogin(), token);
+                userRepository.updateToken(user.getUsername(), token);
                 unitOfWork.commitTransaction();
                 return token;
             } else {

@@ -12,7 +12,6 @@ import at.fhtw.swen.mctg.persistence.dao.battle.BattleRepository;
 import at.fhtw.swen.mctg.persistence.dao.battle.BattleRequestsRepository;
 import at.fhtw.swen.mctg.persistence.dao.cards.CardDao;
 import at.fhtw.swen.mctg.persistence.dao.user.StatsRepository;
-import at.fhtw.swen.mctg.persistence.dao.user.UserRepository;
 import at.fhtw.swen.mctg.services.common.UserManager;
 
 import java.util.List;
@@ -38,13 +37,13 @@ public class BattleController {
                //TODO for opponent deck herunterladen
                User opponent = findOpponent(battleRequestsRepo); //search if there are any requests for a battle
                if (opponent == null) {
-                   System.err.println(user.getLogin() + " creates request for a battle");
+                   System.err.println(user.getUsername() + " creates request for a battle");
                    battleRequestsRepo.save(user.getId());
                    unitOfWork.commitTransaction();
                    return new Response(HttpStatus.ACCEPTED, "{ \"message\": \"Battle request submitted. No opponents are available at the moment. The battle will be processed once an opponent is found.\" }\n");
 
                } else {
-                   System.err.println(user.getLogin() + " plays with " + opponent.getLogin());
+                   System.err.println(user.getUsername() + " plays with " + opponent.getUsername());
                    //Delete record of opponent's request from battle_requests
                    battleRequestsRepo.delete(opponent.getId());
                    //int stackOppId = new StackRepository(unitOfWork).findStackByUsername(opponent.getLogin());
@@ -54,8 +53,8 @@ public class BattleController {
                    }
                    opponent.getDeck().addCards(opponentCards);
                    System.out.println("-----joinBattle---------");
-                   System.err.println(user.getLogin() + " " + user.getDeck());
-                   System.err.println(opponent.getLogin() + " " + opponent.getDeck());
+                   System.err.println(user.getUsername() + " " + user.getDeck());
+                   System.err.println(opponent.getUsername() + " " + opponent.getDeck());
                    //start battle
                    BattleEngine engine = new BattleEngine(user, opponent);
                    Battle battle = engine.startBattle();
@@ -87,10 +86,10 @@ public class BattleController {
 
                    System.out.println("stack after battle:");
                    System.out.println(user.getStack());
-                   System.out.println(user.getLogin() + "'s deck after battle:");
+                   System.out.println(user.getUsername() + "'s deck after battle:");
                    System.out.println(user.getDeck());
                    //opponent.getStack().returnDeckToStack();
-                   System.out.println(opponent.getLogin() + "'s deck after battle:");
+                   System.out.println(opponent.getUsername() + "'s deck after battle:");
                    System.out.println(opponent.getDeck());
 
 
@@ -100,8 +99,8 @@ public class BattleController {
                            + "\t%s won %d rounds\n"
                            + "\t%s won %d rounds\n"
                            + "\tThe battle had %d draw rounds\n",
-                   battle.getNumberOfRounds(), user.getLogin(), battle.getUser1BattleResult().getResult(),
-                   opponent.getLogin(), battle.getUser2BattleResult().getResult(), battle.getDrawRounds());
+                   battle.getNumberOfRounds(), user.getUsername(), battle.getUser1BattleResult().getResult(),
+                   opponent.getUsername(), battle.getUser2BattleResult().getResult(), battle.getDrawRounds());
                    return new Response(HttpStatus.OK, engine.getLog().toString() + result);
                }
            }
@@ -135,7 +134,7 @@ public class BattleController {
    private List<Card> getUserDeck(User user, UnitOfWork unitOfWork) {
 
        List<Card> cards = new CardDao(unitOfWork).getCardsInDeckByUserId(user.getId());
-       cards.forEach(card -> card.setOwnerName(user.getLogin()));
+       cards.forEach(card -> card.setOwnerName(user.getUsername()));
        return cards;
    }
 
