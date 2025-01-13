@@ -18,6 +18,7 @@ public class Request {
     @Getter
     @Setter
     private Map<String, String> params;
+    @Setter
     @Getter
     private HeaderMap headerMap = new HeaderMap();
     private String body;
@@ -44,10 +45,15 @@ public class Request {
             }
         }
     }
-
-    public void setHeaderMap(HeaderMap headerMap) {
-        this.headerMap = headerMap;
+    public String getParameter(String key) {
+        return params != null ? params.get(key) : null;
     }
+
+    public boolean isParameterEqualTo(String key, String value) {
+        String paramValue = getParameter(key);
+        return paramValue != null && paramValue.equals(value);
+    }
+
     public Method getMethod() {
         return method;
     }
