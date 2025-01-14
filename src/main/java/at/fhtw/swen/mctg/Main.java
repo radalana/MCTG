@@ -5,6 +5,7 @@ import at.fhtw.swen.mctg.services.cards.StackService;
 import at.fhtw.swen.mctg.services.deck.DeckService;
 import at.fhtw.swen.mctg.services.login.AuthenticationService;
 import at.fhtw.swen.mctg.services.packages.PackageService;
+import at.fhtw.swen.mctg.services.score.scoreboard.ScoreboardService;
 import at.fhtw.swen.mctg.services.score.stats.UserStatsService;
 import at.fhtw.swen.mctg.services.user.UsersService;
 import at.fhtw.swen.mctg.httpserver.server.Server;
@@ -40,6 +41,7 @@ public class Main{
         router.addService("/battles", new BattleService());
         router.addService("/tradings", new TradingService());
         router.addService("/stats", new UserStatsService());
+        router.addService("/scoreboard", new ScoreboardService());
         return router;
     }
 }

@@ -267,8 +267,47 @@ echo .
 echo .
 
 if [ $pauseFlag -eq 1 ]; then read -p "Press enter to continue..."; fi
+#------------------------------------------------------
+echo "14) edit user data"
+echo .
+curl -i -X GET http://localhost:10001/users/kienboec --header "Authorization: Bearer kienboec-mtcgToken"
+echo "Should return HTTP 200 - and current user data"
+echo .
+curl -i -X GET http://localhost:10001/users/altenhof --header "Authorization: Bearer altenhof-mtcgToken"
+echo "Should return HTTP 200 - and current user data"
+echo .
+curl -i -X PUT http://localhost:10001/users/kienboec --header "Content-Type: application/json" --header "Authorization: Bearer kienboec-mtcgToken" -d "{\"Name\": \"Kienboeck\",  \"Bio\": \"me playin...\", \"Image\": \":-)\"}"
+echo "Should return HTTP 2xx"
+echo .
+curl -i -X PUT http://localhost:10001/users/altenhof --header "Content-Type: application/json" --header "Authorization: Bearer altenhof-mtcgToken" -d "{\"Name\": \"Altenhofer\", \"Bio\": \"me codin...\",  \"Image\": \":-D\"}"
+echo "Should return HTTP 2xx"
+echo .
+curl -i -X GET http://localhost:10001/users/kienboec --header "Authorization: Bearer kienboec-mtcgToken"
+echo "Should return HTTP 200 - and new user data"
+echo .
+curl -i -X GET http://localhost:10001/users/altenhof --header "Authorization: Bearer altenhof-mtcgToken"
+echo "Should return HTTP 200 - and new user data"
+echo .
+echo .
 
+if [ $pauseFlag -eq 1 ]; then read -p "Press enter to continue..."; fi
+
+# --------------------------------------------------
+echo "15) stats"
+curl -i -X GET http://localhost:10001/stats --header "Authorization: Bearer kienboec-mtcgToken"
+echo "Should return HTTP 200 - and user stats"
+echo .
+curl -i -X GET http://localhost:10001/stats --header "Authorization: Bearer altenhof-mtcgToken"
+echo "Should return HTTP 200 - and user stats"
+echo .
+echo .
 #----------------------------------------------------
+echo "16) scoreboard"
+curl -i -X GET http://localhost:10001/scoreboard --header "Authorization: Bearer kienboec-mtcgToken"
+echo "Should return HTTP 200 - and the scoreboard"
+echo .
+echo .
+#--------------------------------------------------------------------------------------------------
 echo "17) battle"
 curl -i -X POST http://localhost:10001/battles --header "Authorization: Bearer kienboec-mtcgToken" &
 curl -i -X POST http://localhost:10001/battles --header "Authorization: Bearer altenhof-mtcgToken" &
