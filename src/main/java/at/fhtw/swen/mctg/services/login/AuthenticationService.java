@@ -59,7 +59,7 @@ public class AuthenticationService {
 
     }
 
-    private String generateToken(String login) {
+    public String generateToken(String login) {
         return login + TOKEN;
     }
 

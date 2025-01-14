@@ -36,6 +36,20 @@ public class UserRepository {
             throw  new DataAccessException(e);
         }
     }
+
+    public void update(User user) {
+        String sql = "UPDATE users SET username = ?, password = ?, bio = ?, image = ? WHERE token = ?";
+        try(PreparedStatement preparedStatement = this.unitOfWork.prepareStatement(sql)) {
+            preparedStatement.setString(1, user.getUsername());
+            preparedStatement.setString(2, user.getPassword());
+            preparedStatement.setString(3, user.getBio());
+            preparedStatement.setString(4, user.getImage());
+            preparedStatement.setString(5, user.getToken());
+            preparedStatement.executeUpdate();
+        }catch (SQLException e) {
+            throw new DataAccessException("Update error: failed to update user data in the database" + e.getMessage(), e);
+        }
+    }
     public User findUserByToken(String token) {
         if (token == null || token.isEmpty()) {
             throw new IllegalArgumentException("Token cannot be null or empty");
@@ -50,6 +64,7 @@ public class UserRepository {
                         resultSet.getInt("id"),
                         resultSet.getString("username"),
                         resultSet.getString("password"),
+                        resultSet.getString("token"),
                         resultSet.getString("bio"),
                         resultSet.getString("image"),
                         resultSet.getInt("coins")

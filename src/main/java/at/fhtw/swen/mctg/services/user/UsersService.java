@@ -31,6 +31,10 @@ public class UsersService extends BaseService {
             String token = getTokenFromRequest(request);;
             return this.userController.getUser(request, token);
         }
-        return new Response(HttpStatus.BAD_REQUEST, REQUEST_BODY_REQUIRED);
+        if (requestMethod == Method.PUT && request.getBody() != null) {
+            String token = getTokenFromRequest(request);
+            return this.userController.editProfile(request, token);
+        }
+        return new Response(HttpStatus.BAD_REQUEST, "");
     }
 }
