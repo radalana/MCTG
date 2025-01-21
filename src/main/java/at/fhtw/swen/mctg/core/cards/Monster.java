@@ -24,11 +24,13 @@ public abstract class Monster extends Card {
         if (opponent instanceof Monster) {
              return Double.compare(this.getDamage(), opponent.getDamage());
         }
-        System.err.println(" ----------Monster fight vs spell---------");
+        //System.err.println(" ----------Monster fight vs spell---------");
         return super.fight(opponent, effectiveness);
     }
     @Override
     public boolean isMonsterType() {
         return true;
     }
+
+    protected abstract String generateAttackMessage();
 }

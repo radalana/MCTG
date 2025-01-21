@@ -20,4 +20,14 @@ public class Goblin extends Monster {
         System.out.println("Stab with a rusty dagger");
         return Double.compare(getDamage(), opponent.getDamage());
     }
+
+    @Override
+    protected String generateAttackMessage() {
+        return switch (this.getElement()) {
+            case FIRE -> "Throws an explosive bomb";
+            case WATER -> "Splashes dirty swamp water";
+            case NORMAL -> "Swings a rusty dagger";
+            default -> "Tries to bite the opponent";
+        };
+    }
 }

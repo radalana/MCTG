@@ -20,4 +20,14 @@ public class Knight extends Monster {
         System.out.println("Strikes with a sword");
         return super.fight(opponent, effectiveness);
     }
+
+    @Override
+    protected String generateAttackMessage() {
+        return switch (this.getElement()) {
+            case FIRE -> "Swings a flaming sword";
+            case WATER -> "Unleashes a crashing tidal strike";
+            case NORMAL -> "Delivers a powerful shield bash";
+            default -> "Charges forward with a heavy lance";
+        };
+    }
 }

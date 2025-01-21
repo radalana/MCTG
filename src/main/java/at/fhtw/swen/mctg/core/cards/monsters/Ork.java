@@ -18,4 +18,14 @@ public class Ork extends Monster {
         }
         return super.fight(opponent, effectiveness);
     }
+
+    @Override
+    protected String generateAttackMessage() {
+        return switch (this.getElement()) {
+            case FIRE -> "Swings a flaming axe";
+            case WATER -> "Throws a massive water-infused boulder";
+            case NORMAL -> "Smashes the opponent with brute force";
+            default -> "Attacks with wild fury";
+        };
+    }
 }

@@ -22,4 +22,14 @@ public class Wizard extends Monster {
         return super.fight(opponent, effectiveness);
     }
 
+    @Override
+    protected String generateAttackMessage() {
+        return switch (this.getElement()) {
+            case FIRE -> "Casts a blazing fireball";
+            case WATER -> "Summons a freezing ice storm";
+            case NORMAL -> "Unleashes a burst of arcane energy";
+            default -> "Channels an ancient spell of destruction";
+        };
+    }
+
 }

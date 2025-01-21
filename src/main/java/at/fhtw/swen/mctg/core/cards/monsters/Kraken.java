@@ -22,5 +22,15 @@ public class Kraken extends Monster {
         return super.fight(opponent, effectiveness);
     }
 
+    @Override
+    protected String generateAttackMessage() {
+        return switch (this.getElement()) {
+            case FIRE -> "Spews a jet of boiling steam";
+            case WATER -> "Unleashes a massive tidal wave";
+            case NORMAL -> "Crushes the opponent with giant tentacles";
+            default -> "Wraps the opponent in an unbreakable grip";
+        };
+    }
+
 
 }
