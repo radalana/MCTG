@@ -45,6 +45,14 @@ public class UserController extends Controller {
     }
 
     public Response editProfile(Request request, String token) {
+        if (request.getPathParts().size() != 2) {
+            return new Response(HttpStatus.BAD_REQUEST, "no parameter\n");
+
+        }
+        String usernamePathParam = request.getPathParts().get(1);
+        if (!token.equals(authenticationService.generateToken(usernamePathParam))) {
+            return new Response(HttpStatus.FORBIDDEN, "{ \"message\": \"Access denied\"}");
+        }
         try (UnitOfWork unitOfWork = new UnitOfWork()) {
             Map<String, String> editData = this.getObjectMapper().readValue(request.getBody(), new TypeReference<Map<String, String>>() {
             });
