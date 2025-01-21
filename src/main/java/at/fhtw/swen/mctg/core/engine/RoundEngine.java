@@ -14,7 +14,7 @@ public class RoundEngine {
         this.user2 = user2;
     }
     public Round run() throws IllegalArgumentException{
-        System.out.println("---round.run----");
+        //System.out.println("---round.run----");
         //System.err.println(user1.getDeck());
         //System.err.println(user2.getDeck());
         Card card1 = user1.getDeck().pickRandomCard();
@@ -22,6 +22,7 @@ public class RoundEngine {
         //System.out.println("Card 1: " + card1);
         //System.out.println("Card 2: " + card2);
         double effectiveness = ElementFactors.getMultiplier(card1.getElement(), card2.getElement());
+        //если у одной из карт нет элемента то effectivness 1
         int result =  startFight(card1, card2, effectiveness);
 
         if (result > 0) {
@@ -35,7 +36,7 @@ public class RoundEngine {
             //card1.setOwnerName(user2.getLogin());
             return new Round(card2, card1, effectiveness);
         } else {
-            return new Round(card1, card2, effectiveness);
+            return new Round(card1, card2, effectiveness, true);
         }
     }
 
