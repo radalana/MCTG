@@ -143,43 +143,46 @@ public class TradingController extends Controller {
             }
 
             TradeOfferRepository tradeOfferRepository = new TradeOfferRepository(unitOfWork);
-            TradeOffer tradeOffer = tradeOfferRepository.findById(offerId);
-            if (tradeOffer == null) {
-                return new Response(HttpStatus.BAD_REQUEST, "{ \"message\": \"Deal with id: " + offerId + " was not found\" }\n");
-            }
-            if (tradeOffer.isClosed()) {
-                return new Response(HttpStatus.BAD_REQUEST, "{ \"message\": \"The trade offer is already closed.}\n");
-            }
+            synchronized (this) {
+                TradeOffer tradeOffer = tradeOfferRepository.findById(offerId);
+                if (tradeOffer == null) {
+                    return new Response(HttpStatus.BAD_REQUEST, "{ \"message\": \"Deal with id: " + offerId + " was not found\" }\n");
+                }
+                if (tradeOffer.isClosed()) {
+                    return new Response(HttpStatus.BAD_REQUEST, "{ \"message\": \"The trade offer is already closed.}\n");
+                }
 
-            if (tradeOffer.getTrader().getId() == user.getId()) {
-                return new Response(HttpStatus.BAD_REQUEST, "{ \"message\": \"Trading with yourself is not allowed.}\n");
-            }
+                if (tradeOffer.getTrader().getId() == user.getId()) {
+                    return new Response(HttpStatus.BAD_REQUEST, "{ \"message\": \"Trading with yourself is not allowed.}\n");
+                }
 
-            Card card = cardDao.findCardById(cardId);
-            //check if the card meets the requirements
-            RequiredType requiredType = tradeOffer.getType();
-            if (!isValidType(requiredType, card)) {
-                return new Response(HttpStatus.BAD_REQUEST, "{ \"message\": \"The required card type for this trade is: " + requiredType + ". Your card type is: " + card.getClass().getSimpleName() + ".\" }\n");
-            }
+                Card card = cardDao.findCardById(cardId);
+                //check if the card meets the requirements
+                RequiredType requiredType = tradeOffer.getType();
+                if (!isValidType(requiredType, card)) {
+                    return new Response(HttpStatus.BAD_REQUEST, "{ \"message\": \"The required card type for this trade is: " + requiredType + ". Your card type is: " + card.getClass().getSimpleName() + ".\" }\n");
+                }
 
-            if (card.getDamage() < tradeOffer.getMinDamage()) {
-                return new Response(HttpStatus.BAD_REQUEST, "{ \"message\": \"Min damage for this trade: " + tradeOffer.getMinDamage() + ". Your card damage is: " + card.getDamage() + ".\" }\n");
-            }
+                if (card.getDamage() < tradeOffer.getMinDamage()) {
+                    return new Response(HttpStatus.BAD_REQUEST, "{ \"message\": \"Min damage for this trade: " + tradeOffer.getMinDamage() + ". Your card damage is: " + card.getDamage() + ".\" }\n");
+                }
 
-            Trade trade = new Trade(tradeOffer, user, card);
-            new TradeRepository(unitOfWork).save(trade);
-            tradeOfferRepository.closeTradeOffer(tradeOffer);
-            cardDao.updateOwnership(card, tradeOffer.getTrader());
-            cardDao.updateOwnership(tradeOffer.getCard(), user);
-            unitOfWork.commitTransaction();
-            String response = String.format("\"tradeDetails\": {\"trade initiator\": {\"name\": \"%s\", \"card traded\": \"%s (Damage: %.1f)\"},\"trade recipient\": {\"name\": \"%s\", \"card traded\": \"%s (Damage: %.1f)\"}}",
-                    tradeOffer.getTrader().getUsername(),
-                    tradeOffer.getCard().getName(),
-                    tradeOffer.getCard().getDamage(),
-                    user.getUsername(),
-                    card.getName(),
-                    card.getDamage());
-            return new Response(HttpStatus.CREATED, response + "\n");
+                Trade trade = new Trade(tradeOffer, user, card);
+                new TradeRepository(unitOfWork).save(trade);
+                tradeOfferRepository.closeTradeOffer(tradeOffer);
+                cardDao.updateOwnership(card, tradeOffer.getTrader());
+                cardDao.updateOwnership(tradeOffer.getCard(), user);
+                unitOfWork.commitTransaction();
+
+                String response = String.format("\"tradeDetails\": {\"trade initiator\": {\"name\": \"%s\", \"card traded\": \"%s (Damage: %.1f)\"},\"trade recipient\": {\"name\": \"%s\", \"card traded\": \"%s (Damage: %.1f)\"}}",
+                        tradeOffer.getTrader().getUsername(),
+                        tradeOffer.getCard().getName(),
+                        tradeOffer.getCard().getDamage(),
+                        user.getUsername(),
+                        card.getName(),
+                        card.getDamage());
+                return new Response(HttpStatus.CREATED, response + "\n");
+            }
         } catch (Exception e) {
             System.err.println(e.getMessage());
             e.printStackTrace();
