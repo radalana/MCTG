@@ -34,7 +34,6 @@ public class BattleController {
 
            BattleRequestsRepository battleRequestsRepo = new BattleRequestsRepository(unitOfWork);
            synchronized (this) {
-               //TODO for opponent deck herunterladen
                User opponent = findOpponent(battleRequestsRepo); //search if there are any requests for a battle
                if (opponent == null) {
                    System.err.println(user.getUsername() + " creates request for a battle");
@@ -52,9 +51,9 @@ public class BattleController {
                        return new Response(HttpStatus.BAD_REQUEST, "{ \"message\": \"Deck is empty. To start battle configure a stack.\" }\n");
                    }
                    opponent.getDeck().addCards(opponentCards);
-                   System.out.println("-----joinBattle---------");
-                   System.err.println(user.getUsername() + " " + user.getDeck());
-                   System.err.println(opponent.getUsername() + " " + opponent.getDeck());
+                   //System.out.println("-----joinBattle---------");
+                   //System.err.println(user.getUsername() + " " + user.getDeck());
+                   //System.err.println(opponent.getUsername() + " " + opponent.getDeck());
                    //start battle
                    BattleEngine engine = new BattleEngine(user, opponent);
                    Battle battle = engine.startBattle();
@@ -84,13 +83,13 @@ public class BattleController {
                    cardDao.updateDeckOwnership(opponent);
                    cardDao.unsetDeckFlag(opponent);
 
-                   System.out.println("stack after battle:");
+                   //System.out.println("stack after battle:");
                    System.out.println(user.getStack());
-                   System.out.println(user.getUsername() + "'s deck after battle:");
-                   System.out.println(user.getDeck());
+                   //System.out.println(user.getUsername() + "'s deck after battle:");
+                   //System.out.println(user.getDeck());
                    //opponent.getStack().returnDeckToStack();
-                   System.out.println(opponent.getUsername() + "'s deck after battle:");
-                   System.out.println(opponent.getDeck());
+                   //System.out.println(opponent.getUsername() + "'s deck after battle:");
+                   //System.out.println(opponent.getDeck());
 
 
                    unitOfWork.commitTransaction();
@@ -99,8 +98,8 @@ public class BattleController {
                            + "\t%s won %d rounds\n"
                            + "\t%s won %d rounds\n"
                            + "\tThe battle had %d draw rounds\n",
-                   battle.getNumberOfRounds(), user.getUsername(), battle.getUser1BattleResult().getResult(),
-                   opponent.getUsername(), battle.getUser2BattleResult().getResult(), battle.getDrawRounds());
+                   battle.getNumberOfRounds(), user.getUsername(), battle.getUser1BattleResult().getVictories(),
+                   opponent.getUsername(), battle.getUser2BattleResult().getVictories(), battle.getDrawRounds());
                    return new Response(HttpStatus.OK, engine.getLog().toString() + result);
                }
            }
@@ -116,8 +115,8 @@ public class BattleController {
    }
 //TODO должна может быть вынести отдельно в логику states
    private void updateStates(Stats userStats, Stats opponentStats, Battle battle) {
-       int userScore = battle.getUser1BattleResult().getResult();
-       int opponentScore = battle.getUser2BattleResult().getResult();
+       int userScore = battle.getUser1BattleResult().getVictories();
+       int opponentScore = battle.getUser2BattleResult().getVictories();
 
        if (userScore > opponentScore) {
            userStats.recordWin();

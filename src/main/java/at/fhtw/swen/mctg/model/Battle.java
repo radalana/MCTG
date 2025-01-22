@@ -1,10 +1,7 @@
 package at.fhtw.swen.mctg.model;
 
-import at.fhtw.swen.mctg.model.User;
 import lombok.Getter;
-import lombok.Setter;
 
-import java.util.ArrayList;
 import java.util.List;
 @Getter
 public class Battle {
@@ -19,7 +16,7 @@ public class Battle {
         this.numberOfRounds = rounds.size();
         this.user1BattleResult = user1BattleResult;
         this.user2BattleResult = user2BattleResult;
-        this.drawRounds = numberOfRounds - user1BattleResult.getResult() - user2BattleResult.getResult();
+        this.drawRounds = numberOfRounds - user1BattleResult.getVictories() - user2BattleResult.getVictories();
     }
 
     @Override
