@@ -20,7 +20,7 @@ public class Dragon extends Monster {
     }
     @Override
     public int fight(Card opponent, double effectiveness) {
-        if (this.getElement() == null || opponent.getElement() == null) {
+        if (isNoRulesMode(opponent)) {
             System.out.println("No rules");
             return super.fight(opponent, effectiveness);
         }

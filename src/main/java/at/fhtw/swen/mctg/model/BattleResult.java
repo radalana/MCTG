@@ -5,15 +5,15 @@ import lombok.Getter;
 @Getter
 public class BattleResult {
     private final int userId;
-    private final int result;
+    private final int victories;
 
-    public BattleResult(int userId, int result) {
+    public BattleResult(int userId, int victories) {
         this.userId = userId;
-        this.result = result;
+        this.victories = victories;
     }
 
     @Override
     public String toString() {
-        return "user: " + userId + ", result: " + result;
+        return "user: " + userId + ", victories: " + victories;
     }
 }

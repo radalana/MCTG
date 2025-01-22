@@ -31,8 +31,6 @@ public abstract class Monster extends Card {
     public boolean isMonsterType() {
         return true;
     }
-    protected boolean isNoRulesMode(Card card) {
-        return this.getElement() == null || card.getElement() == null;
-    }
+
     protected abstract String generateAttackMessage();
 }

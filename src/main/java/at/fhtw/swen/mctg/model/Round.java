@@ -6,21 +6,23 @@ import lombok.Setter;
 @Setter
 @Getter
 public class Round {
+    private User winner;
     private Card winnerCard;
     private Card looserCard;
     private int roundNumber;
     private double effectiveness;
     private boolean isDraw;
 
-    public Round(Card card1, Card card2, double effectiveness, boolean isDraw) {
+    public Round(Card card1, Card card2, double effectiveness, User winner, boolean isDraw) {
         this.winnerCard = card1;
         this.looserCard = card2;
         this.isDraw = isDraw;
         this.effectiveness = effectiveness;
+        this.winner = winner;
     }
 
-    public Round(Card card1, Card card2, double effectiveness) {
-        this(card1, card2, effectiveness, false);
+    public Round(Card card1, Card card2, double effectiveness, User winner) {
+        this(card1, card2, effectiveness, winner,false);
     }
     //for HTTP answer
     @Override

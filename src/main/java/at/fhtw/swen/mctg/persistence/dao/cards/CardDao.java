@@ -141,7 +141,6 @@ public class CardDao {
             if (parameter instanceof Integer) {
                 preparedStatement.setInt(1, (Integer) parameter);
             } else if (parameter instanceof String) {
-                System.out.println("String for uuid: " + parameter);
                 UUID uuid = UUID.fromString((String) parameter);
                 preparedStatement.setObject(1, uuid);
             } else {

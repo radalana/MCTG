@@ -52,13 +52,15 @@ public class BattleRequestsRepository {
         try(PreparedStatement preparedStatement = this.unitOfWork.prepareStatement(sql)) {
             preparedStatement.setInt(1, userid);
             int rowsDeleted = preparedStatement.executeUpdate();
-
+            /*
             if (rowsDeleted == 0) {
                 System.out.println("No battle request found for user_id: " + userid);
                 // Можно также выбросить исключение или просто логировать это событие
             } else {
-                System.out.println("Successfully deleted battle request for user_id: " + userid);
+                //System.out.println("Successfully deleted battle request for user_id: " + userid);
             }
+
+             */
         }catch(SQLException e) {
             throw new DataAccessException("Failed to DELETE battle request for user_id: " + userid+". " + e.getMessage(), e);
         }

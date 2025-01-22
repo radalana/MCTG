@@ -21,9 +21,9 @@ public class BattleEngine {
     }
     public Battle startBattle() throws IllegalArgumentException{
        //get deck1 und get deck2
-        System.out.println("----Starting Battle-------");
-        System.out.println(user1.getUsername() + " " + user1.getDeck());
-        System.out.println(user2.getUsername() + " " + user2.getDeck());
+       // System.out.println("----Starting Battle-------");
+        //System.out.println(user1.getUsername() + " " + user1.getDeck());
+        //System.out.println(user2.getUsername() + " " + user2.getDeck());
        Deck deck1 = user1.getDeck(); //пока пустой нужно из дб получить deck
        Deck deck2 = user2.getDeck();
         //System.err.println("Deck1: " + deck1.toString());
@@ -37,9 +37,9 @@ public class BattleEngine {
         List<Round> rounds = new ArrayList<>();
         //System.err.println("engine.runRounds: " + " deck1: " + deck1 + " deck2: " + deck2);
         for(int i = 0; i < MAX_ROUNDS; i++) {
-            System.out.println("round number: " + i);
+            //System.out.println("round number: " + i);
             if (deck1.isEmpty() || deck2.isEmpty()) {
-                System.err.println("one or more decks are empty");
+                //System.err.println("one or more decks are empty");
                 break;
             }
           //  System.out.println("after check empty decks round number: " + i);
@@ -60,7 +60,7 @@ public class BattleEngine {
 
     private int calculateResult(List<Round> rounds, User user) {
         return (int) rounds.stream()
-                .filter(round -> !round.isDraw() && user.getUsername().equals(round.getWinnerCard().getOwnerName()))
+                .filter(round -> !round.isDraw() && round.getWinner().equals(user))
                 .count();
     }
 }

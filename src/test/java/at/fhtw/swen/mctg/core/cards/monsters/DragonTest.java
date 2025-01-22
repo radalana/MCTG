@@ -77,7 +77,7 @@ class DragonTest {
         Goblin normalGoblin = new Goblin("goblin", "goblin", 10.0, Element.FIRE);
 
         int actual = waterDragon.fight(normalGoblin, 1.0);
-        assertEquals(0, actual);
+        assertEquals(1, actual);
     }
 
     @Test

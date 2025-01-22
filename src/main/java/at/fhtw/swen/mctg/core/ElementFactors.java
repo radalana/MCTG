@@ -28,14 +28,11 @@ public class  ElementFactors {
     }
     //TODO logic if card does not have any element
     public static double getMultiplier(Element element1, Element element2) {
-        System.err.println("------getMultiplier--------");
+        //System.err.println("------getMultiplier--------");
         if (element1 != null && element2 != null) {
             return elementsFactors.get(element1).get(element2);
         }
         //if card does not have element, it is weaker all others cards with elements
-        if (element1 == null) {
-            return  1/0.44;
-        }
-        return 0.44;
+        return 1;
     }
 }

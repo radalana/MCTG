@@ -14,21 +14,27 @@ public class Kraken extends Monster {
 
     @Override
     public int fight(Card opponent, double effectiveness) {
+        if (isNoRulesMode(opponent)) {
+            return super.fight(opponent, effectiveness);
+        }
         if (opponent instanceof Spell) {
-            System.out.println("is immune against " + opponent.getName());
+            System.out.println(this.getName() + " is immune against " + opponent.getName());
             return 1;
         }
-        System.out.println("Smashes with tentacles");
+        System.out.println(generateAttackMessage());
         return super.fight(opponent, effectiveness);
     }
 
     @Override
     protected String generateAttackMessage() {
-        return switch (this.getElement()) {
+        Element element = this.getElement();
+        if (element == null) {
+            return "Wraps the opponent in an unbreakable grip";
+        }
+        return switch (element) {
             case FIRE -> "Spews a jet of boiling steam";
             case WATER -> "Unleashes a massive tidal wave";
             case NORMAL -> "Crushes the opponent with giant tentacles";
-            default -> "Wraps the opponent in an unbreakable grip";
         };
     }
 

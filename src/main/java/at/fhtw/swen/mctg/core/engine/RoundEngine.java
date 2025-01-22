@@ -29,14 +29,14 @@ public class RoundEngine {
             user1.getDeck().addCard(card2);
             user2.getDeck().removeCard(card2);
             //card2.setOwnerName(user1.getLogin());
-            return new Round(card1, card2, effectiveness);
+            return new Round(card1, card2, effectiveness, user1);
         }if (result < 0) {
             user2.getDeck().addCard(card1);
             user1.getDeck().removeCard(card1);
             //card1.setOwnerName(user2.getLogin());
-            return new Round(card2, card1, effectiveness);
+            return new Round(card2, card1, effectiveness, user2);
         } else {
-            return new Round(card1, card2, effectiveness, true);
+            return new Round(card1, card2, effectiveness, null, true);
         }
     }
 

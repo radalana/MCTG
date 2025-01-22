@@ -17,7 +17,7 @@ public class BattleResultRepository {
         String sql = "INSERT INTO battles_results (user_id, result) VALUES (?, ?)";
         try(PreparedStatement preparedStatement = this.unitOfWork.prepareStatement(sql, true)) {
             preparedStatement.setInt(1, battleResult.getUserId());
-            preparedStatement.setInt(2, battleResult.getResult());
+            preparedStatement.setInt(2, battleResult.getVictories());
             preparedStatement.executeUpdate();
             ResultSet resultSet = preparedStatement.getGeneratedKeys();
             if (resultSet.next()) {

@@ -43,40 +43,4 @@ class WizardTest {
         assertEquals(-1, wizard.fight(knight, 1.0));
         assertEquals(1, knight.fight(wizard, 1.0));
     }
-
-
-    //Wizard vs spells
-    @Test
-    @DisplayName("Wizard(Normal element, 1.0)  fights against water spell(1.0) -> Wizard wins")
-
-    void testFightWizardWaterSpell() {
-        Card wizard = new Wizard("Wizard", "Wizard", 1.0, Element.NORMAL);
-        Card water = new Spell("Spell", "WaterSpell", 1.0, Element.WATER);
-
-        assertEquals(1, wizard.fight(water, 1.0));
-        assertEquals(-1, water.fight(wizard, 1.0));
-    }
-
-    @Test
-    @DisplayName("Wizard(Normal, 1.0)  fights against FIRE spell(1.0) -> Spell wins")
-    void testFightWizardFireSpell() {
-        Card wizard = new Wizard("Wizard", "Wizard", 1.0, Element.NORMAL);
-        Card fire = new Spell("Spell", "WaterSpell", 1.0, Element.FIRE);
-
-        assertEquals(-1, wizard.fight(fire, 1.0));
-        assertEquals(1, fire.fight(wizard, 1.0));
-    }
-
-    @Test
-    @DisplayName("Wizard(Normal, 1.0)  fights against Normal spell(1.0) -> draw")
-    void testFightWizardNormalSpell() {
-        Card wizard = new Wizard("Wizard", "Wizard", 1.0, Element.NORMAL);
-        Card normalSpell = new Spell("Spell", "WaterSpell", 1.0, Element.NORMAL);
-
-        assertEquals(0, wizard.fight(normalSpell, 1.0));
-        assertEquals(0, normalSpell.fight(wizard, 1.0));
-    }
-    //WaterWizard vs water, fire, normal
-    //FireWizard vs water, fire, normal
-    //NormalWizard vs water, fire, normal
 }

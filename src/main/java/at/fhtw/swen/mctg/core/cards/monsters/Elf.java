@@ -3,6 +3,7 @@ package at.fhtw.swen.mctg.core.cards.monsters;
 import at.fhtw.swen.mctg.core.cards.Element;
 import at.fhtw.swen.mctg.core.cards.Monster;
 import at.fhtw.swen.mctg.core.cards.MonsterType;
+import at.fhtw.swen.mctg.core.cards.Spell;
 import at.fhtw.swen.mctg.model.Card;
 
 public class Elf extends Monster {
@@ -14,7 +15,7 @@ public class Elf extends Monster {
     }
     @Override
     public int fight(Card opponent, double effectiveness) {
-        if (this.getElement() == null || opponent.getElement() == null) {
+        if (isNoRulesMode(opponent)) {
             System.out.println("No rules");
             return super.fight(opponent, effectiveness);
         }
@@ -34,7 +35,15 @@ public class Elf extends Monster {
                 }
             }
         }
-        System.out.println("Shoots an arrow");
+
+        if (this.getElement() == Element.WATER && opponent instanceof Spell && opponent.getElement() == Element.WATER) {
+            Spell spell = (Spell) opponent;
+            // water spell is stronger than elf, elf can fend off the attack
+            if (Double.compare(spell.getDamage(), this.getDamage()) > 0) {
+                return 0;
+            }
+        }
+        System.out.println(generateAttackMessage());
         return super.fight(opponent, effectiveness);
     }
 

@@ -11,16 +11,17 @@ public class Spell extends Card {
     }
     @Override
     public int fight(Card opponent, double effectiveness) {
-        if (getElement() == Element.WATER) {
-            if (opponent instanceof Knight) {
-                return 1;
+        if (!isNoRulesMode(opponent)) {
+            if (getElement() == Element.WATER) {
+                if (opponent instanceof Knight) {
+                    return 1;
+                }
+            }
+
+            if (opponent instanceof Kraken) {
+                return -1;
             }
         }
-
-        if (opponent instanceof Kraken) {
-            return -1;
-        }
-        System.out.println("Spell");
         return super.fight(opponent, effectiveness);
     }
     @Override

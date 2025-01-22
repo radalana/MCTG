@@ -4,6 +4,7 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
 import at.fhtw.swen.mctg.core.cards.Element;
+import at.fhtw.swen.mctg.core.cards.Spell;
 import at.fhtw.swen.mctg.core.cards.monsters.Wizard;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -38,6 +39,8 @@ class BattleEngineTest {
         field.setAccessible(true);
         field.set(battleEngine, roundEngine); // Ersetzen des echten Objekts durch einen Spy
 
+        when(user1.getUsername()).thenReturn("user1");
+        when(user2.getUsername()).thenReturn("user2");
         when(user1.getDeck()).thenReturn(deckA);
         when(user2.getDeck()).thenReturn(deckB);
 
@@ -47,15 +50,15 @@ class BattleEngineTest {
     @DisplayName("User1 wins all rounds and User2 deck becomes empty")
     void startBattleTest() {
         when(deckA.isEmpty())
-                .thenReturn(false) // 1-й вызов
                 .thenReturn(false)
-                .thenReturn(false)// 2-й вызов
+                .thenReturn(false)
+                .thenReturn(false)
                 .thenReturn(false)
                 .thenReturn(false);
         when(deckA.isEmpty())
-                .thenReturn(false) // 1-й вызов
                 .thenReturn(false)
-                .thenReturn(false)// 2-й вызов
+                .thenReturn(false)
+                .thenReturn(false)
                 .thenReturn(false)
                 .thenReturn(true);
 
@@ -63,16 +66,16 @@ class BattleEngineTest {
         Card card2 = new Wizard("5", "5", 4.0, Element.NORMAL);
         card1.setOwnerName(user1.getUsername());
         card2.setOwnerName(user2.getUsername());
-                doReturn(new Round(card1, card2,  1.0))
-                .doReturn(new Round(card1, card2, 1.0))
-                .doReturn(new Round(card1, card2, 1.0))
-                .doReturn(new Round(card1, card2, 1.0))
+                doReturn(new Round(card1, card2,  1.0, user1))
+                .doReturn(new Round(card1, card2, 1.0, user1))
+                .doReturn(new Round(card1, card2, 1.0, user1))
+                .doReturn(new Round(card1, card2, 1.0, user1))
                 .when(roundEngine).run();
 
         Battle battle = battleEngine.startBattle();
         assertEquals(4, battle.getRounds().size());
-        assertEquals(4, battle.getUser1BattleResult().getResult());
-        assertEquals(0, battle.getUser2BattleResult().getResult());
+        assertEquals(4, battle.getUser1BattleResult().getVictories());
+        assertEquals(0, battle.getUser2BattleResult().getVictories());
     }
 
 
@@ -113,19 +116,20 @@ class BattleEngineTest {
         Card card2 = new Wizard("5", "5", 4.0, Element.NORMAL);
         card1.setOwnerName(user1.getUsername());
         card2.setOwnerName(user2.getUsername());
-        doReturn(new Round(card1, card2, 1.0))
-                .doReturn(new Round(card1, card2, 1.0))
-                .doReturn(new Round(card1, card2, 1.0))
-                .doReturn(new Round(card2, card1, 1.0))
-                .doReturn(new Round(card2, card1, 1.0, true))
-                .doReturn(new Round(card1, card2, 1.0))
-                .doReturn(new Round(card1, card2, 1.0))
+       // card3.setOwnerName(user2.getUsername());
+        doReturn(new Round(card1, card2, 1.0, user1))
+                .doReturn(new Round(card1, card2, 1.0, user1))
+                .doReturn(new Round(card1, card2, 1.0, user1))
+                .doReturn(new Round(card2, card1, 1.0, user2))
+                .doReturn(new Round(card2, card1, 1.0, null,true))
+                .doReturn(new Round(card1, card2, 1.0, user1))
+                .doReturn(new Round(card1, card2, 1.0, user1))
                 .when(roundEngine).run();
 
         Battle battle = battleEngine.startBattle();
         assertEquals(7, battle.getRounds().size());
-        assertEquals(5, battle.getUser1BattleResult().getResult());
-        assertEquals(1, battle.getUser2BattleResult().getResult());
+        assertEquals(5, battle.getUser1BattleResult().getVictories());
+        assertEquals(1, battle.getUser2BattleResult().getVictories());
     }
 
     @DisplayName("Alle Rounds unentschieden, Battle endet nach 100 Rounds")
@@ -140,7 +144,7 @@ class BattleEngineTest {
         when(deckB.isEmpty())
                 .thenReturn(false);
 
-        doReturn(new Round(card1, card2, 1.0, true)).when(roundEngine).run();
+        doReturn(new Round(card1, card2, 1.0, null,true)).when(roundEngine).run();
 
         Battle battle = battleEngine.startBattle();
         assertEquals(100, battle.getNumberOfRounds());

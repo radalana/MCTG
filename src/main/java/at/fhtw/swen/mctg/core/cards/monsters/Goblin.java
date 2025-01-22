@@ -12,13 +12,12 @@ public class Goblin extends Monster {
     }
     @Override
     public int fight(Card opponent, double effectiveness) {
-        //TODO dont need logic of elements bcs both monsters
         if (opponent instanceof Dragon) {
             System.out.println("Is too afraid of Dragon " + opponent.getName());
             return -1;
         }
-        System.out.println("Stab with a rusty dagger");
-        return Double.compare(getDamage(), opponent.getDamage());
+        System.out.println(generateAttackMessage());
+        return super.fight(opponent, effectiveness);
     }
 
     @Override

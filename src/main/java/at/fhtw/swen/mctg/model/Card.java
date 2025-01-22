@@ -29,12 +29,12 @@ public abstract class Card {
     }
 
     public int fight(Card opponent, double effectiveness){
-        System.err.println("---In abstract class Card.fight------");
+        //System.err.println("---In abstract class Card.fight------");
         if (opponent == null) {
             System.err.println("Opponent is null");
         }
-        System.err.println("this.hashCode:" + this.hashCode());
-        System.err.println("opponent.hashCode:" + opponent.hashCode());
+        //System.err.println("this.hashCode:" + this.hashCode());
+        //System.err.println("opponent.hashCode:" + opponent.hashCode());
         if (this == opponent) {
             throw new IllegalArgumentException("Cannot fight the same card");
         }
@@ -42,7 +42,7 @@ public abstract class Card {
         //TODO logic if card against itself - exception
         //Element opponentElement = opponent.getElement();
         //double effectiveness = ElementFactors.getMultiplier(element, opponentElement);
-        System.out.println("effectiveness: " + effectiveness);
+        //System.out.println("effectiveness: " + effectiveness);
         return Double.compare(getDamage()*effectiveness, opponent.getDamage());
     }
 
@@ -60,4 +60,7 @@ public abstract class Card {
         return "\nid: " + this.id + "\nname:" + this.name +  "\nclass: " + this.getClass().getSimpleName() + "\ndamage: " + damage + "\nelement: " + this.element;
     }
 
+    protected boolean isNoRulesMode(Card card) {
+        return this.getElement() == null || card.getElement() == null;
+    }
 }

@@ -22,4 +22,13 @@ class KrakenTest {
         assertEquals(1, kraken.fight(fireSpell, effectiveness));
         assertEquals(-1, fireSpell.fight(kraken, effectiveness));
     }
+
+    @Test
+    @DisplayName("No special rules - kraken doesn't have elemtne")
+    void testKrakenWithNoElement() {
+        Kraken kraken = new Kraken("kraken", "kraken", 1.0, null);
+        Spell waterSpell = new Spell("waterSpell", "waterSpell", 5.0, Element.WATER);
+        assertEquals(-1, kraken.fight(waterSpell, 1.0));
+        assertEquals(1, waterSpell.fight(kraken, 1.0));
+    }
 }
